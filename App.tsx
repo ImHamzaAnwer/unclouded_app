@@ -5,24 +5,15 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import AudioPlayer from './src/screens/AudioPlayerScreen';
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import Routes from './src/navigation';
 
 function App(): JSX.Element {
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <AudioPlayer />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Routes />
+    </NavigationContainer>
   );
 }
 
