@@ -8,6 +8,7 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import TrackPlayer, {
   useTrackPlayerEvents,
@@ -18,6 +19,7 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {setupPlayer, addTracks} from '../../trackPlayerServices';
+import * as Progress from 'react-native-progress';
 
 function Header() {
   const [info, setInfo] = useState({});
@@ -56,11 +58,26 @@ function TrackProgress() {
     return `${mins}:${secs}`;
   }
 
+  async function handleSeekToPress() {
+    if ((await TrackPlayer.getState()) == State.Playing) {
+      TrackPlayer.seekTo(15000);
+    } else {
+      TrackPlayer.pause();
+    }
+  }
+
   return (
     <View>
       <Text style={styles.trackProgress}>
         {format(position)} / {format(duration)}
       </Text>
+      <View onPress={handleSeekToPress} style={{alignItems: 'center', width: '100%'}}>
+        <Progress.Bar
+          width={Dimensions.get('screen').width - 50}
+          style={{borderColor: '#fff', marginTop: 20}}
+          progress={(position / duration) || 0}
+        />
+      </View>
     </View>
   );
 }
