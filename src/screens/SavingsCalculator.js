@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 function SavingsCalculator() {
   const [pricePerPack, setPricePerPack] = useState(0);
@@ -50,6 +51,7 @@ function SavingsCalculator() {
         />
       </View>
       <Button title="Calculate Savings" onPress={calculateSavings} />
+      <Button title="logout" onPress={()=>auth().signout()} />
       {savings > 0 && (
         <Text style={styles.savings}>
           You have saved ${savings.toFixed(2)} by not smoking.

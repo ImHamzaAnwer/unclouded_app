@@ -17,6 +17,9 @@
 		BB3F527829D76A9E0046C378 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F527729D76A9E0046C378 /* dummy.swift */; };
 		BB3F527A29D781AA0046C378 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = BB3F527929D781A90046C378 /* fonts */; };
 		BBCB9A3629E0E8F8000DC397 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBCB9A3529E0E8F7000DC397 /* GoogleService-Info.plist */; };
+		6AD82813403643C684634FB0 /* GothamRounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7F9DCED252074A568C086400 /* GothamRounded-Light.otf */; };
+		DC2B011E88FD4CA5B006EE33 /* GothamRounded-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AC152020FF546598ABBE6AF /* GothamRounded-Medium.otf */; };
+		C365305EBDC8474289268F32 /* GothamRounded-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6959B0ED3419997BA5E6D /* GothamRounded-Bold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,9 @@
 		BB3F527929D781A90046C378 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = unclouded/fonts; sourceTree = "<group>"; };
 		BBCB9A3529E0E8F7000DC397 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "unclouded/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		7F9DCED252074A568C086400 /* GothamRounded-Light.otf */ = {isa = PBXFileReference; name = "GothamRounded-Light.otf"; path = "../src/assets/fonts/GothamRounded-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6AC152020FF546598ABBE6AF /* GothamRounded-Medium.otf */ = {isa = PBXFileReference; name = "GothamRounded-Medium.otf"; path = "../src/assets/fonts/GothamRounded-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C3A6959B0ED3419997BA5E6D /* GothamRounded-Bold.otf */ = {isa = PBXFileReference; name = "GothamRounded-Bold.otf"; path = "../src/assets/fonts/GothamRounded-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +139,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				E8276FBD9B924D539B88A752 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -157,6 +164,16 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-unclouded-uncloudedTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E8276FBD9B924D539B88A752 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7F9DCED252074A568C086400 /* GothamRounded-Light.otf */,
+				6AC152020FF546598ABBE6AF /* GothamRounded-Medium.otf */,
+				C3A6959B0ED3419997BA5E6D /* GothamRounded-Bold.otf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +275,9 @@
 				BBCB9A3629E0E8F8000DC397 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6AD82813403643C684634FB0 /* GothamRounded-Light.otf in Resources */,
+				DC2B011E88FD4CA5B006EE33 /* GothamRounded-Medium.otf in Resources */,
+				C365305EBDC8474289268F32 /* GothamRounded-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,6 +536,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VB6VY3D86R;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = unclouded/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -528,8 +549,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.unclouded;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unclouded;
 				PRODUCT_NAME = unclouded;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -549,6 +569,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VB6VY3D86R;
 				INFOPLIST_FILE = unclouded/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -560,8 +581,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.unclouded;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unclouded;
 				PRODUCT_NAME = unclouded;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

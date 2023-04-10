@@ -9,6 +9,7 @@ const Routes = () => {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(user => {
+      console.log(user, 'userrrr---');
       setUser(user);
     });
     return subscriber; // unsubscribe on unmount

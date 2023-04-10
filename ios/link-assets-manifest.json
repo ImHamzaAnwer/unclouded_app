@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/GothamRounded-Bold.otf",
+      "sha1": "f4c81272ea69c5f7bca16df7b4af6456076796c7"
+    },
+    {
+      "path": "src/assets/fonts/GothamRounded-Light.otf",
+      "sha1": "ce97516dbd57255540d8d65b9a2a62a58b887644"
+    },
+    {
+      "path": "src/assets/fonts/GothamRounded-Medium.otf",
+      "sha1": "cfdef2ac3d8dacfcb66ebe910a373307d3c90ee3"
+    }
+  ]
+}

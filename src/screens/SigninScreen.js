@@ -19,7 +19,14 @@ const SigninScreen = () => {
 
   return (
     <View>
-      <Text>Email:</Text>
+      <Text
+        style={{
+          marginTop: 40,
+          fontSize: 33,
+          fontFamily: 'GothamRounded-Light',
+        }}>
+        Email:
+      </Text>
       <TextInput value={email} onChangeText={setEmail} />
       <Text>Password:</Text>
       <TextInput value={password} onChangeText={setPassword} secureTextEntry />
