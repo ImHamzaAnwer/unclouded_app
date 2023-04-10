@@ -6,15 +6,10 @@
  */
 
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import Routes from './src/navigation';
 
 function App(): JSX.Element {
-  return (
-    <NavigationContainer>
-      <Routes />
-    </NavigationContainer>
-  );
+  return <Routes />;
 }
 
 export default App;

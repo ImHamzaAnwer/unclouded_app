@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "607917371043",
+    "project_id": "unclouded-c64ed",
+    "storage_bucket": "unclouded-c64ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607917371043:android:a44dabfa212715bb42d916",
+        "android_client_info": {
+          "package_name": "com.unclouded"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607917371043-ab61540lgirhh8179t3d7tktqqn94ht6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.unclouded",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "607917371043-ak1cj7rmugpufqnmbts44lpbdfcr56qe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7IUdPb79PVeC3uOENlKY4IdpL8tsvV90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607917371043-ak1cj7rmugpufqnmbts44lpbdfcr56qe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "607917371043-qhgpsrup72kcgecl01hv703cjjn7c98c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.unclouded"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

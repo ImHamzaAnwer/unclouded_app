@@ -1,19 +1,24 @@
-import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Workbook from '../screens/WorkbookScreen';
-import SavingsCalculator from '../screens/SavingsCalculator';
-import AudioPlayer from '../screens/AudioPlayerScreen';
+import React, {useEffect, useState} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import AuthNavigator from './AuthNavigator';
+import MainNavigator from './MainNavigator';
+import auth from '@react-native-firebase/auth';
 
-function Routes() {
-  const Tab = createBottomTabNavigator();
+const Routes = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(user => {
+      setUser(user);
+    });
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Meditate" component={AudioPlayer} />
-      <Tab.Screen name="Workbook" component={Workbook} />
-      <Tab.Screen name="Savings Calculator" component={SavingsCalculator} />
-    </Tab.Navigator>
+    <NavigationContainer>
+      {user ? <MainNavigator /> : <AuthNavigator />}
+    </NavigationContainer>
   );
-}
+};
 
 export default Routes;
