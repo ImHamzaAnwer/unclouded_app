@@ -5,24 +5,43 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
 import {APP_COLORS} from '../config/colors';
+import {EMAIL_REGEX} from '../config/regexes';
 
 const SigninScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSignin = () => {
+    if (!email.length || !email.match(EMAIL_REGEX)) {
+      Alert.alert('please enter valid email address');
+    }
+    setLoading(true);
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
+        setLoading(false);
         // Handle successful signin
       })
       .catch(error => {
+        if (error?.message?.includes('auth/wrong-password')) {
+          Alert.alert('wrong password, please try again');
+        } else if (
+          error?.message?.includes(
+            'There is no user record corresponding to this identifier',
+          )
+        ) {
+          Alert.alert('No user found with this email');
+        }
+        console.log(error.message, 'rtt in signin');
+        setLoading(false);
         // Handle signin error
       });
   };
@@ -49,11 +68,15 @@ const SigninScreen = ({navigation}) => {
           style={styles.forgotPassText}>
           Forgot Password?
         </AppText>
+
         <AppButton
+          disabled={loading}
+          loading={loading}
           style={styles.authBtn}
           title="Signin"
           onPress={handleSignin}
         />
+
         <AppText
           onPress={() => navigation.navigate('Signup')}
           style={styles.noAccountText}>

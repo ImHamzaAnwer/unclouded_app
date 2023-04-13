@@ -15,6 +15,12 @@ import {APP_COLORS} from '../config/colors';
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
+import {
+  EMAIL_REGEX,
+  mediumPasswordRegex,
+  strongPasswordRegex,
+  weakPasswordRegex,
+} from '../config/regexes';
 
 const SignupScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
@@ -24,15 +30,10 @@ const SignupScreen = ({navigation}) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const EMAIL_REGEX =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
   const handleSignup = () => {
     if (!username.length) {
       Alert.alert('please enter username');
-    } else if (!email.length) {
-      Alert.alert('please enter email address');
-    } else if (!email.match(EMAIL_REGEX)) {
+    } else if (!email.length || !email.match(EMAIL_REGEX)) {
       Alert.alert('please enter valid email address');
     } else if (!password.length) {
       Alert.alert('please enter password');
@@ -62,13 +63,6 @@ const SignupScreen = ({navigation}) => {
   };
 
   const calculatePasswordStrength = password => {
-    const weakPasswordRegex = new RegExp(`^[a-z]+$`);
-    //no special character, atleast one number, one uppercase and lowercase letter
-    const mediumPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9]+$/;
-    //must contain special character, atleast one number, one uppercase and lowercase letter
-    const strongPasswordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/g;
-
     if (password.length) {
       if (weakPasswordRegex.test(password)) {
         return 0; // Weak
