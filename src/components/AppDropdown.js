@@ -6,13 +6,14 @@ import {APP_COLORS} from '../config/colors';
 const AppDropdown = ({data, value, setValue}) => {
   return (
     <Dropdown
+      activeColor={APP_COLORS.secondaryText}
+      containerStyle={{borderWidth: 0}}
+      itemTextStyle={styles.itemStyle}
       style={styles.dropdown}
       placeholderStyle={styles.placeholderStyle}
       selectedTextStyle={styles.selectedTextStyle}
-      inputSearchStyle={styles.inputSearchStyle}
       iconStyle={styles.iconStyle}
       data={data}
-      //   search
       maxHeight={300}
       labelField="label"
       valueField="value"
@@ -28,23 +29,23 @@ export default AppDropdown;
 
 const styles = StyleSheet.create({
   dropdown: {
-    height: 50,
-    borderColor: 'gray',
-    borderWidth: 0.5,
+    borderColor: APP_COLORS.primary,
+    borderBottomWidth: 0.5,
     paddingHorizontal: 8,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    width: 200,
   },
   icon: {
     marginRight: 5,
   },
   placeholderStyle: {
     fontSize: 16,
+    fontFamily: 'GothamRounded-Light',
     color: APP_COLORS.primaryText,
   },
   selectedTextStyle: {
+    fontFamily: 'GothamRounded-Light',
     fontSize: 16,
     color: APP_COLORS.primaryText,
   },
@@ -52,8 +53,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+  itemStyle: {
+    fontFamily: 'GothamRounded-Light',
   },
 });

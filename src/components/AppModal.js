@@ -22,8 +22,8 @@ const AppModal = ({isVisible, setIsVisible, children}) => {
 
 const styles = StyleSheet.create({
   centeredView: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     // marginTop: 22,
     // backgroundColor: 'rgba(0,0,0 0.9)',
   },

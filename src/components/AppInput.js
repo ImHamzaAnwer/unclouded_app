@@ -18,7 +18,7 @@ const AppInput = props => {
 
 const styles = StyleSheet.create({
   input: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     borderColor: APP_COLORS.primary,
     fontSize: 16,
     fontFamily: 'GothamRounded-Medium',

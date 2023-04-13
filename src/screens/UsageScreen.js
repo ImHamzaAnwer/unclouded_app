@@ -1,21 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  Modal,
-  // Picker,
-  TextInput,
-  StyleSheet,
-  Pressable,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {APP_COLORS} from '../config/colors';
 import AppText from '../components/AppText';
 import AppModal from '../components/AppModal';
 import AppDropdown from '../components/AppDropdown';
 import AppButton from '../components/AppButton';
+import AppInput from '../components/AppInput';
 
 const UsageScreen = () => {
   // const [usageMethod, setUsageMethod] = useState('');
@@ -36,7 +27,7 @@ const UsageScreen = () => {
       .collection('usageData')
       .orderBy('createdAt', 'desc')
       .onSnapshot(snapshot => {
-        const data = snapshot.docs.map(doc => ({
+        const data = snapshot?.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
         }));
@@ -80,7 +71,9 @@ const UsageScreen = () => {
       </AppText>
 
       <AppModal isVisible={modalVisible} setIsVisible={setModalVisible}>
-        <AppText heading>Add Usage Method</AppText>
+        <AppText style={styles.modalHeading} heading>
+          Add Usage Method
+        </AppText>
         <View style={styles.pickerContainer}>
           <AppText style={styles.label}>Usage Method:</AppText>
           <AppDropdown
@@ -92,7 +85,7 @@ const UsageScreen = () => {
 
         <View style={styles.pickerContainer}>
           <AppText style={styles.label}>Consumage per day:</AppText>
-          <TextInput
+          <AppInput
             style={styles.input}
             placeholder="Grams per day"
             value={consumage}
@@ -100,21 +93,42 @@ const UsageScreen = () => {
           />
         </View>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Grams per Joint or Bowl"
-          value={gramsPer}
-          onChangeText={setGramsPer}
-        />
+        <View style={styles.smallInputWrap}>
+          <AppText>Grams per joint</AppText>
+          <AppInput
+            style={styles.smallInput}
+            placeholder="Grams per Joint or Bowl"
+            value={gramsPer}
+            onChangeText={setGramsPer}
+          />
+        </View>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Price per Gram"
-          value={pricePerGram}
-          onChangeText={setPricePerGram}
-        />
+        <View style={styles.smallInputWrap}>
+          <AppText>Price per gram</AppText>
+          <AppInput
+            style={styles.smallInput}
+            placeholder="Price per Gram"
+            value={pricePerGram}
+            onChangeText={setPricePerGram}
+          />
+        </View>
 
-        <AppButton onPress={saveUsageData} title={'Submit'} />
+        <View style={styles.smallInputWrap}>
+          <AppText>Average cost per day</AppText>
+          <AppInput
+            readOnly
+            value="$50"
+            style={styles.smallInput}
+            placeholder="Price per Gram"
+            onChangeText={setPricePerGram}
+          />
+        </View>
+
+        <AppButton
+          style={styles.button}
+          onPress={saveUsageData}
+          title={'Add'}
+        />
       </AppModal>
 
       <FlatList
@@ -138,13 +152,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     backgroundColor: APP_COLORS.background,
     padding: 20,
   },
   title: {
-    // fontSize: 24,
-    // fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  modalHeading: {
+    fontSize: 20,
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -154,7 +171,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 18,
+    marginTop: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     marginRight: 10,
   },
@@ -167,22 +185,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   input: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 5,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    fontSize: 18,
+    fontFamily: 'GothamRounded-Light',
   },
   button: {
-    backgroundColor: '#0080ff',
-    padding: 10,
-    borderRadius: 5,
     marginTop: 20,
   },
-  buttonText: {
-    color: 'dodgerblue',
+  smallInputWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  smallInput: {
+    width: 70,
+    paddingHorizontal: 10,
+    textAlign: 'center',
+    borderWidth: 1,
+    borderRadius: 20,
+    height: 40,
+    fontFamily: 'GothamRounded-Light',
   },
 });
 

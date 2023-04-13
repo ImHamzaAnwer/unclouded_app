@@ -1,15 +1,21 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, ActivityIndicator} from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const AppButton = ({title, style, onPress}) => {
+const AppButton = props => {
+  const {title, style, onPress, loading} = props;
   return (
     <TouchableOpacity
+      {...props}
       activeOpacity={0.8}
       onPress={onPress}
       style={[styles.btn, style]}>
-      <Text style={styles.text}>{title}</Text>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <Text style={styles.text}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };
