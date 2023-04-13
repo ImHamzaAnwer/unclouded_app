@@ -10,17 +10,16 @@ import AppInput from '../components/AppInput';
 
 const UsageScreen = () => {
   // const [usageMethod, setUsageMethod] = useState('');
-  const [consumage, setConsumage] = useState('');
-  const [gramsPer, setGramsPer] = useState('');
-  const [pricePerGram, setPricePerGram] = useState('');
+  const [usageMethodValue, setUsageMethodValue] = useState('joint');
+  const [consumage, setConsumage] = useState('0');
+  const [gramsPer, setGramsPer] = useState('0');
+  const [pricePerGram, setPricePerGram] = useState('0');
   const [usageData, setUsageData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [usageMethodOpen, setUsageMethodOpen] = useState(false);
-  const [usageMethodValue, setUsageMethodValue] = useState(null);
-  const [usageMethodItems, setUsageMethodItems] = useState([
-    {label: 'Bowls', value: 'bowls'},
-    {label: 'Joints', value: 'joints'},
-  ]);
+  const usageMethodItems = [
+    {label: 'Joints', value: 'joint'},
+    {label: 'Bowls', value: 'bowl'},
+  ];
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -46,7 +45,8 @@ const UsageScreen = () => {
         pricePerGram,
         createdAt: firestore.FieldValue.serverTimestamp(),
       };
-
+      console.log(usageData, 'usage data---');
+      return;
       await firestore().collection('usageData').add(usageData);
 
       setConsumage('');
@@ -59,6 +59,11 @@ const UsageScreen = () => {
       alert('Error saving usage data.');
     }
   };
+
+  let total_consumption_per_day = consumage * gramsPer;
+  let cost_per_day = total_consumption_per_day * pricePerGram;
+  let cost_per_gram = cost_per_day / total_consumption_per_day;
+  cost_per_gram = isNaN(cost_per_gram) ? '--' : cost_per_gram;
 
   return (
     <View style={styles.container}>
@@ -87,14 +92,14 @@ const UsageScreen = () => {
           <AppText style={styles.label}>Consumage per day:</AppText>
           <AppInput
             style={styles.input}
-            placeholder="Grams per day"
+            placeholder={`${usageMethodValue} per day`}
             value={consumage}
             onChangeText={setConsumage}
           />
         </View>
 
         <View style={styles.smallInputWrap}>
-          <AppText>Grams per joint</AppText>
+          <AppText>Grams per {usageMethodValue}</AppText>
           <AppInput
             style={styles.smallInput}
             placeholder="Grams per Joint or Bowl"
@@ -117,10 +122,10 @@ const UsageScreen = () => {
           <AppText>Average cost per day</AppText>
           <AppInput
             readOnly
-            value="$50"
+            value={cost_per_gram.toString()}
             style={styles.smallInput}
             placeholder="Price per Gram"
-            onChangeText={setPricePerGram}
+            // onChangeText={setPricePerGram}
           />
         </View>
 

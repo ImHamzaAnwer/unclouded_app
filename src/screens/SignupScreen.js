@@ -186,12 +186,12 @@ const SignupScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    flex: 1,
     backgroundColor: APP_COLORS.background,
   },
   logo: {
     width: 75,
     height: 75,
+    marginTop: 20,
     marginBottom: 20,
     borderRadius: 100,
   },

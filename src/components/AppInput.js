@@ -3,13 +3,13 @@ import {StyleSheet, Text, TextInput} from 'react-native';
 import {APP_COLORS} from '../config/colors';
 
 const AppInput = props => {
-  const {value, isPassword, style, onChangeText} = props;
+  const {value, isPassword, style, onChangeText, placeholder} = props;
   return (
     <TextInput
       {...props}
       autoCapitalize={'none'}
       value={value}
-      placeholder=""
+      placeholder={placeholder}
       style={[styles.input, style]}
       secureTextEntry={isPassword}
       onChangeText={onChangeText}
