@@ -3,6 +3,7 @@ import AudioPlayer from '../screens/AudioPlayerScreen';
 import Workbook from '../screens/WorkbookScreen';
 import SavingsCalculator from '../screens/SavingsCalculator';
 import UsageScreen from '../screens/UsageScreen';
+import Profile from '../screens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,7 +13,7 @@ const MainNavigator = () => {
       <Tab.Screen name="UsageScreen" component={UsageScreen} />
       <Tab.Screen name="Meditate" component={AudioPlayer} />
       <Tab.Screen name="Workbook" component={Workbook} />
-      <Tab.Screen name="Savings Calculator" component={SavingsCalculator} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };
