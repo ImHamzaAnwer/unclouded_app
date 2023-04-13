@@ -36,7 +36,7 @@ const SigninScreen = ({navigation}) => {
           style={styles.logo}
           source={require('../assets/images/logo.png')}
         />
-        <AppText heading>Sign In</AppText>
+        <AppText textType="heading">Sign In</AppText>
         <AppText style={{marginBottom: 30}}>
           Sign In to your account - enjoy exclusive features and many more.
         </AppText>

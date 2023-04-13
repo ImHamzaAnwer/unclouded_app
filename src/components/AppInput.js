@@ -7,6 +7,7 @@ const AppInput = props => {
   return (
     <TextInput
       {...props}
+      autoCapitalize={'none'}
       value={value}
       placeholder=""
       style={[styles.input, style]}

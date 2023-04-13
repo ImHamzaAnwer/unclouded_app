@@ -5,4 +5,5 @@ export const APP_COLORS = {
   primaryText: '#F3FFFD',
   secondaryText: '#98ABA8',
   thirdColor: '#535A59',
+  error: '#C73E1D',
 };

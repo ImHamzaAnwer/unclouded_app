@@ -7,8 +7,10 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {APP_COLORS} from '../config/colors';
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
@@ -19,22 +21,44 @@ const SignupScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const EMAIL_REGEX =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const handleSignup = () => {
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        // Handle successful signup
-      })
-      .catch(error => {
-        // Handle signup error
-      });
+    if (!username.length) {
+      Alert.alert('please enter username');
+    } else if (!email.length) {
+      Alert.alert('please enter email address');
+    } else if (!email.match(EMAIL_REGEX)) {
+      Alert.alert('please enter valid email address');
+    } else if (!password.length) {
+      Alert.alert('please enter password');
+    } else if (confirmPassword !== password) {
+      Alert.alert('passwords do not match');
+    } else {
+      setLoading(true);
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          setLoading(false);
+          // Handle successful signup
+        })
+        .catch(error => {
+          if (error?.message?.includes('auth/email-already-in-use')) {
+            Alert.alert('email is already in use');
+          }
+          console.log(error.message, 'err-----');
+          setLoading(false);
+          // Handle signup error
+        });
+    }
   };
 
   const handlePasswordChange = password => {
     setPassword(password);
-    // const strengthScore = calculatePasswordStrength(password);
-    // onPasswordStrengthChanged(strengthScore);
   };
 
   const calculatePasswordStrength = password => {
@@ -86,7 +110,7 @@ const SignupScreen = ({navigation}) => {
           style={styles.logo}
           source={require('../assets/images/logo.png')}
         />
-        <AppText heading>Sign Up</AppText>
+        <AppText textType="heading">Sign Up</AppText>
         <AppText style={{marginBottom: 30}}>
           Create your account - enjoy our services with most updated features.
         </AppText>
@@ -100,6 +124,7 @@ const SignupScreen = ({navigation}) => {
 
         <AppText>Email ID</AppText>
         <AppInput
+          keyboardType="email-address"
           style={styles.signupInput}
           value={email}
           onChangeText={setEmail}
@@ -137,11 +162,19 @@ const SignupScreen = ({navigation}) => {
           onChangeText={setConfirmPassword}
           isPassword
         />
+        {confirmPasswordError && (
+          <AppText style={{marginTop: -15, marginBottom: 20}} textType="error">
+            Password does not match
+          </AppText>
+        )}
 
         <View style={styles.termsContainer}>
           <AppText>I agree with terms and conditions.</AppText>
         </View>
+
         <AppButton
+          disabled={loading}
+          loading={loading}
           style={styles.authBtn}
           title="Signin"
           onPress={handleSignup}
@@ -158,7 +191,6 @@ const SignupScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 40,
     paddingHorizontal: 20,
     flex: 1,
     backgroundColor: APP_COLORS.background,

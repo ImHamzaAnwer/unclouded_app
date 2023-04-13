@@ -29,7 +29,7 @@ const ForgotPassword = ({navigation}) => {
         style={styles.logo}
         source={require('../assets/images/logo.png')}
       />
-      <AppText onPress={()=>navigation.goBack()} heading>
+      <AppText onPress={()=>navigation.goBack()} textType="heading">
         {otpScreen ? 'Forgot Password' : 'Forgot Password'}
       </AppText>
       <AppText>

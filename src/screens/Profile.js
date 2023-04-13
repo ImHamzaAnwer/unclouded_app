@@ -6,7 +6,7 @@ import auth from '@react-native-firebase/auth';
 function Profile(props) {
   return (
     <View>
-      <TouchableOpacity onPress={() => auth().signout}>
+      <TouchableOpacity onPress={() => auth().signOut()}>
         <Text>Logout</Text>
       </TouchableOpacity>
     </View>

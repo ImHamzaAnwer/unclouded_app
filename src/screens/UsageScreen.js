@@ -62,7 +62,7 @@ const UsageScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppText heading style={styles.title}>
+      <AppText textType="heading" style={styles.title}>
         Please enter your cannabis usage info
       </AppText>
 
@@ -71,7 +71,7 @@ const UsageScreen = () => {
       </AppText>
 
       <AppModal isVisible={modalVisible} setIsVisible={setModalVisible}>
-        <AppText style={styles.modalHeading} heading>
+        <AppText style={styles.modalHeading} textType="heading">
           Add Usage Method
         </AppText>
         <View style={styles.pickerContainer}>
