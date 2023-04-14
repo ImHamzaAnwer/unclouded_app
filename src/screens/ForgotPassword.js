@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {StyleSheet, ScrollView, Image} from 'react-native';
-import OTPTextView from 'react-native-otp-textinput';
-import auth from '@react-native-firebase/auth';
+// import OTPTextView from 'react-native-otp-textinput';
 import {APP_COLORS} from '../config/colors';
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
 import AppText from '../components/AppText';
+import auth from '@react-native-firebase/auth';
 
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -14,8 +14,9 @@ const ForgotPassword = ({navigation}) => {
 
   const handleForgotPassword = () => {
     auth()
-      .createUserWithEmailAndPassword(email, password)
+      .sendPasswordResetEmail(email)
       .then(() => {
+        setOtpScreen(true);
         // Handle successful signup
       })
       .catch(error => {
@@ -29,33 +30,36 @@ const ForgotPassword = ({navigation}) => {
         style={styles.logo}
         source={require('../assets/images/logo.png')}
       />
-      <AppText onPress={()=>navigation.goBack()} textType="heading">
+      <AppText onPress={() => navigation.goBack()} textType="heading">
         {otpScreen ? 'Forgot Password' : 'Forgot Password'}
       </AppText>
       <AppText>
         {otpScreen
-          ? 'Enter the OTP we just send to your email address.'
-          : 'Enter your email that you used to register your account, so we can send the OTP to reset your password.'}
+          ? `Password reset email has been sent to this email ${email}`
+          : 'Enter your email that you used to register your account, so we can send the link to reset your password.'}
       </AppText>
 
       {otpScreen ? (
         <>
-          <OTPTextView
+          {/* <OTPTextView
             handleTextChange={e => {}}
             containerStyle={styles.textInputContainer}
             textInputStyle={styles.roundedTextInput}
             tintColor={APP_COLORS.secondaryText}
             offTintColor={'transparent'}
-          />
+          /> */}
+          <AppText style={{marginTop: 50, color: '#fff'}}>
+            Please tap on the link in your email to reset password
+          </AppText>
           <AppButton
             style={styles.authBtn}
-            title="Verify OTP"
+            title="Back"
             onPress={() => setOtpScreen(false)}
           />
 
-          <AppText style={{textAlign: 'center', marginTop: 20}}>
+          {/* <AppText style={{textAlign: 'center', marginTop: 20}}>
             Resend OTP in 1:35
-          </AppText>
+          </AppText> */}
         </>
       ) : (
         <>
@@ -63,8 +67,8 @@ const ForgotPassword = ({navigation}) => {
           <AppInput value={email} onChangeText={setEmail} />
           <AppButton
             style={styles.authBtn}
-            title="Send OTP"
-            onPress={() => setOtpScreen(true)}
+            title="Send Reset Link"
+            onPress={handleForgotPassword}
           />
         </>
       )}
@@ -93,7 +97,7 @@ const styles = StyleSheet.create({
   },
   authBtn: {
     alignSelf: 'center',
-    marginTop: 50,
+    marginTop: 30,
   },
   textInputContainer: {
     marginTop: 40,
