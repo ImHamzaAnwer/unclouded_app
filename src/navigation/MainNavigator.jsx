@@ -1,8 +1,8 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 // import AudioPlayer from '../screens/AudioPlayerScreen';
-import Workbook from '../screens/WorkbookScreen';
-import SavingsCalculator from '../screens/SavingsCalculator';
+import Workbook from '../screens/Workbook/WorkbookScreen';
+// import SavingsCalculator from '../screens/SavingsCalculator';
 import UsageScreen from '../screens/UsageScreen';
 import Profile from '../screens/Profile';
 import CustomTabBar from './customTabBar';
@@ -25,6 +25,18 @@ const AudioScreenStack = () => {
   );
 };
 
+const WorkbookStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: () => null,
+      }}
+      initialRouteName="Workbook">
+      <Stack.Screen name="Workbook" component={Workbook} />
+    </Stack.Navigator>
+  );
+};
+
 const MainNavigator = () => {
   return (
     <Tab.Navigator
@@ -33,7 +45,7 @@ const MainNavigator = () => {
       screenOptions={{header: () => null}}>
       <Tab.Screen name="UsageScreen" component={UsageScreen} />
       <Tab.Screen name="Meditate" component={AudioScreenStack} />
-      <Tab.Screen name="Workbook" component={Workbook} />
+      <Tab.Screen name="Workbook" component={WorkbookStack} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

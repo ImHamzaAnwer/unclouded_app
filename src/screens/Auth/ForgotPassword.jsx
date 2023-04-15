@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {StyleSheet, ScrollView, Image} from 'react-native';
 // import OTPTextView from 'react-native-otp-textinput';
-import {APP_COLORS} from '../config/colors';
-import AppButton from '../components/AppButton';
-import AppInput from '../components/AppInput';
-import AppText from '../components/AppText';
+import {APP_COLORS} from '../../config/colors';
+import AppButton from '../../components/AppButton';
+import AppInput from '../../components/AppInput';
+import AppText from '../../components/AppText';
 import auth from '@react-native-firebase/auth';
 
 const ForgotPassword = ({navigation}) => {
@@ -27,7 +27,7 @@ const ForgotPassword = ({navigation}) => {
     <ScrollView style={styles.container}>
       <Image
         style={styles.logo}
-        source={require('../assets/images/logo.png')}
+        source={require('../../assets/images/logo.png')}
       />
       <AppText onPress={() => navigation.goBack()} textType="heading">
         {otpScreen ? 'Forgot Password' : 'Forgot Password'}

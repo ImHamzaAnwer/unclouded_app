@@ -8,11 +8,11 @@ import {
   Alert,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import AppText from '../components/AppText';
-import AppButton from '../components/AppButton';
-import AppInput from '../components/AppInput';
-import {APP_COLORS} from '../config/colors';
-import {EMAIL_REGEX} from '../config/regexes';
+import AppText from '../../components/AppText';
+import AppButton from '../../components/AppButton';
+import AppInput from '../../components/AppInput';
+import {APP_COLORS} from '../../config/colors';
+import {EMAIL_REGEX} from '../../config/regexes';
 
 const SigninScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -53,7 +53,7 @@ const SigninScreen = ({navigation}) => {
       <ScrollView style={styles.container}>
         <Image
           style={styles.logo}
-          source={require('../assets/images/logo.png')}
+          source={require('../../assets/images/logo.png')}
         />
         <AppText textType="heading">Sign In</AppText>
         <AppText style={{marginBottom: 30}}>

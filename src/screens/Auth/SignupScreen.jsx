@@ -11,16 +11,16 @@ import {
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {APP_COLORS} from '../config/colors';
-import AppText from '../components/AppText';
-import AppInput from '../components/AppInput';
-import AppButton from '../components/AppButton';
+import {APP_COLORS} from '../../config/colors';
+import AppText from '../../components/AppText';
+import AppInput from '../../components/AppInput';
+import AppButton from '../../components/AppButton';
 import {
   EMAIL_REGEX,
   mediumPasswordRegex,
   strongPasswordRegex,
   weakPasswordRegex,
-} from '../config/regexes';
+} from '../../config/regexes';
 
 const SignupScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
@@ -102,7 +102,7 @@ const SignupScreen = ({navigation}) => {
       <ScrollView style={styles.container}>
         <Image
           style={styles.logo}
-          source={require('../assets/images/logo.png')}
+          source={require('../../assets/images/logo.png')}
         />
         <AppText textType="heading">Sign Up</AppText>
         <AppText style={{marginBottom: 30}}>

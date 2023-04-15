@@ -4,8 +4,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  StyleSheet,
-  Modal,
+  StyleSheet
 } from 'react-native';
 
 const Workbook = () => {

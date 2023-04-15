@@ -71,11 +71,13 @@ function TrackProgress() {
       <Text style={styles.trackProgress}>
         {format(position)} / {format(duration)}
       </Text>
-      <View onPress={handleSeekToPress} style={{alignItems: 'center', width: '100%'}}>
+      <View
+        onPress={handleSeekToPress}
+        style={{alignItems: 'center', width: '100%'}}>
         <Progress.Bar
           width={Dimensions.get('screen').width - 50}
           style={{borderColor: '#fff', marginTop: 20}}
-          progress={(position / duration) || 0}
+          progress={position / duration || 0}
         />
       </View>
     </View>
