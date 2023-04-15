@@ -9,7 +9,6 @@ import auth from '@react-native-firebase/auth';
 
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
-  const [otpCode, setOtpCode] = useState('');
   const [otpScreen, setOtpScreen] = useState(false);
 
   const handleForgotPassword = () => {
