@@ -1,129 +1,124 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  View,
+  StyleSheet,
   Text,
-  TouchableOpacity,
+  View,
   TextInput,
-  StyleSheet
+  Button,
+  FlatList,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import moment from 'moment';
 
-const Workbook = () => {
-  const [pledgeStreak, setPledgeStreak] = useState(0);
+export default function PledgeScreen() {
+  const [pledgeAmount, setPledgeAmount] = useState('');
   const [pledges, setPledges] = useState([]);
-  const [answer, setAnswer] = useState('');
-  const [isPledged, setIsPledged] = useState(false);
 
-  const handleSubmit = (handledPledges, todayString) => {
-    if (answer) {
-      const pledge = {date: todayString, answer};
-      setPledges([...pledges, pledge]);
+  useEffect(() => {
+    const subscribe = fetchPledgeData();
 
-      if (
-        pledges.length === 0 ||
-        todayString !== pledges[pledges.length - 1].date
-      ) {
-        // if it's the first pledge or if it's not the same day as the last pledge
-        setPledgeStreak(pledgeStreak + 1);
-      }
-    }
+    return () => subscribe;
+  }, []);
 
-    setIsPledged(true);
-    setAnswer('');
+  const fetchPledgeData = async () => {
+    firestore()
+      .collection('pledges')
+      .where('user', '==', auth().currentUser.uid)
+      .orderBy('date', 'desc')
+      .onSnapshot(querySnapshot => {
+        console.log('Total pledges: ', querySnapshot.size);
+        const array = [];
+        querySnapshot.forEach(doc => {
+          array.push({
+            id: doc.id,
+            mood: doc.data().amount,
+            date: moment(doc.data().date?.toDate()?.toISOString()).format(
+              'DD-MM-YYYY',
+            ),
+          });
+        });
+        setPledges(array);
+        console.log(pledges, 'arr00');
+      });
   };
 
   const handlePledgePress = () => {
-    const today = new Date();
-    const todayString = today.toDateString();
-
-    if (pledges.some(pledge => pledge.date === todayString)) {
-      return; // don't add duplicate pledges
-    }
-
-    // Show a modal with a text input to get the user's pledge
-    handleSubmit(pledges, todayString);
+    // Save the pledge to Firestore
+    firestore()
+      .collection('pledges')
+      .add({
+        amount: pledgeAmount,
+        date: firestore.FieldValue.serverTimestamp(),
+        user: auth().currentUser.uid,
+      })
+      .then(() => {
+        setPledgeAmount('');
+      })
+      .catch(error => {
+        console.error('Error saving pledge: ', error);
+      });
   };
 
-  return (
-    <>
-      {isPledged ? (
-        <Text>Pledged Alreay</Text>
-      ) : (
-        <View style={styles.modal}>
-          <Text style={styles.modalHeading}>Pledge for Today</Text>
-          <TextInput
-            style={styles.modalInput}
-            onChangeText={text => setAnswer(text)}
-            value={answer}
-            placeholder="What is your pledge for today?"
-          />
-          <TouchableOpacity style={styles.modalButton} onPress={handleSubmit}>
-            <Text style={styles.modalButtonText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      <View style={styles.container}>
-        <Text style={styles.heading}>Pledge Workbook</Text>
-        <TouchableOpacity style={styles.button} onPress={handlePledgePress}>
-          <Text style={styles.buttonText}>Pledge for Today</Text>
-        </TouchableOpacity>
-        <Text style={styles.subheading}>Pledge Streak: {pledgeStreak}</Text>
-        <Text style={styles.subheading}>Pledges:</Text>
-        {pledges.length === 0 && <Text>No pledges yet</Text>}
-        {pledges.map((pledge, index) => (
-          <Text key={index}>
-            {pledge.date}: {pledge.answer}
-          </Text>
-        ))}
-      </View>
-    </>
+  const renderPledge = ({item}) => (
+    <View style={styles.pledge}>
+      <Text>{item.amount}</Text>
+      <Text>{item.date}</Text>
+    </View>
   );
-};
 
-export default Workbook;
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Daily Pledge</Text>
+      <TextInput
+        style={styles.input}
+        keyboardType="numeric"
+        placeholder="Enter pledge amount"
+        value={pledgeAmount}
+        onChangeText={setPledgeAmount}
+      />
+      <Button title="Pledge" onPress={handlePledgePress} />
+      <Text style={styles.historyTitle}>Pledge History</Text>
+      <FlatList
+        data={pledges}
+        renderItem={renderPledge}
+        keyExtractor={item => item.id}
+        style={styles.history}
+      />
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    justifyContent: 'center',
   },
-  heading: {
-    fontSize: 30,
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  subheading: {
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 20,
+    width: '80%',
+  },
+  historyTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 20,
     marginBottom: 10,
   },
-  button: {
-    backgroundColor: '#4CAF50',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 20,
+  pledge: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
   },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modal: {
-    backgroundColor: '#efefef',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalButtonText: {
-    fontSize: 22,
-  },
-  modalInput: {
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 20,
-    marginVertical: 10,
+  history: {
+    width: '80%',
   },
 });
