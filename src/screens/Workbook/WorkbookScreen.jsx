@@ -1,90 +1,95 @@
 import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  FlatList,
-} from 'react-native';
+import {StyleSheet, Text, View, Button, FlatList} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
+import {APP_COLORS} from '../../config/colors';
+import AppText from '../../components/AppText';
+import MakePledgeComponent from '../../components/MakePledgeComponent';
 
-export default function PledgeScreen() {
-  const [pledgeAmount, setPledgeAmount] = useState('');
-  const [pledges, setPledges] = useState([]);
+const QUESTIONNAIRES = [];
+
+export default function Workbook({navigation}) {
+  const [pledgedToday, setPledgedToday] = useState(false);
+  const [questionnaires, setQuestionnaires] = useState(QUESTIONNAIRES);
 
   useEffect(() => {
-    const subscribe = fetchPledgeData();
-
-    return () => subscribe;
+    checkIfPledgedToday();
   }, []);
 
-  const fetchPledgeData = async () => {
-    firestore()
+  // const fetchPledgeData = async () => {
+  //   firestore()
+  //     .collection('pledges')
+  //     .where('user', '==', auth().currentUser.uid)
+  //     .orderBy('date', 'desc')
+  //     .onSnapshot(querySnapshot => {
+  //       const array = [];
+  //       querySnapshot.forEach(doc => {
+  //         array.push({
+  //           id: doc.id,
+  //           pledgeStatus: doc.data().pledgeStatus,
+  //           challengeLevel: doc.data().challengeLevel,
+  //           feelings: doc.data().feelings,
+  //           note: doc.data().note,
+  //           timeSpentWith: doc.data().timeSpentWith,
+  //           date: moment(doc.data().date?.toDate()?.toISOString()).format(
+  //             'DD-MM-YYYY',
+  //           ),
+  //         });
+  //       });
+  //       setPledges(array);
+  //       console.log(pledges, 'arr00');
+  //     });
+  // };
+
+  const checkIfPledgedToday = async () => {
+    let data = await firestore()
       .collection('pledges')
       .where('user', '==', auth().currentUser.uid)
-      .orderBy('date', 'desc')
-      .onSnapshot(querySnapshot => {
-        console.log('Total pledges: ', querySnapshot.size);
-        const array = [];
-        querySnapshot.forEach(doc => {
-          array.push({
-            id: doc.id,
-            mood: doc.data().amount,
-            date: moment(doc.data().date?.toDate()?.toISOString()).format(
-              'DD-MM-YYYY',
-            ),
-          });
-        });
-        setPledges(array);
-        console.log(pledges, 'arr00');
-      });
+      .get();
+
+    console.log(data.docs[0]._data, 'Darta-a-a-a-a-a-');
   };
 
-  const handlePledgePress = () => {
-    // Save the pledge to Firestore
-    firestore()
-      .collection('pledges')
-      .add({
-        amount: pledgeAmount,
-        date: firestore.FieldValue.serverTimestamp(),
-        user: auth().currentUser.uid,
-      })
-      .then(() => {
-        setPledgeAmount('');
-      })
-      .catch(error => {
-        console.error('Error saving pledge: ', error);
-      });
-  };
-
-  const renderPledge = ({item}) => (
+  const renderQuestionnaires = ({item}) => (
     <View style={styles.pledge}>
-      <Text>{item.amount}</Text>
+      <Text>{item.pledgeStatus}</Text>
+      <Text>{item.challengeLevel}</Text>
+      <Text>{item.feelings}</Text>
+      <Text>{item.note}</Text>
       <Text>{item.date}</Text>
+      {item?.timeSpentWith?.length > 0 && (
+        <View>
+          {item?.timeSpentWith.map(x => {
+            return <Text>{x}</Text>;
+          })}
+        </View>
+      )}
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Daily Pledge</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
-        placeholder="Enter pledge amount"
-        value={pledgeAmount}
-        onChangeText={setPledgeAmount}
+      <View style={styles.header}>
+        <AppText textType="heading" style={styles.title}>
+          Workbook
+        </AppText>
+        <AppText>History</AppText>
+      </View>
+
+      <MakePledgeComponent
+        onPress={() => navigation.navigate('PledgeScreen')}
       />
-      <Button title="Pledge" onPress={handlePledgePress} />
-      <Text style={styles.historyTitle}>Pledge History</Text>
-      <FlatList
-        data={pledges}
-        renderItem={renderPledge}
-        keyExtractor={item => item.id}
-        style={styles.history}
-      />
+
+      <View style={{padding: 15}}>
+        <AppText style={styles.questionnaireTitle}>Questionnaires</AppText>
+        <FlatList
+          data={questionnaires}
+          renderItem={renderQuestionnaires}
+          keyExtractor={item => item.id}
+          style={styles.history}
+        />
+      </View>
     </View>
   );
 }
@@ -92,33 +97,29 @@ export default function PledgeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: APP_COLORS.background,
+  },
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 20,
-    width: '80%',
-  },
-  historyTitle: {
+  questionnaireTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    marginTop: 20,
   },
   pledge: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
     marginBottom: 5,
   },
   history: {
-    width: '80%',
+    padding: 15,
   },
 });

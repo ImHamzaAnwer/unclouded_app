@@ -47,7 +47,7 @@ const ForgotPassword = ({navigation}) => {
             tintColor={APP_COLORS.secondaryText}
             offTintColor={'transparent'}
           /> */}
-          <AppText style={{marginTop: 50, color: '#fff'}}>
+          <AppText style={{marginTop: 50, color: APP_COLORS.primaryText}}>
             Please tap on the link in your email to reset password
           </AppText>
           <AppButton

@@ -10,6 +10,7 @@ const AppInput = props => {
       autoCapitalize={'none'}
       value={value}
       placeholder={placeholder}
+      placeholderTextColor={APP_COLORS.thirdColor}
       style={[styles.input, style]}
       secureTextEntry={isPassword}
       onChangeText={onChangeText}

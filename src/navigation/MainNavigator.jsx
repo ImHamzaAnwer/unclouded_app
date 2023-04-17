@@ -1,13 +1,16 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 // import AudioPlayer from '../screens/AudioPlayerScreen';
-import Workbook from '../screens/Workbook/WorkbookScreen';
 // import SavingsCalculator from '../screens/SavingsCalculator';
 import UsageScreen from '../screens/UsageScreen';
 import Profile from '../screens/Profile';
 import CustomTabBar from './customTabBar';
 import AudioPlayer from '../screens/AudioScreen/AudioPlayer';
 import AudioLibrary from '../screens/AudioScreen/AudioLibrary';
+
+//Workbook
+import Workbook from '../screens/Workbook/WorkbookScreen';
+import PledgeScreen from '../screens/Workbook/PledgeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -33,6 +36,7 @@ const WorkbookStack = () => {
       }}
       initialRouteName="Workbook">
       <Stack.Screen name="Workbook" component={Workbook} />
+      <Stack.Screen name="PledgeScreen" component={PledgeScreen} />
     </Stack.Navigator>
   );
 };
