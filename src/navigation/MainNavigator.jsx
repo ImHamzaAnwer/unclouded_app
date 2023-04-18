@@ -11,6 +11,7 @@ import AudioLibrary from '../screens/AudioScreen/AudioLibrary';
 //Workbook
 import Workbook from '../screens/Workbook/WorkbookScreen';
 import PledgeScreen from '../screens/Workbook/PledgeScreen';
+import HistoryScreen from '../screens/Workbook/HistoryScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -37,6 +38,7 @@ const WorkbookStack = () => {
       initialRouteName="Workbook">
       <Stack.Screen name="Workbook" component={Workbook} />
       <Stack.Screen name="PledgeScreen" component={PledgeScreen} />
+      <Stack.Screen name="HistoryScreen" component={HistoryScreen} />
     </Stack.Navigator>
   );
 };

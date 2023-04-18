@@ -1,11 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Button, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import moment from 'moment';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import MakePledgeComponent from '../../components/MakePledgeComponent';
+import CustomTabs from '../../components/CustomTabs';
 
 const QUESTIONNAIRES = [];
 
@@ -74,9 +81,11 @@ export default function Workbook({navigation}) {
         <AppText textType="heading" style={styles.title}>
           Workbook
         </AppText>
-        <AppText>History</AppText>
+        <TouchableOpacity onPress={() => navigation.navigate('HistoryScreen')}>
+          <AppText>History</AppText>
+        </TouchableOpacity>
       </View>
-
+      
       <MakePledgeComponent
         onPress={() => navigation.navigate('PledgeScreen')}
       />

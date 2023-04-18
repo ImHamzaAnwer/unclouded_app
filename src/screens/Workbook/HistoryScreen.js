@@ -5,8 +5,10 @@ import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
+import CustomTabs from '../../components/CustomTabs';
 
 export default function HistoryScreen({navigation}) {
+  const [activeTab, setActiveTab] = useState(0);
   const [pledges, setPledges] = useState([]);
 
   useEffect(() => {
@@ -40,17 +42,17 @@ export default function HistoryScreen({navigation}) {
       });
   };
 
-  const renderPledge = ({item}) => (
-    <View style={styles.pledge}>
-      <Text>{item.pledgeStatus}</Text>
-      <Text>{item.challengeLevel}</Text>
-      <Text>{item.feelings}</Text>
-      <Text>{item.note}</Text>
-      <Text>{item.date}</Text>
+  const renderPledge = ({item, index}) => (
+    <View key={index} style={styles.pledge}>
+      <AppText>{item.pledgeStatus}</AppText>
+      <AppText>{item.challengeLevel}</AppText>
+      <AppText>{item.feelings}</AppText>
+      <AppText>{item.note}</AppText>
+      <AppText>{item.date}</AppText>
       {item?.timeSpentWith?.length > 0 && (
         <View>
           {item?.timeSpentWith.map(x => {
-            return <Text>{x}</Text>;
+            return <AppText>{x}</AppText>;
           })}
         </View>
       )}
@@ -60,16 +62,27 @@ export default function HistoryScreen({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <AppText>History</AppText>
+        <AppText textType="heading">History</AppText>
       </View>
 
-      <Text style={styles.historyTitle}>Pledge History</Text>
-      <FlatList
-        data={pledges}
-        renderItem={renderPledge}
-        keyExtractor={item => item.id}
-        style={styles.history}
+      <CustomTabs
+        tabValues={['Questions', 'Pledges']}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
       />
+
+      <View style={{padding: 20}}>
+        {activeTab === 0 ? (
+          <AppText>Questionsss===</AppText>
+        ) : (
+          <FlatList
+            data={pledges}
+            renderItem={renderPledge}
+            keyExtractor={(item, index) => index}
+            style={styles.history}
+          />
+        )}
+      </View>
     </View>
   );
 }
@@ -105,8 +118,8 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // justifyContent: 'space-between',
     marginBottom: 5,
+    borderWidth: 1,
+    padding: 5,
   },
-  history: {
-    width: '80%',
-  },
+  history: {},
 });
