@@ -3,38 +3,42 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import AppText from './AppText';
 import moment from 'moment';
 import {APP_COLORS} from '../config/colors';
+import LinearGradient from 'react-native-linear-gradient';
 
-const CustomTabs = ({onPress, tabValues, activeTab, setActiveTab}) => {
+const CustomTabs = ({tabValues, activeTab, setActiveTab}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => setActiveTab(0)}
-        style={[
-          styles.btn,
-          styles.btn1Radius,
-          {
-            backgroundColor:
-              activeTab === 0
-                ? APP_COLORS.thirdColor
-                : APP_COLORS.itemBackground,
-          },
-        ]}>
-        <AppText style={styles.text}>{tabValues[0]}</AppText>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => setActiveTab(1)}
-        style={[
-          styles.btn,
-          styles.btn2Radius,
-          {
-            backgroundColor:
-              activeTab === 1
-                ? APP_COLORS.thirdColor
-                : APP_COLORS.itemBackground,
-          },
-        ]}>
-        <AppText style={styles.text}>{tabValues[1]}</AppText>
-      </TouchableOpacity>
+      <LinearGradient
+        style={[styles.btn, styles.btn1Radius]}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={
+          activeTab === 0
+            ? APP_COLORS.buttonGradient
+            : [APP_COLORS.thirdColor, APP_COLORS.thirdColor]
+        }>
+        <TouchableOpacity
+          style={styles.btnInner}
+          onPress={() => setActiveTab(0)}>
+          <AppText style={styles.text}>{tabValues[0]}</AppText>
+        </TouchableOpacity>
+      </LinearGradient>
+
+      <LinearGradient
+        style={[styles.btn, styles.btn2Radius]}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={
+          activeTab === 1
+            ? APP_COLORS.buttonGradient
+            : [APP_COLORS.thirdColor, APP_COLORS.thirdColor]
+        }>
+        <TouchableOpacity
+          style={styles.btnInner}
+          onPress={() => setActiveTab(1)}>
+          <AppText style={styles.text}>{tabValues[1]}</AppText>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 };
@@ -50,14 +54,18 @@ const styles = StyleSheet.create({
   },
   text: {
     color: APP_COLORS.primaryText,
+    textAlign: 'center',
   },
   btn: {
     marginVertical: 8,
-    paddingVertical: 5,
-    width: '47%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: APP_COLORS.itemBackground,
+    width: '47%',
+  },
+  btnInner: {
+    width: '100%',
+    paddingVertical: 5,
   },
   btn1Radius: {
     marginRight: '1%',

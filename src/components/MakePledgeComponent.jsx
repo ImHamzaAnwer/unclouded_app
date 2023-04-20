@@ -1,22 +1,27 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Touchable, View} from 'react-native';
 import AppText from './AppText';
 import moment from 'moment';
 import {APP_COLORS} from '../config/colors';
 import AppButton from './AppButton';
 import {Image} from 'react-native-animatable';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const MakePledgeComponent = ({onPress}) => {
   return (
     <View style={styles.container}>
-      <AppText style={styles.date}>{moment().format('DD-MM-YYYY')}</AppText>
-
-      <Image style={styles.img} source={require('../assets/images/logo.png')} />
       <View style={styles.btnWrap}>
-        <AppButton
-          onPress={onPress}
-          style={styles.btn}
-          title="Make Today's Pledge"
+        <AppText style={styles.date}>{moment().format('DD, MMM YYYY')}</AppText>
+        <AppText>make your pledge today</AppText>
+        <TouchableOpacity onPress={onPress} style={styles.btn}>
+          <AppText style={styles.btnText}>Make Today's Pledge</AppText>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.imgWrap}>
+        <Image
+          style={styles.img}
+          source={require('../assets/images/logo.png')}
         />
       </View>
     </View>
@@ -25,31 +30,38 @@ const MakePledgeComponent = ({onPress}) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 140,
-    backgroundColor: APP_COLORS.itemBackground,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    // height: 140,
+    backgroundColor: APP_COLORS.pledgeCardColor,
     margin: 15,
     borderRadius: 20,
   },
   btnWrap: {
-    position: 'absolute',
-    width: '85%',
-    alignSelf: 'center',
-    bottom: -25,
+    paddingVertical: 20,
+    paddingLeft: 15,
+    width: '65%',
+    // alignSelf: 'center',
   },
   btn: {
-    height: 56,
-    alignSelf: 'center',
-    borderWidth: 4,
-    borderColor: APP_COLORS.background,
+    paddingHorizontal: 5,
+    alignSelf: 'flex-start',
+    borderRadius: 20,
+    backgroundColor: APP_COLORS.primaryText,
+  },
+  btnText: {
+    padding: 10,
+    color: APP_COLORS.background,
+    marginVertical: 0,
   },
   date: {
-    position: 'absolute',
-    right: 15,
-    top: 5,
-    fontSize: 13,
+    fontSize: 24,
+    marginVertical: 0,
+  },
+  imgWrap: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   img: {
     width: 30,

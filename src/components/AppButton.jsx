@@ -2,21 +2,25 @@ import React from 'react';
 import {StyleSheet, Text, ActivityIndicator} from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AppButton = props => {
   const {title, style, onPress, loading} = props;
   return (
-    <TouchableOpacity
+    <LinearGradient
       {...props}
-      activeOpacity={0.8}
-      onPress={onPress}
-      style={[styles.btn, style]}>
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <Text style={styles.text}>{title}</Text>
-      )}
-    </TouchableOpacity>
+      style={[styles.btn, style]}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0}}
+      colors={APP_COLORS.buttonGradient}>
+      <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text style={styles.text}>{title}</Text>
+        )}
+      </TouchableOpacity>
+    </LinearGradient>
   );
 };
 

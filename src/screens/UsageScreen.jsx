@@ -7,9 +7,10 @@ import AppModal from '../components/AppModal';
 import AppDropdown from '../components/AppDropdown';
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
+import CustomTabs from '../components/CustomTabs';
 
 const UsageScreen = () => {
-  // const [usageMethod, setUsageMethod] = useState('');
+  const [activeTab, setActiveTab] = useState(0);
   const [usageMethodValue, setUsageMethodValue] = useState('joint');
   const [consumage, setConsumage] = useState('0');
   const [gramsPer, setGramsPer] = useState('0');
@@ -21,19 +22,26 @@ const UsageScreen = () => {
     {label: 'Bowls', value: 'bowl'},
   ];
 
-  useEffect(() => {
-    const unsubscribe = firestore()
+  const fetchUsageData = async () => {
+    firestore()
       .collection('usageData')
       .orderBy('createdAt', 'desc')
-      .onSnapshot(snapshot => {
-        const data = snapshot?.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUsageData(data);
+      .onSnapshot(querySnapshot => {
+        const array = [];
+        querySnapshot.forEach(doc => {
+          array.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        setUsageData(array);
       });
+  };
 
-    return unsubscribe;
+  useEffect(() => {
+    const unsubscribe = fetchUsageData();
+
+    return () => unsubscribe;
   }, []);
 
   const saveUsageData = async () => {
@@ -45,14 +53,12 @@ const UsageScreen = () => {
         pricePerGram,
         createdAt: firestore.FieldValue.serverTimestamp(),
       };
-      console.log(usageData, 'usage data---');
-      return;
       await firestore().collection('usageData').add(usageData);
 
+      setModalVisible(false);
       setConsumage('');
       setGramsPer('');
       setPricePerGram('');
-
       alert('Usage data saved successfully!');
     } catch (error) {
       console.error(error);
@@ -67,13 +73,28 @@ const UsageScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppText textType="heading" style={styles.title}>
-        Please enter your cannabis usage info
-      </AppText>
+      <CustomTabs
+        tabValues={['Step 1', 'Step 2']}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
+      {activeTab === 0 ? (
+        <>
+          <AppText textType="heading" style={styles.title}>
+            Please enter your cannabis usage information
+          </AppText>
 
-      <AppText onPress={() => setModalVisible(true)}>
-        + Add Usage Method
-      </AppText>
+          <AppText
+            style={styles.addUsageText}
+            onPress={() => setModalVisible(true)}>
+            + Add Usage Method
+          </AppText>
+        </>
+      ) : (
+        <>
+          <AppText>ASDASD</AppText>
+        </>
+      )}
 
       <AppModal isVisible={modalVisible} setIsVisible={setModalVisible}>
         <AppText style={styles.modalHeading} textType="heading">
@@ -156,14 +177,13 @@ const UsageScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     // justifyContent: 'center',
     backgroundColor: APP_COLORS.background,
     padding: 20,
   },
   title: {
     textAlign: 'center',
-    marginBottom: 20,
+    marginVertical: 20,
   },
   modalHeading: {
     fontSize: 20,
@@ -208,6 +228,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 40,
     fontFamily: 'GothamRounded-Light',
+  },
+  addUsageText: {
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 
