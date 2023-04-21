@@ -22,7 +22,7 @@ export default function Player(props) {
     // const track = props.tracks[selectedTrack];
     if (audioElement.current && !isChanging) {
       audioElement.current.seek(currentPosition);
-      setPaused(true);
+      // setPaused(true);
     }
   }, [selectedTrack]);
 
@@ -77,8 +77,8 @@ export default function Player(props) {
     <Video
       source={{uri: track.audioUrl}} // Can be a URL or a local file.
       ref={audioElement}
-      playInBackground={true}
-      playWhenInactive={true}
+      // playInBackground={true}
+      // playWhenInactive={true}
       paused={paused} // Pauses playback entirely.
       resizeMode="cover" // Fill the whole screen at aspect ratio.
       repeat={true} // Repeat forever.
