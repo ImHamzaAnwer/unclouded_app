@@ -9,6 +9,103 @@ import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
 import CustomTabs from '../components/CustomTabs';
 
+const UsageCard = ({item}) => {
+  const styles = StyleSheet.create({
+    usageItem: {
+      backgroundColor: APP_COLORS.itemBackground,
+      borderRadius: 20,
+      marginVertical: 15,
+    },
+    cut: {
+      backgroundColor: APP_COLORS.background,
+      width: 100,
+      height: 15,
+      borderRadius: 6,
+      marginTop: -8,
+      alignSelf: 'center',
+      // transform: [{skewX: '45deg'}],
+    },
+    contentContainer: {
+      paddingHorizontal: 10,
+      marginVertical: 8,
+    },
+    contentContainerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 15,
+      paddingHorizontal: 10,
+      justifyContent: 'space-between',
+    },
+    text: {
+      marginVertical: 0,
+    },
+    usageMethodText: {
+      fontSize: 17,
+      color: APP_COLORS.primaryText,
+      textTransform: 'capitalize',
+      fontWeight: 500,
+    },
+    usageMethodText2: {
+      fontSize: 17,
+      textAlign: 'center',
+      color: APP_COLORS.primaryText,
+      textTransform: 'capitalize',
+      fontWeight: 500,
+      marginBottom: 5,
+    },
+    editBtn: {
+      width: 80,
+      height: 35,
+      borderRadius: 8,
+    },
+    totalAmountText: {
+      fontSize: 17,
+      color: APP_COLORS.primaryText,
+      fontWeight: 500,
+    },
+    totalAmountText2: {
+      color: APP_COLORS.primaryText,
+      fontWeight: 200,
+    },
+  });
+
+  return (
+    <View style={styles.usageItem}>
+      <View style={styles.cut} />
+      <View style={styles.contentContainer}>
+        <View
+          style={[
+            styles.contentContainerRow,
+            {borderBottomWidth: 0.5, borderBottomColor: APP_COLORS.gray},
+          ]}>
+          <AppText style={[styles.text, styles.usageMethodText]}>
+            {item.usageMethod + 's'}
+          </AppText>
+          <View>
+            <AppText style={[styles.text, styles.usageMethodText2]}>
+              {item.consumage}
+            </AppText>
+            <View>
+              <AppText style={[styles.text, styles.consumageText]}>
+                {item.usageMethod + 's'}/day
+              </AppText>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.contentContainerRow}>
+          <AppText style={styles.totalAmountText}>
+            $20 <AppText style={styles.totalAmountText2}>total amount</AppText>
+          </AppText>
+
+          <AppButton style={styles.editBtn} title="Edit" />
+        </View>
+      </View>
+      <View style={[styles.cut, {marginBottom: -8}]} />
+    </View>
+  );
+};
+
 const UsageScreen = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [usageMethodValue, setUsageMethodValue] = useState('joint');
@@ -89,6 +186,13 @@ const UsageScreen = () => {
             onPress={() => setModalVisible(true)}>
             + Add Usage Method
           </AppText>
+
+          <FlatList
+            data={usageData}
+            renderItem={({item}) => <UsageCard item={item} />}
+            keyExtractor={item => item.id}
+            style={styles.usageList}
+          />
         </>
       ) : (
         <>
@@ -156,20 +260,6 @@ const UsageScreen = () => {
           title={'Add'}
         />
       </AppModal>
-
-      <FlatList
-        data={usageData}
-        renderItem={({item}) => (
-          <View style={styles.usageItem}>
-            <Text style={styles.usageText}>{item.usageMethod}</Text>
-            <Text style={styles.usageText}>{item.consumage}</Text>
-            <Text style={styles.usageText}>{item.gramsPer}</Text>
-            <Text style={styles.usageText}>{item.pricePerGram}</Text>
-          </View>
-        )}
-        keyExtractor={item => item.id}
-        style={styles.usageList}
-      />
     </View>
   );
 };
@@ -231,7 +321,9 @@ const styles = StyleSheet.create({
   },
   addUsageText: {
     textAlign: 'center',
-    marginTop: 20,
+    marginVertical: 20,
+    fontWeight: 500,
+    color: APP_COLORS.aqua,
   },
 });
 

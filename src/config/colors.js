@@ -7,7 +7,9 @@ export const APP_COLORS = {
   thirdColor: '#535A59',
   error: '#C73E1D',
   buttonGradient: ['#15A997', '#047BB6'],
-  pledgeCardColor: '#0F7375'
+  pledgeCardColor: '#0F7375',
+  gray: '#476B66',
+  aqua: '#00D8B4',
 };
 
 
