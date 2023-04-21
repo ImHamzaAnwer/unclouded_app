@@ -2,6 +2,7 @@ import React from 'react';
 // import { defaultString } from '../String/defaultStringValue';
 
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import { IMAGES } from '../../config/images';
 
 const Controls = ({
   paused,
@@ -23,14 +24,14 @@ const Controls = ({
           styles.secondaryControl,
           shuffleOn ? [] : styles.off,
         ]}
-        source={require('../../assets/images/logo.png')}
+        source={IMAGES.logo}
       />
       <Text>Shuffle</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={onBack}>
       <Image
         style={{width: 20, height: 20}}
-        source={require('../../assets/images/logo.png')}
+        source={IMAGES.logo}
       />
 
       <Text>back</Text>
@@ -40,7 +41,7 @@ const Controls = ({
         <View style={styles.playButton}>
           <Image
             style={{width: 15, height: 15}}
-            source={require('../../assets/images/logo.png')}
+            source={IMAGES.logo}
           />
 
           <Text>play</Text>
@@ -51,7 +52,7 @@ const Controls = ({
         <View style={styles.playButton}>
           <Image
             style={{width: 15, height: 15}}
-            source={require('../../assets/images/logo.png')}
+            source={IMAGES.logo}
           />
         </View>
       </TouchableOpacity>
@@ -59,7 +60,7 @@ const Controls = ({
     <TouchableOpacity onPress={onForward} disabled={forwardDisabled}>
       <Image
         style={[{width: 15, height: 15}, forwardDisabled && {opacity: 0.3}]}
-        source={require('../../assets/images/logo.png')}
+        source={IMAGES.logo}
       />
 
       <Text>forward</Text>
@@ -71,7 +72,7 @@ const Controls = ({
           repeatOn ? [] : styles.off,
           {width: 15, height: 15},
         ]}
-        source={require('../../assets/images/logo.png')}
+        source={IMAGES.logo}
       />
 
       <Text>repeat</Text>

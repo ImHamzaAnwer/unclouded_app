@@ -21,6 +21,7 @@ import {
   strongPasswordRegex,
   weakPasswordRegex,
 } from '../../config/regexes';
+import {IMAGES} from '../../config/images';
 
 const SignupScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
@@ -100,10 +101,7 @@ const SignupScreen = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <ScrollView style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={require('../../assets/images/logo.png')}
-        />
+        <Image style={styles.logo} source={IMAGES.logo} />
         <AppText textType="heading">Sign Up</AppText>
         <AppText style={{marginBottom: 30}}>
           Create your account - enjoy our services with most updated features.

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, ScrollView, Image, View, TextInput} from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
+import { IMAGES } from '../../config/images';
 
 const AudioLibrary = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
@@ -17,7 +18,7 @@ const AudioLibrary = ({navigation}) => {
       <View style={styles.searchBarContainer}>
         <Image
           style={styles.searchBarIcon}
-          source={require('../../assets/images/logo.png')}
+          source={IMAGES.logo}
         />
         <TextInput
           value={searchText}

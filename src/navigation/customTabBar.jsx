@@ -2,6 +2,7 @@ import React from 'react';
 
 import {View, Pressable, Dimensions, StyleSheet, Image} from 'react-native';
 import {APP_COLORS} from '../config/colors';
+import { IMAGES } from '../config/images';
 
 const {width} = Dimensions.get('window');
 
@@ -79,7 +80,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
                 }}>
                 <Image
                   style={{width: 25, height: 25, resizeMode: 'contain'}}
-                  source={require('../assets/images/logo.png')}
+                  source={IMAGES.logo}
                 />
               </View>
             </Pressable>

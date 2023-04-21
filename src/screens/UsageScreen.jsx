@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {APP_COLORS} from '../config/colors';
 import AppText from '../components/AppText';
 import AppModal from '../components/AppModal';
@@ -8,6 +9,8 @@ import AppDropdown from '../components/AppDropdown';
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
 import CustomTabs from '../components/CustomTabs';
+import moment from 'moment';
+import {IMAGES} from '../config/images';
 
 const UsageCard = ({item}) => {
   const styles = StyleSheet.create({
@@ -18,7 +21,7 @@ const UsageCard = ({item}) => {
     },
     cut: {
       backgroundColor: APP_COLORS.background,
-      width: 100,
+      width: 80,
       height: 15,
       borderRadius: 6,
       marginTop: -8,
@@ -54,7 +57,7 @@ const UsageCard = ({item}) => {
       marginBottom: 5,
     },
     editBtn: {
-      width: 80,
+      width: 70,
       height: 35,
       borderRadius: 8,
     },
@@ -114,6 +117,10 @@ const UsageScreen = () => {
   const [pricePerGram, setPricePerGram] = useState('0');
   const [usageData, setUsageData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(
+    moment().format('YYYY-MM-DD'),
+  );
+
   const usageMethodItems = [
     {label: 'Joints', value: 'joint'},
     {label: 'Bowls', value: 'bowl'},
@@ -196,7 +203,47 @@ const UsageScreen = () => {
         </>
       ) : (
         <>
-          <AppText>ASDASD</AppText>
+          <AppText style={styles.calendarTitle} textType="heading">
+            Set quitting date
+          </AppText>
+          <View style={styles.calendarRow}>
+            <View>
+              <AppText>select date</AppText>
+              <AppText style={styles.selectedDateText} textType="heading">
+                {selectedDate}
+              </AppText>
+            </View>
+            <Image style={styles.calendarIcon} source={IMAGES.logo} />
+          </View>
+          <Calendar
+            hideExtraDays
+            firstDay={1}
+            style={{
+              borderRadius: 10,
+              marginVertical: 20,
+              paddingTop: 10,
+            }}
+            theme={{
+              backgroundColor: APP_COLORS.itemBackground,
+              calendarBackground: APP_COLORS.itemBackground,
+              dayTextColor: '#A8C0BC',
+              textDisabledColor: APP_COLORS.gray,
+              monthTextColor: APP_COLORS.primaryText,
+              textMonthFontSize: 18,
+              textMonthFontWeight: '500',
+            }}
+            onDayPress={day => {
+              setSelectedDate(day.dateString);
+            }}
+            minDate={moment().format('YYYY-MM-DD')}
+            markedDates={{
+              [selectedDate]: {
+                selected: true,
+                disableTouchEvent: true,
+                selectedDotColor: 'orange',
+              },
+            }}
+          />
         </>
       )}
 
@@ -324,6 +371,31 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     fontWeight: 500,
     color: APP_COLORS.aqua,
+  },
+
+  //calendar Screen
+  calendarTitle: {
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  selectedDateText: {
+    marginVertical: 0,
+    fontSize: 17,
+  },
+  calendarRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 0.7,
+    paddingBottom: 10,
+    paddingRight: 5,
+    borderBottomColor: APP_COLORS.gray,
+  },
+  calendarIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
+    alignSelf: 'flex-end',
   },
 });
 

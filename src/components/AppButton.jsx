@@ -13,7 +13,10 @@ const AppButton = props => {
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
       colors={APP_COLORS.buttonGradient}>
-      <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+      <TouchableOpacity
+        style={styles.innerBtn}
+        activeOpacity={0.8}
+        onPress={onPress}>
         {loading ? (
           <ActivityIndicator />
         ) : (
@@ -27,20 +30,24 @@ const AppButton = props => {
 const styles = StyleSheet.create({
   btn: {
     backgroundColor: APP_COLORS.primary,
-    // paddingVertical: 8,
+    borderRadius: 100,
+    width: '95%',
     display: 'flex',
     alignContent: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 15,
-    borderRadius: 100,
-    width: '95%',
-    height: 56,
   },
   text: {
     fontSize: 18,
     textAlign: 'center',
     fontFamily: 'GothamRounded-Medium',
     color: APP_COLORS.primaryText,
+  },
+  innerBtn: {
+    width: '100%',
+    height: 56,
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
 });
 

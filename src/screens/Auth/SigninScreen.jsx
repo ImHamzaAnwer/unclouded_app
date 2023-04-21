@@ -13,6 +13,7 @@ import AppButton from '../../components/AppButton';
 import AppInput from '../../components/AppInput';
 import {APP_COLORS} from '../../config/colors';
 import {EMAIL_REGEX} from '../../config/regexes';
+import { IMAGES } from '../../config/images';
 
 const SigninScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -53,7 +54,7 @@ const SigninScreen = ({navigation}) => {
       <ScrollView style={styles.container}>
         <Image
           style={styles.logo}
-          source={require('../../assets/images/logo.png')}
+          source={IMAGES.logo}
         />
         <AppText textType="heading">Sign In</AppText>
         <AppText style={{marginBottom: 30}}>

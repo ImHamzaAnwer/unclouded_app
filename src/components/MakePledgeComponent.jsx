@@ -6,6 +6,7 @@ import {APP_COLORS} from '../config/colors';
 import AppButton from './AppButton';
 import {Image} from 'react-native-animatable';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import { IMAGES } from '../config/images';
 
 const MakePledgeComponent = ({onPress}) => {
   return (
@@ -21,7 +22,7 @@ const MakePledgeComponent = ({onPress}) => {
       <View style={styles.imgWrap}>
         <Image
           style={styles.img}
-          source={require('../assets/images/logo.png')}
+          source={IMAGES.logo}
         />
       </View>
     </View>

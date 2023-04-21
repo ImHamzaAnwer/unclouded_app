@@ -6,6 +6,7 @@ import AppButton from '../../components/AppButton';
 import AppInput from '../../components/AppInput';
 import AppText from '../../components/AppText';
 import auth from '@react-native-firebase/auth';
+import { IMAGES } from '../../config/images';
 
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -27,7 +28,7 @@ const ForgotPassword = ({navigation}) => {
     <ScrollView style={styles.container}>
       <Image
         style={styles.logo}
-        source={require('../../assets/images/logo.png')}
+        source={IMAGES.logo}
       />
       <AppText onPress={() => navigation.goBack()} textType="heading">
         {otpScreen ? 'Forgot Password' : 'Forgot Password'}
