@@ -6,24 +6,23 @@ import {APP_COLORS} from '../config/colors';
 import AppButton from './AppButton';
 import {Image} from 'react-native-animatable';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import { IMAGES } from '../config/images';
+import {IMAGES} from '../config/images';
 
-const MakePledgeComponent = ({onPress}) => {
+const MakePledgeComponent = ({onPress, pledgedToday}) => {
   return (
     <View style={styles.container}>
       <View style={styles.btnWrap}>
         <AppText style={styles.date}>{moment().format('DD, MMM YYYY')}</AppText>
         <AppText>make your pledge today</AppText>
         <TouchableOpacity onPress={onPress} style={styles.btn}>
-          <AppText style={styles.btnText}>Make Today's Pledge</AppText>
+          <AppText style={styles.btnText}>
+            {pledgedToday ? 'Review' : 'Make'} Today's Pledge
+          </AppText>
         </TouchableOpacity>
       </View>
 
       <View style={styles.imgWrap}>
-        <Image
-          style={styles.img}
-          source={IMAGES.logo}
-        />
+        <Image style={styles.img} source={IMAGES.logo} />
       </View>
     </View>
   );
