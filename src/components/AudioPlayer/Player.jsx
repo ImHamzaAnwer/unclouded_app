@@ -93,7 +93,6 @@ export default function Player(props) {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden={true} />
       <AudioHeader title={track.title} message="Playing From Charts" />
       <AlbumArt
         title={track.title}

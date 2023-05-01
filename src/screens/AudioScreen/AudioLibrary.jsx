@@ -46,33 +46,36 @@ const AudioLibrary = ({navigation}) => {
                 <AppText>{'see all >'}</AppText>
               </TouchableOpacity>
             </View>
-            <ScrollView horizontal>
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal>
               {TRACKS.filter(track => track.category === category).map(
                 track => (
                   <View
                     style={{
                       marginLeft: 20,
-                      backgroundColor: 'blue',
                     }}>
-                    <Image
-                      style={styles.cardImg}
-                      source={{
-                        uri: 'https://picsum.photos/240/140',
-                      }}
-                    />
                     <TouchableOpacity>
-                      <View style={styles.trackTitleContainer}>
-                        <AppText style={styles.trackTitle} key={track.title}>
-                          {track.title}
-                        </AppText>
-                      </View>
+                      <Image
+                        style={styles.cardImg}
+                        source={{
+                          uri: 'https://picsum.photos/240/140',
+                        }}
+                      />
                     </TouchableOpacity>
+
+                    <View style={styles.trackTitleContainer}>
+                      <AppText style={styles.trackTitle} key={track.title}>
+                        {track?.title?.length > 20
+                          ? `${track.title.slice(0, 20)}...`
+                          : track.title}
+                      </AppText>
+                    </View>
                   </View>
                 ),
               )}
             </ScrollView>
           </View>
         ))}
+        <View style={{height: 140}} />
       </View>
     </ScrollView>
   );
@@ -147,18 +150,24 @@ const styles = StyleSheet.create({
   cardImg: {
     borderRadius: 20,
     resizeMode: 'cover',
-    width: 240,
+    width: 260,
     height: 140,
   },
   trackTitleContainer: {
-    backgroundColor: 'pink',
-    bottom: -20,
-    position: 'absolute',
-    borderRadius: 20,
+    backgroundColor: APP_COLORS.itemBackground,
+    // bottom: -20,
+    // position: 'absolute',
+    borderRadius: 120,
+    marginTop: -20,
+    paddingVertical: 5,
+    borderWidth: 6,
+    borderColor: APP_COLORS.background,
+    maxWidth: '85%',
+    width: '85%',
     alignSelf: 'center',
   },
   trackTitle: {
-    color: 'black',
+    textAlign: 'center',
     fontWeight: 500,
   },
 });

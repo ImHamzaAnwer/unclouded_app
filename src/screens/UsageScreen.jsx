@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Image, Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {APP_COLORS} from '../config/colors';
 import AppText from '../components/AppText';
@@ -12,7 +13,7 @@ import CustomTabs from '../components/CustomTabs';
 import moment from 'moment';
 import {IMAGES} from '../config/images';
 
-const UsageCard = ({item}) => {
+const UsageCard = ({item, handleEditUsageData}) => {
   const styles = StyleSheet.create({
     usageItem: {
       backgroundColor: APP_COLORS.itemBackground,
@@ -101,7 +102,11 @@ const UsageCard = ({item}) => {
             $20 <AppText style={styles.totalAmountText2}>total amount</AppText>
           </AppText>
 
-          <AppButton style={styles.editBtn} title="Edit" />
+          <AppButton
+            onPress={handleEditUsageData}
+            style={styles.editBtn}
+            title="Edit"
+          />
         </View>
       </View>
       <View style={[styles.cut, {marginBottom: -8}]} />
@@ -148,6 +153,13 @@ const UsageScreen = () => {
     return () => unsubscribe;
   }, []);
 
+  const handleEditUsageData = () => {
+    setConsumage(usageData[0].consumage);
+    setGramsPer(usageData[0].gramsPer);
+    setPricePerGram(usageData[0].pricePerGram);
+    setModalVisible(true);
+  };
+
   const saveUsageData = async () => {
     try {
       const usageData = {
@@ -156,8 +168,12 @@ const UsageScreen = () => {
         gramsPer,
         pricePerGram,
         createdAt: firestore.FieldValue.serverTimestamp(),
+        userId: auth().currentUser.uid,
       };
-      await firestore().collection('usageData').add(usageData);
+      await firestore()
+        .collection('usageData')
+        .doc(auth().currentUser.uid)
+        .set(usageData);
 
       setModalVisible(false);
       setConsumage('');
@@ -188,15 +204,22 @@ const UsageScreen = () => {
             Please enter your cannabis usage information
           </AppText>
 
-          <AppText
-            style={styles.addUsageText}
-            onPress={() => setModalVisible(true)}>
-            + Add Usage Method
-          </AppText>
+          {!usageData.length && (
+            <AppText
+              style={styles.addUsageText}
+              onPress={() => setModalVisible(true)}>
+              + Add Usage Method
+            </AppText>
+          )}
 
           <FlatList
             data={usageData}
-            renderItem={({item}) => <UsageCard item={item} />}
+            renderItem={({item}) => (
+              <UsageCard
+                handleEditUsageData={handleEditUsageData}
+                item={item}
+              />
+            )}
             keyExtractor={item => item.id}
             style={styles.usageList}
           />
@@ -320,7 +343,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    marginVertical: 20,
+    marginVertical: 40,
   },
   modalHeading: {
     fontSize: 20,

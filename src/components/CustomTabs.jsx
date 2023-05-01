@@ -13,9 +13,7 @@ const CustomTabs = ({tabValues, activeTab, setActiveTab}) => {
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         colors={
-          activeTab === 0
-            ? APP_COLORS.buttonGradient
-            : [APP_COLORS.thirdColor, APP_COLORS.thirdColor]
+          activeTab === 0 ? APP_COLORS.buttonGradient : ['#1B2931', '#1B2931']
         }>
         <TouchableOpacity
           style={styles.btnInner}
@@ -29,9 +27,7 @@ const CustomTabs = ({tabValues, activeTab, setActiveTab}) => {
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         colors={
-          activeTab === 1
-            ? APP_COLORS.buttonGradient
-            : [APP_COLORS.thirdColor, APP_COLORS.thirdColor]
+          activeTab === 1 ? APP_COLORS.buttonGradient : ['#1B2931', '#1B2931']
         }>
         <TouchableOpacity
           style={styles.btnInner}

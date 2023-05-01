@@ -7,7 +7,7 @@
 
 import React from 'react';
 import Routes from './src/navigation';
-import {SafeAreaView, StatusBar, View} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import {APP_COLORS} from './src/config/colors';
 import {Provider as PaperProvider} from 'react-native-paper';
 
