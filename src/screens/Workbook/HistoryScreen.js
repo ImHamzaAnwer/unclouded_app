@@ -6,18 +6,133 @@ import moment from 'moment';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import CustomTabs from '../../components/CustomTabs';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import AppButton from '../../components/AppButton';
+
+const ReviewPledgeCard = ({item, index}) => {
+  const styles = StyleSheet.create({
+    usageItem: {
+      backgroundColor: APP_COLORS.itemBackground,
+      borderRadius: 20,
+      marginVertical: 15,
+    },
+    cut: {
+      backgroundColor: APP_COLORS.background,
+      width: 80,
+      height: 15,
+      borderRadius: 6,
+      marginTop: -8,
+      alignSelf: 'center',
+      // transform: [{skewX: '45deg'}],
+    },
+    contentContainer: {
+      paddingHorizontal: 10,
+      marginVertical: 8,
+    },
+    contentContainerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 15,
+      paddingHorizontal: 10,
+      justifyContent: 'space-between',
+    },
+    contentContainerRowItem: {
+      borderRightWidth: 0.2,
+      borderColor: '#fff',
+      width: '33%',
+      alignItems: 'center',
+    },
+    text: {
+      marginVertical: 0,
+    },
+    usageMethodText: {
+      fontSize: 15,
+      color: APP_COLORS.primaryText,
+      textTransform: 'capitalize',
+      fontWeight: 500,
+    },
+    usageMethodText2: {
+      fontSize: 17,
+      textAlign: 'center',
+      color: APP_COLORS.primaryText,
+      textTransform: 'capitalize',
+      fontWeight: 500,
+      marginBottom: 5,
+    },
+    editBtn: {
+      width: 70,
+      height: 35,
+      borderRadius: 8,
+    },
+    bottomRowText: {
+      textTransform: 'capitalize',
+      marginVertical: 0,
+      fontSize: 17,
+      color: APP_COLORS.primaryText,
+      fontWeight: 500,
+    },
+    bottomRowText2: {
+      color: APP_COLORS.primaryText,
+      fontWeight: 200,
+    },
+  });
+
+  return (
+    <View key={index} style={styles.usageItem}>
+      <View style={styles.cut} />
+      <View style={styles.contentContainer}>
+        <View
+          style={[
+            styles.contentContainerRow,
+            {borderBottomWidth: 0.5, borderBottomColor: APP_COLORS.gray},
+          ]}>
+          <View>
+            <AppText style={[styles.text, styles.usageMethodText]}>
+              Daily review of pledge
+            </AppText>
+            <AppText>I will stay sober today</AppText>
+          </View>
+
+          <AppButton onPress={() => {}} style={styles.editBtn} title="Edit" />
+        </View>
+
+        <View style={[styles.contentContainerRow, {paddingHorizontal: 0}]}>
+          <View style={styles.contentContainerRowItem}>
+            <AppText style={styles.bottomRowText}>
+              {item.challengeLevel || '--'}
+            </AppText>
+            <AppText style={styles.bottomRowText2}>Diificulty</AppText>
+          </View>
+          <View style={styles.contentContainerRowItem}>
+            <AppText style={styles.bottomRowText}>
+              {item.feelings || '--'}
+            </AppText>
+            <AppText style={styles.bottomRowText2}>Mood</AppText>
+          </View>
+          <View style={[styles.contentContainerRowItem, {borderRightWidth: 0}]}>
+            <AppText style={styles.bottomRowText}>
+              {item.timeSpentWith[0] || '--'}
+            </AppText>
+            <AppText style={styles.bottomRowText2}>Activity</AppText>
+          </View>
+        </View>
+      </View>
+      <View style={[styles.cut, {marginBottom: -8}]} />
+    </View>
+  );
+};
 
 export default function HistoryScreen({navigation}) {
   const [activeTab, setActiveTab] = useState(0);
   const [pledges, setPledges] = useState([]);
 
   useEffect(() => {
-    const subscribe = fetchPledgeData();
+    const subscribe = fetchReviewPledgeData();
 
     return () => subscribe;
   }, []);
 
-  const fetchPledgeData = async () => {
+  const fetchReviewPledgeData = async () => {
     firestore()
       .collection('pledges')
       .where('user', '==', auth().currentUser.uid)
@@ -42,27 +157,30 @@ export default function HistoryScreen({navigation}) {
       });
   };
 
-  const renderPledge = ({item, index}) => (
-    <View key={index} style={styles.pledge}>
-      <AppText>{item.pledgeStatus}</AppText>
-      <AppText>{item.challengeLevel}</AppText>
-      <AppText>{item.feelings}</AppText>
-      <AppText>{item.note}</AppText>
-      <AppText>{item.date}</AppText>
-      {item?.timeSpentWith?.length > 0 && (
-        <View>
-          {item?.timeSpentWith.map(x => {
-            return <AppText>{x}</AppText>;
-          })}
-        </View>
-      )}
-    </View>
+  const renderReviewPledge = ({item, index}) => (
+    <ReviewPledgeCard item={item} index={index} />
+    // <View key={index} style={styles.pledge}>
+    //   <AppText>{item.pledgeStatus}</AppText>
+    //   <AppText>{item.challengeLevel}</AppText>
+    //   <AppText>{item.feelings}</AppText>
+    //   <AppText>{item.note}</AppText>
+    //   <AppText>{item.date}</AppText>
+    //   {item?.timeSpentWith?.length > 0 && (
+    //     <View>
+    //       {item?.timeSpentWith.map(x => {
+    //         return <AppText>{x}</AppText>;
+    //       })}
+    //     </View>
+    // )}
+    // </View>
   );
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <AppText textType="heading">History</AppText>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <AppText textType="heading">History</AppText>
+        </TouchableOpacity>
       </View>
 
       <CustomTabs
@@ -77,8 +195,7 @@ export default function HistoryScreen({navigation}) {
         ) : (
           <FlatList
             data={pledges}
-            renderItem={renderPledge}
-            keyExtractor={(item, index) => index}
+            renderItem={renderReviewPledge}
             style={styles.history}
           />
         )}

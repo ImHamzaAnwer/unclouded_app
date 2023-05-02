@@ -15,33 +15,45 @@ import AppDropdown from '../../components/AppDropdown';
 import MultiSelectDropdown from '../../components/MultiSelectDropdown';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import Slider from '@react-native-community/slider';
 
 const PledgeScreen = ({navigation}) => {
   const [pledgeStatus, setPledgeStatus] = useState('yes');
   const [pledgeNote, setPledgeNote] = useState('');
   const [challengeLevel, setChallengeLevel] = useState('good');
-  const [feelings, setFeelings] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [sliderValue, setSliderValue] = useState(0);
+  const [mood, setMood] = useState('happy');
 
   const handlePledgeStatusChange = value => {
     setPledgeStatus(value);
+  };
+
+  const handleSliderChange = val => {
+    console.log(val, 'valalalala---');
+    setSliderValue(val);
+    setSliderValue(val);
+    if (val == 0) {
+      setMood('happy');
+    } else if (val == 0.5) {
+      setMood('sad');
+    } else if (val > 0.5) {
+      setMood('angry');
+    }
   };
 
   const handleChallengeLevelChange = value => {
     setChallengeLevel(value);
   };
 
-  const handleFeelingsChange = value => {
-    setFeelings(value);
-  };
   const handlePledgeNote = value => {
     setPledgeNote(value);
   };
 
-  const savePledge = async () => {
+  const savePledgeReview = async () => {
     firestore()
-      .collection('pledges')
+      .collection('pledgesReview')
       .add({
         pledgeStatus,
         challengeLevel,
@@ -107,12 +119,28 @@ const PledgeScreen = ({navigation}) => {
       />
 
       <AppText style={styles.label}>How did you feel?</AppText>
-      <AppInput
+      <View style={styles.sliderContainer}>
+        <Slider
+          thumbTintColor={APP_COLORS.aqua}
+          minimumTrackTintColor={APP_COLORS.aqua}
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={1}
+          step={0.5}
+          onValueChange={handleSliderChange}
+        />
+        <View style={styles.labelContainer}>
+          <AppText style={styles.sliderLabel}>Happy</AppText>
+          <AppText style={styles.sliderLabel}>Sad</AppText>
+          <AppText style={styles.sliderLabel}>Angry</AppText>
+        </View>
+      </View>
+      {/* <AppInput
         style={styles.input}
         value={feelings}
         onChangeText={handleFeelingsChange}
         placeholder="Enter your feelings"
-      />
+      /> */}
 
       <AppText style={styles.label}>How did you spend your time today?</AppText>
 
@@ -134,7 +162,11 @@ const PledgeScreen = ({navigation}) => {
         onChangeText={handlePledgeNote}
       />
 
-      <AppButton title="Save" style={styles.button} onPress={savePledge} />
+      <AppButton
+        title="Save"
+        style={styles.button}
+        onPress={savePledgeReview}
+      />
     </ScrollView>
   );
 };
@@ -164,6 +196,25 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
+  },
+
+  //slider
+  sliderContainer: {
+    flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  slider: {
+    width: '100%',
+  },
+  labelContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 5,
+  },
+  sliderLabel: {
+    fontSize: 14,
   },
 });
 
