@@ -6,61 +6,15 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import MakePledgeComponent from '../../components/MakePledgeComponent';
 import {QUESTIONNAIRE} from '../../config/questionnaire';
-import AppModal from '../../components/AppModal';
-import AppInput from '../../components/AppInput';
-import AppButton from '../../components/AppButton';
-import moment from 'moment';
+
 
 export default function Workbook({navigation}) {
-  const [pledgedModal, setPledgeModal] = useState(false);
-  const [pledgedToday, setPledgedToday] = useState(false);
   const [questionnaires, setQuestionnaires] = useState(QUESTIONNAIRE);
-  const [note, setNote] = useState('');
   // const randomBool = useMemo(() => Math.random() < 0.5, []);
-  const today = moment().format('YYYY-MM-DD');
-  const uid = auth().currentUser.uid;
-  useEffect(() => {
-    const unsubscribe = checkIfPledgedToday();
-
-    return () => unsubscribe;
-  }, [pledgeToday]);
-
-  const pledgeToday = () => {
-    firestore().collection('dailyPledges').add({
-      pledged: true,
-      date: today,
-      userId: uid,
-      note,
-      createdAt: firebase.firestore.Timestamp.now(),
-      // const createdAt = firebase.firestore.Timestamp.now().toDate();
-      // const timeAgo = moment(createdAt).fromNow();
-    });
-    setPledgedToday(true);
-    setPledgeModal(false);
-  };
-
-  const checkIfPledgedToday = () => {
-    firestore()
-      .collection('dailyPledges')
-      .where('userId', '==', uid)
-      .onSnapshot(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(doc.data(), 'yoaoaoa');
-          if (doc.exists && doc.data().pledged && doc.data().date === today) {
-            setPledgedToday(true);
-            setPledgeModal(false);
-          } else {
-            setPledgedToday(false);
-          }
-        });
-      });
-  };
 
   // const fetchPledgeData = async () => {
   //   firestore()
@@ -165,14 +119,7 @@ export default function Workbook({navigation}) {
         </TouchableOpacity>
       </View>
 
-      <MakePledgeComponent
-        pledgedToday={pledgedToday}
-        onPress={() =>
-          pledgedToday
-            ? navigation.navigate('PledgeScreen')
-            : setPledgeModal(true)
-        }
-      />
+      <MakePledgeComponent />
 
       <View style={{padding: 15, flex: 1}}>
         <AppText style={styles.questionnaireTitle}>Questionnaires</AppText>
@@ -184,20 +131,6 @@ export default function Workbook({navigation}) {
           renderItem={renderQuestionnaires}
         />
       </View>
-
-      <AppModal isVisible={pledgedModal} setIsVisible={setPledgeModal}>
-        <AppText style={styles.pledeModalTitle} textType="heading">
-          Today, I will not smoke
-        </AppText>
-        <AppText>I’m doing this because...</AppText>
-        <AppInput
-          value={note}
-          onChangeText={setNote}
-          multiline
-          maxLength={200}
-        />
-        <AppButton onPress={pledgeToday} style={{marginTop: 40}} title="save" />
-      </AppModal>
     </View>
   );
 }
