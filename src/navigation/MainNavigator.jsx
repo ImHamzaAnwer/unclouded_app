@@ -7,6 +7,7 @@ import Profile from '../screens/Profile';
 import CustomTabBar from './customTabBar';
 import AudioPlayer from '../screens/AudioScreen/AudioPlayer';
 import AudioLibrary from '../screens/AudioScreen/AudioLibrary';
+import AudioListSeeAll from '../screens/AudioScreen/AudioListSeeAll';
 
 //Workbook
 import Workbook from '../screens/Workbook/WorkbookScreen';
@@ -24,6 +25,7 @@ const AudioScreenStack = () => {
       }}
       initialRouteName="AudioLibrary">
       <Stack.Screen name="AudioLibrary" component={AudioLibrary} />
+      <Stack.Screen name="AudioListSeeAll" component={AudioListSeeAll} />
       <Stack.Screen name="AudioPlayer" component={AudioPlayer} />
     </Stack.Navigator>
   );
