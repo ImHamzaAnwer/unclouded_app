@@ -114,7 +114,7 @@ const UsageCard = ({item, handleEditUsageData}) => {
   );
 };
 
-const UsageScreen = () => {
+const UsageScreen = ({navigation}) => {
   const [activeTab, setActiveTab] = useState(0);
   const [usageMethodValue, setUsageMethodValue] = useState('joint');
   const [consumage, setConsumage] = useState('0');
@@ -144,6 +144,9 @@ const UsageScreen = () => {
           });
         });
         setUsageData(array);
+        if (array[0]?.quittingDate && array[0]?.usageMethod) {
+          navigation.navigate('MainTabs');
+        }
       });
   };
 
@@ -160,7 +163,7 @@ const UsageScreen = () => {
     setModalVisible(true);
   };
 
-  const saveUsageData = async () => {
+  const saveUsageData = async fromCalendar => {
     try {
       const usageData = {
         usageMethod: usageMethodValue,
@@ -169,20 +172,31 @@ const UsageScreen = () => {
         pricePerGram,
         createdAt: firestore.FieldValue.serverTimestamp(),
         userId: auth().currentUser.uid,
+        quittingDate: null,
       };
-      await firestore()
-        .collection('usageData')
-        .doc(auth().currentUser.uid)
-        .set(usageData);
+
+      fromCalendar
+        ? await firestore()
+            .collection('usageData')
+            .doc(auth().currentUser.uid)
+            .update({quittingDate: selectedDate || null})
+        : await firestore()
+            .collection('usageData')
+            .doc(auth().currentUser.uid)
+            .set(usageData);
 
       setModalVisible(false);
       setConsumage('');
       setGramsPer('');
       setPricePerGram('');
-      alert('Usage data saved successfully!');
+      Alert.alert(
+        fromCalendar
+          ? 'Quitting date saved successfully!'
+          : 'Usage data saved successfully!',
+      );
     } catch (error) {
       console.error(error);
-      alert('Error saving usage data.');
+      Alert.alert('Error saving usage data.');
     }
   };
 
@@ -223,6 +237,8 @@ const UsageScreen = () => {
             keyExtractor={item => item.id}
             style={styles.usageList}
           />
+
+          <AppButton title="Next" />
         </>
       ) : (
         <>
@@ -267,6 +283,8 @@ const UsageScreen = () => {
               },
             }}
           />
+
+          <AppButton onPress={() => saveUsageData(true)} title="Next" />
         </>
       )}
 

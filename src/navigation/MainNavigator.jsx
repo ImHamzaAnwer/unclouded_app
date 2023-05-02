@@ -13,6 +13,7 @@ import AudioListSeeAll from '../screens/AudioScreen/AudioListSeeAll';
 import Workbook from '../screens/Workbook/WorkbookScreen';
 import PledgeScreen from '../screens/Workbook/PledgeScreen';
 import HistoryScreen from '../screens/Workbook/HistoryScreen';
+import Home from '../screens/Home/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -31,6 +32,18 @@ const AudioScreenStack = () => {
   );
 };
 
+const HomeStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: () => null,
+      }}
+      initialRouteName="Home">
+      <Stack.Screen name="Home" component={Home} />
+    </Stack.Navigator>
+  );
+};
+
 const WorkbookStack = () => {
   return (
     <Stack.Navigator
@@ -45,17 +58,31 @@ const WorkbookStack = () => {
   );
 };
 
-const MainNavigator = () => {
+const MainTabs = () => {
   return (
     <Tab.Navigator
       tab
       tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{header: () => null}}>
-      <Tab.Screen name="UsageScreen" component={UsageScreen} />
+      {/* <Tab.Screen name="UsageScreen" component={UsageScreen} /> */}
+      <Tab.Screen name="HomeStack" component={HomeStack} />
       <Tab.Screen name="AudioScreenStack" component={AudioScreenStack} />
       <Tab.Screen name="WorkbookStack" component={WorkbookStack} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
+  );
+};
+
+const MainNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: () => null,
+      }}
+      initialRouteName="UsageScreen">
+      <Stack.Screen name="UsageScreen" component={UsageScreen} />
+      <Stack.Screen name="MainTabs" component={MainTabs} />
+    </Stack.Navigator>
   );
 };
 
