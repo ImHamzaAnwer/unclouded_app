@@ -24,10 +24,8 @@ export const IMAGES = {
   HomeIcon: require('../assets/images/Home.png'),
   InformationIcon: require('../assets/images/Information.png'),
   InsomniaIcon: require('../assets/images/Insomnia.png'),
-
   LeftArrowIcon: require('../assets/images/LeftArrow.png'),
   LoginScreenBg: require('../assets/images/LoginScreen.png'),
-
   MakeTodaysPledgeIcon: require('../assets/images/MakeTodaysPledge.png'),
   MoreIcon: require('../assets/images/More.png'),
   NewQuestionWorkbookIcon: require('../assets/images/NewQuestionWorkbook.png'),

@@ -2,36 +2,59 @@ import React from 'react';
 
 import {View, Pressable, Dimensions, StyleSheet, Image} from 'react-native';
 import {APP_COLORS} from '../config/colors';
-import { IMAGES } from '../config/images';
+import {IMAGES} from '../config/images';
+import LinearGradient from 'react-native-linear-gradient';
 
 const {width} = Dimensions.get('window');
 
-// const  NavigationIcon = ({route, isFocused}) => {
-//     const renderIcon = (route, isFocues) =>{
-//       let height = 20;
-//       let width = 20;
+const NavigationIcon = ({route, isFocused}) => {
+  const renderIcon = (route, isFocues) => {
+    let height = 28;
+    let width = 28;
+    switch (route) {
+      case 'HomeStack':
+        return (
+          <Image
+            source={isFocues ? IMAGES.SelectedHomeIcon : IMAGES.HomeIcon}
+            style={{width, height}}
+          />
+        );
 
-//       switch (route) {
-//         case "home":
-//           return isFocues?<HomeSvg2 height={height} width={width} />: <HomeSvg height={height} width={width} />
-//         case "analytics":
-//           return isFocues?<ActivitySvg2 height={height} width={width} />: <ActivitySvg height={height} width={width} />
-//         case "notes":
-//           return isFocues?<EditSvg2 height={height} width={width} />: <EditSvg height={height} width={width} />
-//         case "settings":
-//           return isFocues?<SettingsSvg2 height={height} width={width} />:<SettingsSvg height={height} width={width} />
-//         default:
-//           break;
-//       }
-//     }
+      case 'AudioScreenStack':
+        return (
+          <Image
+            source={isFocues ? IMAGES.SelectedAudioIcon : IMAGES.AudioIcon}
+            style={{width, height}}
+          />
+        );
 
-//     return (
-//       <View>
-//         {renderIcon(route, isFocused)}
-//       </View>
+      case 'WorkbookStack':
+        return (
+          <Image
+            source={
+              isFocues ? IMAGES.SelectedWorkbookIcon : IMAGES.WorkbookIcon
+            }
+            style={{width, height}}
+          />
+        );
 
-//     )
-//   }
+      case 'Profile':
+        return (
+          <Image
+            source={
+              isFocues ? IMAGES.SelectedSymptomsIcon : IMAGES.SymptomsIcon
+            }
+            style={{width, height}}
+          />
+        );
+
+      default:
+        break;
+    }
+  };
+
+  return <View>{renderIcon(route.name, isFocused)}</View>;
+};
 
 const CustomTabBar = ({state, descriptors, navigation}) => {
   return (
@@ -46,7 +69,6 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
             : route.name;
 
         const isFocused = state.index === index;
-
         const onPress = () => {
           const event = navigation.emit({
             type: 'tabPress',
@@ -65,24 +87,26 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
               styles.mainItemContainer,
               {borderRightWidth: label == 'notes' ? 3 : 0},
             ]}>
-            <Pressable
-              onPress={onPress}
-              style={{
-                backgroundColor: isFocused ? APP_COLORS.primary : 'transparent',
-                borderRadius: 50,
-              }}>
-              <View
+            <Pressable onPress={onPress}>
+              <LinearGradient
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flex: 1,
-                  padding: 15,
-                }}>
-                <Image
-                  style={{width: 25, height: 25, resizeMode: 'contain'}}
-                  source={IMAGES.logo}
-                />
-              </View>
+                  borderRadius: 50,
+                }}
+                colors={
+                  isFocused
+                    ? APP_COLORS.buttonGradient
+                    : ['transparent', 'transparent']
+                }>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1,
+                    padding: 10,
+                  }}>
+                  <NavigationIcon isFocused={isFocused} route={route} />
+                </View>
+              </LinearGradient>
             </Pressable>
           </View>
         );
