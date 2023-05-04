@@ -1,30 +1,64 @@
-import React from 'react';
-import {StyleSheet, Text, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 import {APP_COLORS} from '../config/colors';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AppInput = props => {
-  const {value, isPassword, style, onChangeText, placeholder} = props;
+  const {
+    value,
+    isPassword,
+    style,
+    onChangeText,
+    placeholder,
+    icon,
+    onIconPress,
+  } = props;
+
+  const [showPassword, setShowPassword] = useState(isPassword);
   return (
-    <TextInput
-      {...props}
-      autoCapitalize={'none'}
-      value={value}
-      placeholder={placeholder}
-      placeholderTextColor={APP_COLORS.thirdColor}
-      style={[styles.input, style]}
-      secureTextEntry={isPassword}
-      onChangeText={onChangeText}
-    />
+    <View style={styles.container}>
+      <TextInput
+        {...props}
+        autoCapitalize={'none'}
+        value={value}
+        placeholder={placeholder}
+        placeholderTextColor={APP_COLORS.thirdColor}
+        style={[styles.input, style]}
+        secureTextEntry={showPassword}
+        onChangeText={onChangeText}
+      />
+      {isPassword && (
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <Image
+            resizeMode="contain"
+            style={[
+              styles.icon,
+              {tintColor: !showPassword ? APP_COLORS.aqua : undefined},
+            ]}
+            source={icon}
+          />
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  input: {
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomWidth: 0.5,
     borderColor: APP_COLORS.primary,
+    paddingBottom: 5,
+  },
+  input: {
+    width: '92%',
     fontSize: 16,
     fontFamily: 'GothamRounded-Medium',
     color: APP_COLORS.primaryText,
+  },
+  icon: {
+    marginBottom: 5,
   },
   text: {
     fontSize: 16,

@@ -13,7 +13,7 @@ import AppButton from '../../components/AppButton';
 import AppInput from '../../components/AppInput';
 import {APP_COLORS} from '../../config/colors';
 import {EMAIL_REGEX} from '../../config/regexes';
-import { IMAGES } from '../../config/images';
+import {IMAGES} from '../../config/images';
 
 const SigninScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -52,18 +52,20 @@ const SigninScreen = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <ScrollView style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={IMAGES.logo}
-        />
+        <Image style={styles.logo} source={IMAGES.logo} />
         <AppText textType="heading">Sign In</AppText>
         <AppText style={{marginBottom: 30}}>
           Sign In to your account - enjoy exclusive features and many more.
         </AppText>
         <AppText>Email ID:</AppText>
         <AppInput value={email} onChangeText={setEmail} />
-        <AppText>Password:</AppText>
-        <AppInput value={password} onChangeText={setPassword} isPassword />
+        <AppText style={{marginTop: 40}}>Password:</AppText>
+        <AppInput
+          icon={IMAGES.CloseEyeIcon}
+          value={password}
+          onChangeText={setPassword}
+          isPassword
+        />
         <AppText
           onPress={() => navigation.navigate('ForgotPassword')}
           style={styles.forgotPassText}>

@@ -22,6 +22,7 @@ import {
   weakPasswordRegex,
 } from '../../config/regexes';
 import {IMAGES} from '../../config/images';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const SignupScreen = ({navigation}) => {
   const [username, setUsername] = useState('');
@@ -30,16 +31,19 @@ const SignupScreen = ({navigation}) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const handleSignup = () => {
     if (!username.length) {
       Alert.alert('please enter username');
     } else if (!email.length || !email.match(EMAIL_REGEX)) {
       Alert.alert('please enter valid email address');
-    } else if (!password.length) {
-      Alert.alert('please enter password');
+    } else if (password.length < 6) {
+      Alert.alert('password length should be 6 or greater');
     } else if (confirmPassword !== password) {
       Alert.alert('passwords do not match');
+    } else if (!termsAccepted) {
+      Alert.alert('You must agree with terms & conditions');
     } else {
       setLoading(true);
       auth()
@@ -64,17 +68,12 @@ const SignupScreen = ({navigation}) => {
   };
 
   const calculatePasswordStrength = password => {
-    if (password.length) {
-      if (weakPasswordRegex.test(password)) {
-        return 0; // Weak
-      } else if (mediumPasswordRegex.test(password)) {
-        return 1; // Medium
-      } else if (strongPasswordRegex.test(password)) {
-        console.log('aya---------------');
-        return 2; // Strong
-      } else {
-        return 0; // Weak (if password doesn't match any of the regex)
-      }
+    if (password.match(weakPasswordRegex)) {
+      return 0;
+    } else if (password.match(mediumPasswordRegex)) {
+      return 1;
+    } else if (password.match(strongPasswordRegex)) {
+      return 2;
     }
   };
 
@@ -107,14 +106,14 @@ const SignupScreen = ({navigation}) => {
           Create your account - enjoy our services with most updated features.
         </AppText>
 
-        <AppText>User Name</AppText>
+        <AppText style={styles.label}>User Name</AppText>
         <AppInput
           style={styles.signupInput}
           value={username}
           onChangeText={setUsername}
         />
 
-        <AppText>Email ID</AppText>
+        <AppText style={styles.label}>Email ID</AppText>
         <AppInput
           keyboardType="email-address"
           style={styles.signupInput}
@@ -122,7 +121,7 @@ const SignupScreen = ({navigation}) => {
           onChangeText={setEmail}
         />
 
-        <AppText>Password</AppText>
+        <AppText style={styles.label}>Password</AppText>
         <AppInput
           style={styles.signupInput}
           value={password}
@@ -147,7 +146,7 @@ const SignupScreen = ({navigation}) => {
           </>
         )}
 
-        <AppText>Confirm Password</AppText>
+        <AppText style={styles.label}>Confirm Password</AppText>
         <AppInput
           style={styles.signupInput}
           value={confirmPassword}
@@ -160,9 +159,19 @@ const SignupScreen = ({navigation}) => {
           </AppText>
         )}
 
-        <View style={styles.termsContainer}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => setTermsAccepted(!termsAccepted)}
+          style={styles.termsContainer}>
+          <Image
+            style={[
+              styles.checkMarkIcon,
+              {tintColor: !termsAccepted ? APP_COLORS.gray : undefined},
+            ]}
+            source={IMAGES.CheckMarkIcon}
+          />
           <AppText>I agree with terms and conditions.</AppText>
-        </View>
+        </TouchableOpacity>
 
         <AppButton
           disabled={loading}
@@ -204,7 +213,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   signupInput: {
-    marginBottom: 25,
+    marginTop: 8,
   },
   strengthMeterContainer: {
     height: 5,
@@ -216,7 +225,6 @@ const styles = StyleSheet.create({
   },
   strengthMeter: {
     height: '100%',
-    // borderRadius: 5,
   },
   strengthLabel: {
     fontSize: 16,
@@ -224,8 +232,15 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   termsContainer: {
-    display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
+  },
+  checkMarkIcon: {
+    marginRight: 10,
+  },
+  label: {
+    marginTop: 30,
+    marginBottom: 0,
   },
 });
 
