@@ -5,41 +5,26 @@ import {
   FlatList,
   TouchableOpacity,
   ImageBackground,
+  Image,
+  Alert,
 } from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import MakePledgeComponent from '../../components/MakePledgeComponent';
 import {QUESTIONNAIRE} from '../../config/questionnaire';
-
+import {IMAGES} from '../../config/images';
+import AppModal from '../../components/AppModal';
+import AppInput from '../../components/AppInput';
+import AppButton from '../../components/AppButton';
+import firestore, {firebase} from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import QuestionModal from '../../components/QuestionModal';
 
 export default function Workbook({navigation}) {
+  const [questionModal, setQuestionModal] = useState(false);
   const [questionnaires, setQuestionnaires] = useState(QUESTIONNAIRE);
-  // const randomBool = useMemo(() => Math.random() < 0.5, []);
-
-  // const fetchPledgeData = async () => {
-  //   firestore()
-  //     .collection('pledges')
-  //     .where('user', '==', auth().currentUser.uid)
-  //     .orderBy('date', 'desc')
-  //     .onSnapshot(querySnapshot => {
-  //       const array = [];
-  //       querySnapshot.forEach(doc => {
-  //         array.push({
-  //           id: doc.id,
-  //           pledgeStatus: doc.data().pledgeStatus,
-  //           challengeLevel: doc.data().challengeLevel,
-  //           feelings: doc.data().feelings,
-  //           note: doc.data().note,
-  //           timeSpentWith: doc.data().timeSpentWith,
-  //           date: moment(doc.data().date?.toDate()?.toISOString()).format(
-  //             'DD-MM-YYYY',
-  //           ),
-  //         });
-  //       });
-  //       setPledges(array);
-  //       console.log(pledges, 'arr00');
-  //     });
-  // };
+  const [selectedQuestion, setSelectedQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
 
   const QuestionCard = ({item, i}) => {
     const [showQuestion, setShowQuestion] = useState(false);
@@ -91,11 +76,17 @@ export default function Workbook({navigation}) {
                 style={{color: '#fff', textAlign: 'center', fontSize: 15}}>
                 {item.question}
               </AppText>
-              <TouchableOpacity>
-                <AppText
-                  style={{color: '#fff', textAlign: 'center', fontSize: 15}}>
-                  GO
-                </AppText>
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedQuestion(item);
+                  setQuestionModal(true);
+                }}
+                activeOpacity={0.5}
+                style={styles.arrowIconWrap}>
+                <Image
+                  style={{width: 25, height: 25}}
+                  source={IMAGES.ArrowIcon}
+                />
               </TouchableOpacity>
             </View>
           )}
@@ -108,14 +99,52 @@ export default function Workbook({navigation}) {
     <QuestionCard item={item} i={i} />
   );
 
+  const saveAnswer = async () => {
+    if (answer.length) {
+      let obj = {
+        title: selectedQuestion.title,
+        question: selectedQuestion.question,
+        answer: answer,
+        date: firestore.FieldValue.serverTimestamp(),
+        user: auth().currentUser.uid,
+      };
+      firestore()
+        .collection('answeredQuestions')
+        .add(obj)
+        .then(doc => {
+          firestore()
+            .collection('answeredQuestions')
+            .doc(doc.id)
+            .update({
+              ...obj,
+              docId: doc.id,
+            });
+          setQuestionModal(false);
+          setAnswer('');
+        })
+        .catch(() => {
+          setQuestionModal(false);
+          setAnswer('');
+        });
+    } else {
+      Alert.alert('please write answer');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <AppText textType="heading" style={styles.title}>
           Workbook
         </AppText>
-        <TouchableOpacity onPress={() => navigation.navigate('HistoryScreen')}>
-          <AppText>History</AppText>
+        <TouchableOpacity
+          style={{flexDirection: 'row', alignItems: 'center'}}
+          onPress={() => navigation.navigate('HistoryScreen')}>
+          <Image
+            style={{width: 20, height: 20, marginRight: 7}}
+            source={IMAGES.HistoryIcon}
+          />
+          <AppText style={{marginVertical: 0, color: '#fff'}}>History</AppText>
         </TouchableOpacity>
       </View>
 
@@ -131,6 +160,15 @@ export default function Workbook({navigation}) {
           renderItem={renderQuestionnaires}
         />
       </View>
+
+      <QuestionModal
+        answer={answer}
+        setAnswer={setAnswer}
+        onPress={saveAnswer}
+        questionModal={questionModal}
+        setQuestionModal={setQuestionModal}
+        selectedQuestion={selectedQuestion}
+      />
     </View>
   );
 }
@@ -169,5 +207,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     marginBottom: 40,
+  },
+
+  arrowIconWrap: {
+    alignSelf: 'center',
+    borderRadius: 60,
+    padding: 10,
+    backgroundColor: 'rgba(0,0,0,0.3)',
   },
 });

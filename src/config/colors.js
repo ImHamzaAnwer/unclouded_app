@@ -10,6 +10,7 @@ export const APP_COLORS = {
   pledgeCardColor: '#0F7375',
   gray: '#476B66',
   aqua: '#00D8B4',
+  gray2: '#1B2931'
 };
 
 

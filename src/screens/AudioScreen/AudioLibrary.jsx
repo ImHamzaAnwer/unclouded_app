@@ -22,10 +22,10 @@ const AudioLibrary = ({navigation}) => {
     const titleMatches = track.title
       .toLowerCase()
       .includes(query?.toLowerCase());
-    const artistMatches = track.artist
-      .toLowerCase()
-      .includes(query?.toLowerCase());
-    return titleMatches || artistMatches;
+    // const artistMatches = track.artist
+    //   .toLowerCase()
+    //   .includes(query?.toLowerCase());
+    return titleMatches; //|| artistMatches;
   });
 
   return (
@@ -54,7 +54,9 @@ const AudioLibrary = ({navigation}) => {
               {filteredTracks.map((track, index) => (
                 <View key={index} style={{width: '100%', marginVertical: 20}}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('AudioPlayer', {track})}>
+                    onPress={() => {
+                      navigation.navigate('AudioPlayer', {track});
+                    }}>
                     <Image
                       style={[styles.cardImg, {width: '100%'}]}
                       source={{
@@ -83,9 +85,9 @@ const AudioLibrary = ({navigation}) => {
                   {category}
                 </AppText>
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('AudioListSeeAll', {category})
-                  }>
+                  onPress={() => {
+                    navigation.navigate('AudioListSeeAll', {category});
+                  }}>
                   <AppText>{'see all >'}</AppText>
                 </TouchableOpacity>
               </View>
@@ -98,15 +100,29 @@ const AudioLibrary = ({navigation}) => {
                         marginLeft: 20,
                       }}>
                       <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate('AudioPlayer', {track})
-                        }>
+                        style={{justifyContent: 'center'}}
+                        onPress={() => {
+                          let tracks = TRACKS.filter(
+                            x => x.category === track.category,
+                          );
+                          let a = [track, ...tracks];
+                          let allTracks = [...new Set(a)];
+                          navigation.navigate('AudioPlayer', {
+                            playlist: allTracks,
+                          });
+                        }}>
                         <Image
                           style={styles.cardImg}
                           source={{
                             uri: 'https://picsum.photos/240/140',
                           }}
                         />
+                        <View style={styles.playIconWrap}>
+                          <Image
+                            style={styles.playIcon}
+                            source={IMAGES.PlayIcon}
+                          />
+                        </View>
                       </TouchableOpacity>
 
                       <View style={styles.trackTitleContainer}>
@@ -131,7 +147,7 @@ const AudioLibrary = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 40,
+    paddingVertical: 20,
     flex: 1,
     backgroundColor: APP_COLORS.background,
   },
@@ -200,6 +216,17 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     width: 260,
     height: 140,
+  },
+  playIconWrap: {
+    position: 'absolute',
+    alignSelf: 'center',
+    backgroundColor: 'rgba(0,0,0,.6)',
+    borderRadius: 100,
+    padding: 15,
+  },
+  playIcon: {
+    width: 27,
+    height: 27,
   },
   trackTitleContainer: {
     backgroundColor: APP_COLORS.itemBackground,

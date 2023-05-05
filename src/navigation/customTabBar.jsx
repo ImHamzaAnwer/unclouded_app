@@ -38,7 +38,7 @@ const NavigationIcon = ({route, isFocused}) => {
           />
         );
 
-      case 'Profile':
+      case 'SymptomsStack':
         return (
           <Image
             source={

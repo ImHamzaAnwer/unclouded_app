@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
+import {APP_COLORS} from '../config/colors';
+import AppText from '../components/AppText';
 
 function SymptomsCountdown(props) {
   const daysWithoutSmoking = props.daysWithoutSmoking;
@@ -37,8 +39,14 @@ function SymptomsCountdown(props) {
   });
 
   return (
-    <View>
-      <Text>Symptoms Countdown</Text>
+    <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        backgroundColor: APP_COLORS.background,
+        justifyContent: 'center',
+      }}>
+      <AppText textType="heading">SYMPTOMS SCREEN HERE</AppText>
+      {/* <Text>Symptoms Countdown</Text>
       <View>
         {symptomsWithDaysLeft.map(symptom => (
           <Text key={symptom.name}>
@@ -46,8 +54,8 @@ function SymptomsCountdown(props) {
             {symptom.daysLeft > 0 ? `${symptom.daysLeft} days left` : 'Gone!'}
           </Text>
         ))}
-      </View>
-    </View>
+      </View> */}
+    </ScrollView>
   );
 }
 

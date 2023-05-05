@@ -4,6 +4,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Image,
   TouchableOpacity,
 } from 'react-native';
 import {RadioButton, Checkbox} from 'react-native-paper';
@@ -16,6 +17,7 @@ import MultiSelectDropdown from '../../components/MultiSelectDropdown';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import Slider from '@react-native-community/slider';
+import {IMAGES} from '../../config/images';
 
 const PledgeScreen = ({navigation}) => {
   const [pledgeStatus, setPledgeStatus] = useState('yes');
@@ -57,23 +59,29 @@ const PledgeScreen = ({navigation}) => {
       .add({
         pledgeStatus,
         challengeLevel,
-        feelings,
         timeSpentWith: selectedItems,
+        feelings: mood,
         note: pledgeNote,
         date: firestore.FieldValue.serverTimestamp(),
         user: auth().currentUser.uid,
       })
       .then(() => {
-        setFeelings('');
         setPledgeNote('');
         setSelectedItems([]);
+        setChallengeLevel('good');
+        setMood('happy');
+        Alert.alert('Reviewed successfully');
+        navigation.goBack();
       })
       .catch(() => {});
   };
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={{flexDirection: 'row', alignItems: 'center'}}
+        onPress={() => navigation.goBack()}>
+        <Image source={IMAGES.BackArrowIcon} />
         <AppText textType="heading" style={styles.heading}>
           Pledge Review
         </AppText>
@@ -135,12 +143,6 @@ const PledgeScreen = ({navigation}) => {
           <AppText style={styles.sliderLabel}>Angry</AppText>
         </View>
       </View>
-      {/* <AppInput
-        style={styles.input}
-        value={feelings}
-        onChangeText={handleFeelingsChange}
-        placeholder="Enter your feelings"
-      /> */}
 
       <AppText style={styles.label}>How did you spend your time today?</AppText>
 
@@ -195,7 +197,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 22,
+    marginLeft: 7,
   },
 
   //slider

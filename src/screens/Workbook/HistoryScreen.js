@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Button, FlatList} from 'react-native';
+import {StyleSheet, Text, View, Button, FlatList, Image} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
@@ -8,6 +8,8 @@ import AppText from '../../components/AppText';
 import CustomTabs from '../../components/CustomTabs';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AppButton from '../../components/AppButton';
+import {IMAGES} from '../../config/images';
+import QuestionModal from '../../components/QuestionModal';
 
 const ReviewPledgeCard = ({item, index}) => {
   const styles = StyleSheet.create({
@@ -90,7 +92,9 @@ const ReviewPledgeCard = ({item, index}) => {
             <AppText style={[styles.text, styles.usageMethodText]}>
               Daily review of pledge
             </AppText>
-            <AppText>I will stay sober today</AppText>
+            <AppText>
+              I will{item.pledgeStatus == 'no' && ' not'} stay sober today
+            </AppText>
           </View>
 
           <AppButton onPress={() => {}} style={styles.editBtn} title="Edit" />
@@ -122,12 +126,22 @@ const ReviewPledgeCard = ({item, index}) => {
   );
 };
 
-const QuestionCard = ({item, index}) => {
+const AnswerCard = ({item, index}) => {
+  const [questionModal, setQuestionModal] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState(item || {});
+  const [answer, setAnswer] = useState(item.answer || '');
+
   const styles = StyleSheet.create({
     usageItem: {
       backgroundColor: APP_COLORS.itemBackground,
       borderRadius: 20,
       marginVertical: 15,
+    },
+    usageMethodText: {
+      fontSize: 16,
+      color: APP_COLORS.primaryText,
+      textTransform: 'capitalize',
+      fontWeight: 400,
     },
     cut: {
       backgroundColor: APP_COLORS.background,
@@ -149,29 +163,10 @@ const QuestionCard = ({item, index}) => {
       paddingHorizontal: 10,
       justifyContent: 'space-between',
     },
-    contentContainerRowItem: {
-      borderRightWidth: 0.2,
-      borderColor: '#fff',
-      width: '33%',
-      alignItems: 'center',
-    },
     text: {
       marginVertical: 0,
     },
-    usageMethodText: {
-      fontSize: 15,
-      color: APP_COLORS.primaryText,
-      textTransform: 'capitalize',
-      fontWeight: 500,
-    },
-    usageMethodText2: {
-      fontSize: 17,
-      textAlign: 'center',
-      color: APP_COLORS.primaryText,
-      textTransform: 'capitalize',
-      fontWeight: 500,
-      marginBottom: 5,
-    },
+
     editBtn: {
       width: 70,
       height: 35,
@@ -190,50 +185,84 @@ const QuestionCard = ({item, index}) => {
     },
   });
 
+  const editAnswer = () => {
+    firestore()
+      .collection('answeredQuestions')
+      .doc(selectedQuestion.id)
+      .update({
+        answer,
+      })
+      .then(() => {
+        setQuestionModal(false);
+      })
+      .catch(() => {
+        setQuestionModal(false);
+      });
+  };
+
   return (
-    <View key={index} style={styles.usageItem}>
-      <View style={styles.cut} />
-      <View style={styles.contentContainer}>
-        <View
-          style={[
-            styles.contentContainerRow,
-            {borderBottomWidth: 0.5, borderBottomColor: APP_COLORS.gray},
-          ]}>
-          <View>
-            <AppText style={[styles.text, styles.usageMethodText]}>
-              Daily review of pledge
-            </AppText>
-            <AppText>I will stay sober today</AppText>
+    <>
+      <View key={index} style={styles.usageItem}>
+        <View style={styles.cut} />
+        <View style={styles.contentContainer}>
+          <View
+            style={[
+              styles.contentContainerRow,
+              {borderBottomWidth: 0.5, borderBottomColor: APP_COLORS.gray},
+            ]}>
+            <View>
+              <AppText style={[styles.text, styles.usageMethodText]}>
+                {item.title}
+              </AppText>
+            </View>
+
+            <AppButton
+              onPress={() => {
+                setSelectedQuestion(item);
+                setQuestionModal(true);
+              }}
+              style={styles.editBtn}
+              title="Edit"
+            />
           </View>
 
-          <AppButton onPress={() => {}} style={styles.editBtn} title="Edit" />
+          <View style={styles.contentContainerRow}>
+            <AppText>{item.answer}</AppText>
+          </View>
         </View>
-
-        <View style={[styles.contentContainerRow, {paddingHorizontal: 0}]}>
-          <AppText>asdasdasdasdasd asd a das ad as dad</AppText>
-        </View>
+        <View style={[styles.cut, {marginBottom: -8}]} />
       </View>
-      <View style={[styles.cut, {marginBottom: -8}]} />
-    </View>
+      <QuestionModal
+        answer={answer}
+        setAnswer={setAnswer}
+        onPress={editAnswer}
+        questionModal={questionModal}
+        setQuestionModal={setQuestionModal}
+        selectedQuestion={selectedQuestion}
+      />
+    </>
   );
 };
 
 export default function HistoryScreen({navigation}) {
   const [activeTab, setActiveTab] = useState(0);
   const [pledges, setPledges] = useState([]);
+  const [answers, setAnswers] = useState([]);
+  const userId = auth().currentUser.uid;
 
   useEffect(() => {
-    const unsubscribe = fetchReviewPledgeData();
-
-    return () => unsubscribe;
+    fetchReviewPledgeData();
+    fetchAnsweredQuestions();
   }, []);
 
   const fetchReviewPledgeData = async () => {
     firestore()
-      .collection('pledges')
-      .where('user', '==', auth().currentUser.uid)
+      .collection('pledgesReview')
+      .where('user', '==', userId)
       .orderBy('date', 'desc')
-      .onSnapshot(querySnapshot => {
+      .get()
+      .then(querySnapshot => {
+        console.log(querySnapshot, 'hainnnnnn');
         const array = [];
         querySnapshot.forEach(doc => {
           array.push({
@@ -248,19 +277,85 @@ export default function HistoryScreen({navigation}) {
             ),
           });
         });
-        setPledges(array);
-        console.log(pledges, 'arr00');
+        const groupedPledges = groupByDate(array);
+        setPledges(groupedPledges);
       });
   };
 
+  const fetchAnsweredQuestions = async () => {
+    firestore()
+      .collection('answeredQuestions')
+      .where('user', '==', userId)
+      .orderBy('date', 'desc')
+      .get()
+      .then(querySnapshot => {
+        const array = [];
+        querySnapshot.forEach(doc => {
+          array.push({
+            id: doc.id,
+            answer: doc.data().answer,
+            question: doc.data().question,
+            title: doc.data().title,
+            date: moment(doc.data().date?.toDate()?.toISOString()).format(
+              'DD-MM-YYYY',
+            ),
+          });
+        });
+        const groupedAnswers = groupByDate(array);
+        setAnswers(groupedAnswers);
+      });
+  };
+
+  const groupByDate = array => {
+    return array.reduce((result, pledge) => {
+      const date = pledge.date;
+      const formattedDate = moment(date, 'DD-MM-YYYY').format('DD MMM, YYYY');
+      const today = moment().format('YYYY-MM-DD');
+      const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
+      let groupKey;
+      if (date === today) {
+        groupKey = 'Today';
+      } else if (date === yesterday) {
+        groupKey = 'Yesterday';
+      } else {
+        groupKey = formattedDate;
+      }
+      if (!result[groupKey]) {
+        result[groupKey] = [];
+      }
+      result[groupKey].push(pledge);
+      return result;
+    }, {});
+  };
+
   const renderReviewPledge = ({item, index}) => (
-    <ReviewPledgeCard item={item} index={index} />
+    <>
+      <AppText style={styles.sectionHeader}>{item}</AppText>
+      {pledges[item].map(pledge => (
+        <ReviewPledgeCard item={pledge} index={index} />
+      ))}
+    </>
+  );
+
+  const renderAnswers = ({item, index}) => (
+    <>
+      <AppText style={styles.sectionHeader}>{item}</AppText>
+      {answers[item].map(question => (
+        <AnswerCard item={question} index={index} />
+      ))}
+    </>
   );
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={{flexDirection: 'row', alignItems: 'center'}}
+          onPress={() => navigation.goBack()}>
+          <Image
+            style={{width: 25, height: 25, padding: 10, marginRight: 10}}
+            source={IMAGES.BackArrowIcon}
+          />
           <AppText textType="heading">History</AppText>
         </TouchableOpacity>
       </View>
@@ -272,11 +367,15 @@ export default function HistoryScreen({navigation}) {
       />
 
       {activeTab === 0 ? (
-        <AppText>Questionsss===</AppText>
+        <FlatList
+          contentContainerStyle={{padding: 20}}
+          data={Object.keys(answers)}
+          renderItem={renderAnswers}
+        />
       ) : (
         <FlatList
           contentContainerStyle={{padding: 20}}
-          data={pledges}
+          data={Object.keys(pledges)}
           renderItem={renderReviewPledge}
         />
       )}

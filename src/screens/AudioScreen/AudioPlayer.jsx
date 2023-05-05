@@ -6,6 +6,7 @@ import {TRACKS} from '../../config/tracks';
 
 const AudioPlayer = ({navigation, route, songId}) => {
   const track = route.params.track;
+  const playlist = route.params.playlist;
   console.log(route, 'track-----');
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const AudioPlayer = ({navigation, route, songId}) => {
     };
   }, []);
 
-  return <Player tracks={[track] || TRACKS} />;
+  return <Player tracks={playlist || [track] || TRACKS} />;
 };
 
 export default AudioPlayer;

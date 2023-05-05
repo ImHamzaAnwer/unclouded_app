@@ -15,21 +15,19 @@ import AppText from '../AppText';
 const AlbumArt = ({title, artist, url, onPress}) => (
   <>
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPress}>
-        <View
-          style={[
-            styles.image,
-            {
-              borderRadius: 20,
-              backgroundColor: APP_COLORS.itemBackground,
-            },
-          ]}>
-          <Image
-            style={[styles.image, {borderRadius: 20}]}
-            source={{uri: url}}
-          />
-        </View>
-      </TouchableOpacity>
+      <View
+        style={[
+          styles.image,
+          {
+            borderRadius: 20,
+            backgroundColor: APP_COLORS.itemBackground,
+          },
+        ]}>
+        <Image
+          style={[styles.image, {borderRadius: 120}]}
+          source={{uri: url}}
+        />
+      </View>
     </View>
 
     <View style={styles.trackDetailsContainer}>

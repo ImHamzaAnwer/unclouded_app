@@ -3,7 +3,7 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import Modal from 'react-native-modal';
 
-const AppModal = ({isVisible, setIsVisible, children}) => {
+const AppModal = ({isVisible, setIsVisible, children, imageModal}) => {
   return (
     <Modal
       isVisible={isVisible}
@@ -14,7 +14,16 @@ const AppModal = ({isVisible, setIsVisible, children}) => {
         setIsVisible(!isVisible);
       }}>
       <View style={styles.centeredView}>
-        <View style={styles.modalView}>{children}</View>
+        <View
+          style={[
+            styles.modalView,
+            {
+              paddingHorizontal: imageModal ? 0 : 20,
+              paddingVertical: imageModal ? 0 : 25,
+            },
+          ]}>
+          {children}
+        </View>
       </View>
     </Modal>
   );
@@ -28,11 +37,10 @@ const styles = StyleSheet.create({
     // backgroundColor: 'rgba(0,0,0 0.9)',
   },
   modalView: {
+    overflow: 'hidden',
     width: '95%',
     backgroundColor: APP_COLORS.itemBackground,
     borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 25,
     // alignItems: 'center',
   },
   button: {

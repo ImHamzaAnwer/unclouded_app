@@ -14,6 +14,8 @@ import Workbook from '../screens/Workbook/WorkbookScreen';
 import PledgeScreen from '../screens/Workbook/PledgeScreen';
 import HistoryScreen from '../screens/Workbook/HistoryScreen';
 import Home from '../screens/Home/HomeScreen';
+import SymptomsCountdown from '../screens/SymptomsTracker';
+import Notifiactions from '../screens/Notifications';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -40,6 +42,9 @@ const HomeStack = () => {
       }}
       initialRouteName="Home">
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="PledgeScreen" component={PledgeScreen} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Notifications" component={Notifiactions} />
     </Stack.Navigator>
   );
 };
@@ -68,7 +73,7 @@ const MainTabs = () => {
       <Tab.Screen name="HomeStack" component={HomeStack} />
       <Tab.Screen name="AudioScreenStack" component={AudioScreenStack} />
       <Tab.Screen name="WorkbookStack" component={WorkbookStack} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="SymptomsStack" component={SymptomsCountdown} />
     </Tab.Navigator>
   );
 };

@@ -1,17 +1,20 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import AppText from '../AppText';
+import {IMAGES} from '../../config/images';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AudioHeader = ({title, message}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <AppText
-        style={{marginBottom: 0, width: 40}}
-        onPress={() => navigation.goBack()}>
-        Back
-      </AppText>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Image
+          style={{width: 30, height: 30, padding: 10}}
+          source={IMAGES.BackArrowIcon}
+        />
+      </TouchableOpacity>
       <View>
         <AppText style={styles.message} onPress={() => navigation.goBack()}>
           {message}

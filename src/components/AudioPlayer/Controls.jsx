@@ -2,7 +2,9 @@ import React from 'react';
 // import { defaultString } from '../String/defaultStringValue';
 
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import { IMAGES } from '../../config/images';
+import {IMAGES} from '../../config/images';
+import LinearGradient from 'react-native-linear-gradient';
+import {APP_COLORS} from '../../config/colors';
 
 const Controls = ({
   paused,
@@ -17,7 +19,7 @@ const Controls = ({
   forwardDisabled,
 }) => (
   <View style={styles.container}>
-    <TouchableOpacity activeOpacity={0.0} onPress={onPressShuffle}>
+    {/* <TouchableOpacity activeOpacity={0.0} onPress={onPressShuffle}>
       <Image
         style={[
           {width: 15, height: 15},
@@ -27,45 +29,43 @@ const Controls = ({
         source={IMAGES.logo}
       />
       <Text>Shuffle</Text>
-    </TouchableOpacity>
+    </TouchableOpacity> */}
     <TouchableOpacity onPress={onBack}>
       <Image
+        resizeMode="contain"
         style={{width: 20, height: 20}}
-        source={IMAGES.logo}
+        source={IMAGES.PreviousIcon}
       />
-
-      <Text>back</Text>
     </TouchableOpacity>
-    {!paused ? (
-      <TouchableOpacity onPress={onPressPause}>
-        <View style={styles.playButton}>
+    <LinearGradient
+      style={{padding: 18, borderRadius: 72 / 2}}
+      colors={APP_COLORS.buttonGradient}>
+      {!paused ? (
+        <TouchableOpacity onPress={onPressPause}>
           <Image
-            style={{width: 15, height: 15}}
-            source={IMAGES.logo}
+            resizeMode="contain"
+            style={{width: 25, height: 25}}
+            source={IMAGES.PauseIcon}
           />
-
-          <Text>play</Text>
-        </View>
-      </TouchableOpacity>
-    ) : (
-      <TouchableOpacity onPress={onPressPlay}>
-        <View style={styles.playButton}>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={onPressPlay}>
           <Image
-            style={{width: 15, height: 15}}
-            source={IMAGES.logo}
+            resizeMode="contain"
+            style={{width: 25, height: 25}}
+            source={IMAGES.PlayIcon}
           />
-        </View>
-      </TouchableOpacity>
-    )}
+        </TouchableOpacity>
+      )}
+    </LinearGradient>
     <TouchableOpacity onPress={onForward} disabled={forwardDisabled}>
       <Image
-        style={[{width: 15, height: 15}, forwardDisabled && {opacity: 0.3}]}
-        source={IMAGES.logo}
+        resizeMode="contain"
+        style={[{width: 25, height: 25}, forwardDisabled && {opacity: 0.3}]}
+        source={IMAGES.NextIcon}
       />
-
-      <Text>forward</Text>
     </TouchableOpacity>
-    <TouchableOpacity activeOpacity={0.0} onPress={onPressRepeat}>
+    {/* <TouchableOpacity activeOpacity={0.0} onPress={onPressRepeat}>
       <Image
         style={[
           styles.secondaryControl,
@@ -76,7 +76,7 @@ const Controls = ({
       />
 
       <Text>repeat</Text>
-    </TouchableOpacity>
+    </TouchableOpacity> */}
   </View>
 );
 
@@ -88,16 +88,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingTop: 8,
-  },
-  playButton: {
-    height: 15,
-    width: 15,
-    resizeMode: 'contain',
-    borderWidth: 1,
-    // borderColor: defaultString.darkColor,
-    borderRadius: 72 / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '70%',
+    alignSelf: 'center',
+    marginTop: 15,
   },
   secondaryControl: {
     height: 18,

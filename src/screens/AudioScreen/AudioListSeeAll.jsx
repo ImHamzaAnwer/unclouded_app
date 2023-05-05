@@ -12,27 +12,31 @@ import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import {IMAGES} from '../../config/images';
 import {TRACKS} from '../../config/tracks';
-import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const AudioCardSeeAll = ({track, i, navigation}) => {
+const AudioCardSeeAll = ({tracks, selectedTrack, i, navigation}) => {
   return (
     <View key={i} style={styles.audioCardContainer}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('AudioPlayer', {track})}
+        onPress={() => {
+          let a = [selectedTrack, ...tracks];
+          let allTracks = [...new Set(a)];
+          navigation.navigate('AudioPlayer', {playlist: allTracks});
+        }}
         activeOpacity={0.5}>
         <Image
           style={styles.cardImg}
           source={{
-            uri: track?.albumArtUrl,
+            uri: selectedTrack?.albumArtUrl,
           }}
         />
       </TouchableOpacity>
 
       <View style={styles.trackTitleContainer}>
         <AppText style={styles.trackTitle}>
-          {track?.title?.length > 20
-            ? `${track?.title.slice(0, 20)}...`
-            : track?.title}
+          {selectedTrack?.title?.length > 20
+            ? `${selectedTrack?.title.slice(0, 20)}...`
+            : selectedTrack?.title}
         </AppText>
       </View>
     </View>
@@ -48,14 +52,17 @@ const AudioListSeeAll = ({navigation, route}) => {
   return (
     <ScrollView style={styles.container}>
       <View style={{paddingHorizontal: 20}}>
-        <AppText
-          style={{textTransform: 'capitalize'}}
-          onPress={() => navigation.goBack()}
-          textType="heading">
-          {categoryName}
-        </AppText>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image style={styles.backIcon} source={IMAGES.BackArrowIcon} />
+          <AppText
+            style={{textTransform: 'capitalize'}}
+            onPress={() => navigation.goBack()}
+            textType="heading">
+            {categoryName}
+          </AppText>
+        </View>
         <View style={styles.searchBarContainer}>
-          <Image style={styles.searchBarIcon} source={IMAGES.logo} />
+          <Image style={styles.searchBarIcon} source={IMAGES.SearchIcon} />
           <TextInput
             value={searchText}
             onChange={setSearchText}
@@ -76,7 +83,12 @@ const AudioListSeeAll = ({navigation, route}) => {
           }}>
           {tracks.map((item, i) => {
             return (
-              <AudioCardSeeAll navigation={navigation} track={item} i={i} />
+              <AudioCardSeeAll
+                navigation={navigation}
+                tracks={tracks}
+                selectedTrack={item}
+                i={i}
+              />
             );
           })}
         </View>
@@ -127,6 +139,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: APP_COLORS.itemBackground,
     borderRadius: 30,
+  },
+  backIcon: {
+    width: 25,
+    height: 25,
+    marginRight: 7,
   },
   searchBarIcon: {
     width: 20,

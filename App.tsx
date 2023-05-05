@@ -7,7 +7,7 @@
 
 import React from 'react';
 import Routes from './src/navigation';
-import {SafeAreaView, View} from 'react-native';
+import {SafeAreaView, StatusBar, View} from 'react-native';
 import {APP_COLORS} from './src/config/colors';
 import {Provider as PaperProvider} from 'react-native-paper';
 
@@ -15,6 +15,7 @@ function App(): JSX.Element {
   return (
     <PaperProvider>
       <View style={{flex: 1, backgroundColor: APP_COLORS.background}}>
+        <StatusBar barStyle="light-content" />
         <SafeAreaView style={{flex: 1}}>
           <Routes />
         </SafeAreaView>
