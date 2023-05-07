@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, Image, Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import {APP_COLORS} from '../config/colors';
 import AppText from '../components/AppText';
 import AppModal from '../components/AppModal';
@@ -114,7 +114,8 @@ const UsageCard = ({item, handleEditUsageData}) => {
   );
 };
 
-const UsageScreen = ({navigation}) => {
+const UsageScreen = ({navigation, route}) => {
+  const isEdit = route?.params?.isEdit;
   const [activeTab, setActiveTab] = useState(0);
   const [usageMethodValue, setUsageMethodValue] = useState('joint');
   const [consumage, setConsumage] = useState('0');
@@ -144,7 +145,7 @@ const UsageScreen = ({navigation}) => {
           });
         });
         setUsageData(array);
-        if (array[0]?.quittingDate && array[0]?.usageMethod) {
+        if (array[0]?.quittingDate && array[0]?.usageMethod && !isEdit) {
           navigation.navigate('MainTabs');
         }
       });
@@ -200,10 +201,10 @@ const UsageScreen = ({navigation}) => {
     }
   };
 
-  let total_consumption_per_day = consumage * gramsPer;
-  let cost_per_day = total_consumption_per_day * pricePerGram;
-  let cost_per_gram = cost_per_day / total_consumption_per_day;
-  cost_per_gram = isNaN(cost_per_gram) ? '--' : cost_per_gram;
+  let total_consumption_per_day = consumage * gramsPer * pricePerGram;
+  let av_cost_per_day = isNaN(total_consumption_per_day)
+    ? '--'
+    : total_consumption_per_day;
 
   return (
     <View style={styles.container}>
@@ -238,7 +239,7 @@ const UsageScreen = ({navigation}) => {
             style={styles.usageList}
           />
 
-          <AppButton title="Next" />
+          {/* <AppButton  title="Next" /> */}
         </>
       ) : (
         <>
@@ -252,7 +253,7 @@ const UsageScreen = ({navigation}) => {
                 {selectedDate}
               </AppText>
             </View>
-            <Image style={styles.calendarIcon} source={IMAGES.logo} />
+            <Image style={styles.calendarIcon} source={IMAGES.CalendarIcon} />
           </View>
           <Calendar
             hideExtraDays
@@ -314,6 +315,7 @@ const UsageScreen = ({navigation}) => {
         <View style={styles.smallInputWrap}>
           <AppText>Grams per {usageMethodValue}</AppText>
           <AppInput
+            containerStyle={{borderBottomWidth: 0}}
             style={styles.smallInput}
             placeholder="Grams per Joint or Bowl"
             value={gramsPer}
@@ -324,6 +326,7 @@ const UsageScreen = ({navigation}) => {
         <View style={styles.smallInputWrap}>
           <AppText>Price per gram</AppText>
           <AppInput
+            containerStyle={{borderBottomWidth: 0}}
             style={styles.smallInput}
             placeholder="Price per Gram"
             value={pricePerGram}
@@ -334,8 +337,9 @@ const UsageScreen = ({navigation}) => {
         <View style={styles.smallInputWrap}>
           <AppText>Average cost per day</AppText>
           <AppInput
+            containerStyle={{borderBottomWidth: 0}}
             readOnly
-            value={cost_per_gram.toString()}
+            value={av_cost_per_day.toString()}
             style={styles.smallInput}
             placeholder="Price per Gram"
             // onChangeText={setPricePerGram}
@@ -403,6 +407,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     textAlign: 'center',
     borderWidth: 1,
+    borderColor: APP_COLORS.gray,
     borderRadius: 20,
     height: 40,
     fontFamily: 'GothamRounded-Light',
@@ -433,8 +438,8 @@ const styles = StyleSheet.create({
     borderBottomColor: APP_COLORS.gray,
   },
   calendarIcon: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     resizeMode: 'contain',
     alignSelf: 'flex-end',
   },

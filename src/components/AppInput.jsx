@@ -12,11 +12,12 @@ const AppInput = props => {
     placeholder,
     icon,
     onIconPress,
+    containerStyle,
   } = props;
 
   const [showPassword, setShowPassword] = useState(isPassword);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <TextInput
         {...props}
         autoCapitalize={'none'}

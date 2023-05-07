@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,8 +6,9 @@ import {
   Alert,
   Image,
   TouchableOpacity,
+  RefreshControl
 } from 'react-native';
-import {RadioButton, Checkbox} from 'react-native-paper';
+import {RadioButton} from 'react-native-paper';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import AppInput from '../../components/AppInput';
@@ -19,7 +20,10 @@ import auth from '@react-native-firebase/auth';
 import Slider from '@react-native-community/slider';
 import {IMAGES} from '../../config/images';
 
-const PledgeScreen = ({navigation}) => {
+const PledgeScreen = ({navigation, route}) => {
+  console.log(route, 'route=====');
+  const pledgeEditData = route?.params?.pledgeEditData;
+
   const [pledgeStatus, setPledgeStatus] = useState('yes');
   const [pledgeNote, setPledgeNote] = useState('');
   const [challengeLevel, setChallengeLevel] = useState('good');
@@ -31,6 +35,23 @@ const PledgeScreen = ({navigation}) => {
   const handlePledgeStatusChange = value => {
     setPledgeStatus(value);
   };
+
+  useEffect(() => {
+    if (pledgeEditData) {
+      setPledgeStatus(pledgeEditData.pledgeStatus);
+      setPledgeNote(pledgeEditData.note);
+      setSelectedItems(pledgeEditData.timeSpentWith);
+      setChallengeLevel(pledgeEditData.challengeLevel);
+      setMood(pledgeEditData.mood);
+      if (pledgeEditData.feelings == 'happy') {
+        setSliderValue(0);
+      } else if (pledgeEditData.feelings == 'sad') {
+        setSliderValue(0.5);
+      } else if (pledgeEditData.feelings == 'angry') {
+        setSliderValue(1);
+      }
+    }
+  }, []);
 
   const handleSliderChange = val => {
     console.log(val, 'valalalala---');
@@ -54,26 +75,52 @@ const PledgeScreen = ({navigation}) => {
   };
 
   const savePledgeReview = async () => {
-    firestore()
-      .collection('pledgesReview')
-      .add({
-        pledgeStatus,
-        challengeLevel,
-        timeSpentWith: selectedItems,
-        feelings: mood,
-        note: pledgeNote,
-        date: firestore.FieldValue.serverTimestamp(),
-        user: auth().currentUser.uid,
-      })
-      .then(() => {
-        setPledgeNote('');
-        setSelectedItems([]);
-        setChallengeLevel('good');
-        setMood('happy');
-        Alert.alert('Reviewed successfully');
-        navigation.goBack();
-      })
-      .catch(() => {});
+    if (pledgeEditData) {
+      firestore()
+        .collection('pledgesReview')
+        .doc(pledgeEditData.id)
+        .update({
+          pledgeStatus,
+          challengeLevel,
+          timeSpentWith: selectedItems,
+          feelings: mood,
+          note: pledgeNote,
+        })
+        .then(() => {
+          setPledgeNote('');
+          setSelectedItems([]);
+          setChallengeLevel('good');
+          setMood('happy');
+          Alert.alert('Pledge Review Edited successfully');
+          navigation.goBack();
+        })
+        .catch(() => {});
+    } else {
+      firestore()
+        .collection('pledgesReview')
+        .add({
+          pledgeStatus,
+          challengeLevel,
+          timeSpentWith: selectedItems,
+          feelings: mood,
+          note: pledgeNote,
+          date: firestore.FieldValue.serverTimestamp(),
+          user: auth().currentUser.uid,
+        })
+        .then(doc => {
+          firestore()
+            .collection('pledgesReview')
+            .doc(doc.id)
+            .update({docId: doc.id});
+          setPledgeNote('');
+          setSelectedItems([]);
+          setChallengeLevel('good');
+          setMood('happy');
+          Alert.alert('Reviewed successfully');
+          navigation.goBack();
+        })
+        .catch(() => {});
+    }
   };
 
   return (
@@ -135,6 +182,7 @@ const PledgeScreen = ({navigation}) => {
           minimumValue={0}
           maximumValue={1}
           step={0.5}
+          value={sliderValue}
           onValueChange={handleSliderChange}
         />
         <View style={styles.labelContainer}>

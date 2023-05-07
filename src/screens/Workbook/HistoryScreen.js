@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Button, FlatList, Image} from 'react-native';
+import {
+  StyleSheet,
+  RefreshControl,
+  Text,
+  View,
+  Button,
+  FlatList,
+  Image,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
@@ -11,7 +19,7 @@ import AppButton from '../../components/AppButton';
 import {IMAGES} from '../../config/images';
 import QuestionModal from '../../components/QuestionModal';
 
-const ReviewPledgeCard = ({item, index}) => {
+const ReviewPledgeCard = ({item, index, navigation}) => {
   const styles = StyleSheet.create({
     usageItem: {
       backgroundColor: APP_COLORS.itemBackground,
@@ -97,7 +105,13 @@ const ReviewPledgeCard = ({item, index}) => {
             </AppText>
           </View>
 
-          <AppButton onPress={() => {}} style={styles.editBtn} title="Edit" />
+          <AppButton
+            onPress={() =>
+              navigation.navigate('PledgeScreen', {pledgeEditData: item})
+            }
+            style={styles.editBtn}
+            title="Edit"
+          />
         </View>
 
         <View style={[styles.contentContainerRow, {paddingHorizontal: 0}]}>
@@ -278,8 +292,12 @@ export default function HistoryScreen({navigation}) {
           });
         });
         const groupedPledges = groupByDate(array);
+        setRefreshing(false);
         setPledges(groupedPledges);
-      });
+      })
+      .catch(()=>{
+        setRefreshing(false);
+      })
   };
 
   const fetchAnsweredQuestions = async () => {
@@ -328,11 +346,18 @@ export default function HistoryScreen({navigation}) {
     }, {});
   };
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchReviewPledgeData();
+  }, []);
+
   const renderReviewPledge = ({item, index}) => (
     <>
       <AppText style={styles.sectionHeader}>{item}</AppText>
       {pledges[item].map(pledge => (
-        <ReviewPledgeCard item={pledge} index={index} />
+        <ReviewPledgeCard navigation={navigation} item={pledge} index={index} />
       ))}
     </>
   );
@@ -374,6 +399,9 @@ export default function HistoryScreen({navigation}) {
         />
       ) : (
         <FlatList
+          refreshControl={
+            <RefreshControl colors={["#fff"]} tintColor={"#fff"} refreshing={refreshing} onRefresh={onRefresh} />
+          }
           contentContainerStyle={{padding: 20}}
           data={Object.keys(pledges)}
           renderItem={renderReviewPledge}

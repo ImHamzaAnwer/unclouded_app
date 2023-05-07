@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -99,93 +101,102 @@ const SignupScreen = ({navigation}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
-      <ScrollView style={styles.container}>
-        <Image style={styles.logo} source={IMAGES.logo} />
-        <AppText textType="heading">Sign Up</AppText>
-        <AppText style={{marginBottom: 30}}>
-          Create your account - enjoy our services with most updated features.
-        </AppText>
+      <ImageBackground
+        style={{flex: 1, width: '100%', height: '100%'}}
+        source={IMAGES.LoginScreenBg}>
+        <SafeAreaView>
+          <ScrollView style={styles.container}>
+            <Image style={styles.logo} source={IMAGES.logo} />
+            <AppText textType="heading">Sign Up</AppText>
+            <AppText style={{marginBottom: 30}}>
+              Create your account - enjoy our services with most updated
+              features.
+            </AppText>
 
-        <AppText style={styles.label}>User Name</AppText>
-        <AppInput
-          style={styles.signupInput}
-          value={username}
-          onChangeText={setUsername}
-        />
+            <AppText style={styles.label}>User Name</AppText>
+            <AppInput
+              style={styles.signupInput}
+              value={username}
+              onChangeText={setUsername}
+            />
 
-        <AppText style={styles.label}>Email ID</AppText>
-        <AppInput
-          keyboardType="email-address"
-          style={styles.signupInput}
-          value={email}
-          onChangeText={setEmail}
-        />
+            <AppText style={styles.label}>Email ID</AppText>
+            <AppInput
+              keyboardType="email-address"
+              style={styles.signupInput}
+              value={email}
+              onChangeText={setEmail}
+            />
 
-        <AppText style={styles.label}>Password</AppText>
-        <AppInput
-          style={styles.signupInput}
-          value={password}
-          onChangeText={handlePasswordChange}
-          isPassword
-        />
+            <AppText style={styles.label}>Password</AppText>
+            <AppInput
+              style={styles.signupInput}
+              value={password}
+              onChangeText={handlePasswordChange}
+              isPassword
+            />
 
-        {strengthLabel && (
-          <>
-            <View style={styles.strengthMeterContainer}>
-              <View
+            {strengthLabel && (
+              <>
+                <View style={styles.strengthMeterContainer}>
+                  <View
+                    style={[
+                      styles.strengthMeter,
+                      {
+                        backgroundColor: strengthColor,
+                        width: `${(strengthScore + 1) * 33.33}%`,
+                      },
+                    ]}
+                  />
+                </View>
+                <AppText>Level: {strengthLabel}</AppText>
+              </>
+            )}
+
+            <AppText style={styles.label}>Confirm Password</AppText>
+            <AppInput
+              style={styles.signupInput}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              isPassword
+            />
+            {confirmPasswordError && (
+              <AppText
+                style={{marginTop: -15, marginBottom: 20}}
+                textType="error">
+                Password does not match
+              </AppText>
+            )}
+
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => setTermsAccepted(!termsAccepted)}
+              style={styles.termsContainer}>
+              <Image
                 style={[
-                  styles.strengthMeter,
-                  {
-                    backgroundColor: strengthColor,
-                    width: `${(strengthScore + 1) * 33.33}%`,
-                  },
+                  styles.checkMarkIcon,
+                  {tintColor: !termsAccepted ? APP_COLORS.gray : undefined},
                 ]}
+                source={IMAGES.CheckMarkIcon}
               />
-            </View>
-            <AppText>Level: {strengthLabel}</AppText>
-          </>
-        )}
+              <AppText>I agree with terms and conditions.</AppText>
+            </TouchableOpacity>
 
-        <AppText style={styles.label}>Confirm Password</AppText>
-        <AppInput
-          style={styles.signupInput}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          isPassword
-        />
-        {confirmPasswordError && (
-          <AppText style={{marginTop: -15, marginBottom: 20}} textType="error">
-            Password does not match
-          </AppText>
-        )}
-
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => setTermsAccepted(!termsAccepted)}
-          style={styles.termsContainer}>
-          <Image
-            style={[
-              styles.checkMarkIcon,
-              {tintColor: !termsAccepted ? APP_COLORS.gray : undefined},
-            ]}
-            source={IMAGES.CheckMarkIcon}
-          />
-          <AppText>I agree with terms and conditions.</AppText>
-        </TouchableOpacity>
-
-        <AppButton
-          disabled={loading}
-          loading={loading}
-          style={styles.authBtn}
-          title="Signin"
-          onPress={handleSignup}
-        />
-        <AppText
-          onPress={() => navigation.navigate('Signin')}
-          style={styles.noAccountText}>
-          Already have an account? Sign In
-        </AppText>
-      </ScrollView>
+            <AppButton
+              disabled={loading}
+              loading={loading}
+              style={styles.authBtn}
+              title="Signin"
+              onPress={handleSignup}
+            />
+            <AppText
+              onPress={() => navigation.navigate('Signin')}
+              style={styles.noAccountText}>
+              Already have an account? Sign In
+            </AppText>
+          </ScrollView>
+        </SafeAreaView>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 };
@@ -193,7 +204,7 @@ const SignupScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    backgroundColor: APP_COLORS.background,
+    // backgroundColor: APP_COLORS.background,
   },
   logo: {
     width: 75,

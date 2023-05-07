@@ -69,7 +69,6 @@ const MainTabs = () => {
       tab
       tabBar={props => <CustomTabBar {...props} />}
       screenOptions={{header: () => null}}>
-      {/* <Tab.Screen name="UsageScreen" component={UsageScreen} /> */}
       <Tab.Screen name="HomeStack" component={HomeStack} />
       <Tab.Screen name="AudioScreenStack" component={AudioScreenStack} />
       <Tab.Screen name="WorkbookStack" component={WorkbookStack} />

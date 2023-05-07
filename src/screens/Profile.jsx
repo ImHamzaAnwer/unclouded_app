@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Pressable,
 } from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import auth from '@react-native-firebase/auth';
@@ -15,17 +16,17 @@ const PROFILE_ITEMS = [
   {
     name: 'Update Usage Info.',
     icon: IMAGES.UpdateUsageInfoIcon,
-    routeName: '',
+    routeName: 'UsageScreen',
   },
   {
     name: 'Reset Quit Date',
     icon: IMAGES.ResetQuitDateIcon,
-    routeName: '',
+    routeName: 'UsageScreen',
   },
   {
     name: 'Notification',
     icon: IMAGES.NotificationIcon,
-    routeName: '',
+    routeName: 'Notification',
   },
   {
     name: 'Favorite Audio Tracks',
@@ -63,7 +64,10 @@ export default function Profile({navigation}) {
 
       {PROFILE_ITEMS.map((item, index) => {
         return (
-          <View style={styles.itemContainer}>
+          <Pressable
+            key={index}
+            onPress={() => navigation.navigate(item.routeName)}
+            style={styles.itemContainer}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View style={styles.iconWrap}>
                 <Image source={item.icon} />
@@ -71,7 +75,7 @@ export default function Profile({navigation}) {
               <AppText>{item.name}</AppText>
             </View>
             <Image source={IMAGES.RightArrowIcon} />
-          </View>
+          </Pressable>
         );
       })}
 
