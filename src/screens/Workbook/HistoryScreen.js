@@ -270,8 +270,8 @@ export default function HistoryScreen({navigation}) {
     const unsubscribe_2 = fetchAnsweredQuestions();
 
     return () => {
-      unsubscribe_1();
-      unsubscribe_2();
+      unsubscribe_1;
+      unsubscribe_2;
     };
   }, []);
 
@@ -282,7 +282,6 @@ export default function HistoryScreen({navigation}) {
       .orderBy('date', 'desc')
       .get()
       .then(querySnapshot => {
-        console.log(querySnapshot, 'hainnnnnn');
         const array = [];
         querySnapshot?.forEach(doc => {
           array.push({
@@ -327,6 +326,10 @@ export default function HistoryScreen({navigation}) {
         });
         const groupedAnswers = groupByDate(array);
         setAnswers(groupedAnswers);
+        setRefreshing(false);
+      })
+      .catch(() => {
+        setRefreshing(false);
       });
   };
 
@@ -356,7 +359,11 @@ export default function HistoryScreen({navigation}) {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    fetchReviewPledgeData();
+    if (activeTab == 0) {
+      fetchAnsweredQuestions();
+    } else {
+      fetchReviewPledgeData();
+    }
   }, []);
 
   const renderReviewPledge = ({item, index}) => (
@@ -401,6 +408,14 @@ export default function HistoryScreen({navigation}) {
 
       {activeTab === 0 ? (
         <FlatList
+          refreshControl={
+            <RefreshControl
+              colors={['#fff']}
+              tintColor={'#fff'}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
           contentContainerStyle={{padding: 20}}
           data={Object.keys(answers)}
           renderItem={renderAnswers}
