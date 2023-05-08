@@ -5,8 +5,8 @@ import {
   Image,
   View,
   TextInput,
-  ImageBackground,
   Dimensions,
+  SafeAreaView
 } from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
@@ -47,54 +47,57 @@ const AudioListSeeAll = ({navigation, route}) => {
   const categoryName = route.params.category;
   const tracks = TRACKS.filter(track => track.category == categoryName);
   const [searchText, setSearchText] = useState('');
-  console.log(tracks, 'tracks-s-');
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{paddingHorizontal: 20}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image style={styles.backIcon} source={IMAGES.BackArrowIcon} />
-          <AppText
-            style={{textTransform: 'capitalize'}}
+      <SafeAreaView>
+        <View style={{paddingHorizontal: 20}}>
+          <TouchableOpacity
             onPress={() => navigation.goBack()}
-            textType="heading">
-            {categoryName}
-          </AppText>
-        </View>
-        <View style={styles.searchBarContainer}>
-          <Image style={styles.searchBarIcon} source={IMAGES.SearchIcon} />
-          <TextInput
-            value={searchText}
-            onChange={setSearchText}
-            placeholderTextColor={'#546260'}
-            placeholder="search audio track"
-            style={styles.searchBarInput}
-          />
-        </View>
-      </View>
-
-      <View>
-        <View
-          style={{
-            padding: 15,
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            flex: 1,
-          }}>
-          {tracks.map((item, i) => {
-            return (
-              <AudioCardSeeAll
-                navigation={navigation}
-                tracks={tracks}
-                selectedTrack={item}
-                i={i}
-              />
-            );
-          })}
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image style={styles.backIcon} source={IMAGES.BackArrowIcon} />
+            <AppText
+              style={{textTransform: 'capitalize'}}
+              onPress={() => navigation.goBack()}
+              textType="heading">
+              {categoryName}
+            </AppText>
+          </TouchableOpacity>
+          <View style={styles.searchBarContainer}>
+            <Image style={styles.searchBarIcon} source={IMAGES.SearchIcon} />
+            <TextInput
+              value={searchText}
+              onChange={setSearchText}
+              placeholderTextColor={APP_COLORS.gray}
+              placeholder="search audio track"
+              style={styles.searchBarInput}
+            />
+          </View>
         </View>
 
-        <View style={{height: 140}} />
-      </View>
+        <View>
+          <View
+            style={{
+              padding: 15,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              flex: 1,
+            }}>
+            {tracks.map((item, i) => {
+              return (
+                <AudioCardSeeAll
+                  navigation={navigation}
+                  tracks={tracks}
+                  selectedTrack={item}
+                  i={i}
+                />
+              );
+            })}
+          </View>
+
+          <View style={{height: 140}} />
+        </View>
+      </SafeAreaView>
     </ScrollView>
   );
 };

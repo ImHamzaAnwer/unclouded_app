@@ -1,11 +1,12 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, StatusBar, SafeAreaView} from 'react-native';
+import {View, Text, StatusBar} from 'react-native';
 import AlbumArt from './AlbumArt';
 import SeekBar from './SeekBar';
 import Controls from './Controls';
 import Video from 'react-native-video';
 import AudioHeader from './AudioHeader';
 import {APP_COLORS} from '../../config/colors';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function Player(props) {
   const [paused, setPaused] = useState(true);

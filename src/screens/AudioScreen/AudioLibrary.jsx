@@ -36,11 +36,11 @@ const AudioLibrary = ({navigation}) => {
           <View style={{paddingHorizontal: 20}}>
             <AppText textType="heading">Audio List</AppText>
             <View style={styles.searchBarContainer}>
-              <Image style={styles.searchBarIcon} source={IMAGES.logo} />
+              <Image style={styles.searchBarIcon} source={IMAGES.SearchIcon} />
               <TextInput
                 value={query}
                 onChangeText={setQuery}
-                placeholderTextColor={'#546260'}
+                placeholderTextColor={APP_COLORS.gray}
                 placeholder="search audio track"
                 style={styles.searchBarInput}
               />
@@ -59,6 +59,8 @@ const AudioLibrary = ({navigation}) => {
                       key={index}
                       style={{width: '100%', marginVertical: 20}}>
                       <TouchableOpacity
+                        activeOpacity={0.5}
+                        style={{justifyContent: 'center'}}
                         onPress={() => {
                           navigation.navigate('AudioPlayer', {track});
                         }}>
@@ -68,6 +70,12 @@ const AudioLibrary = ({navigation}) => {
                             uri: 'https://picsum.photos/240/140',
                           }}
                         />
+                        <View style={styles.playIconWrap}>
+                          <Image
+                            style={styles.playIcon}
+                            source={IMAGES.PlayIcon}
+                          />
+                        </View>
                       </TouchableOpacity>
                       <View style={styles.trackTitleContainer}>
                         <AppText style={styles.trackTitle} key={track.title}>
@@ -105,6 +113,7 @@ const AudioLibrary = ({navigation}) => {
                             marginLeft: 20,
                           }}>
                           <TouchableOpacity
+                            activeOpacity={0.5}
                             style={{justifyContent: 'center'}}
                             onPress={() => {
                               let tracks = TRACKS.filter(
@@ -229,7 +238,7 @@ const styles = StyleSheet.create({
   playIconWrap: {
     position: 'absolute',
     alignSelf: 'center',
-    backgroundColor: 'rgba(0,0,0,.6)',
+    backgroundColor: 'rgba(0,0,0,0.4)',
     borderRadius: 100,
     padding: 15,
   },
@@ -242,7 +251,7 @@ const styles = StyleSheet.create({
     // bottom: -20,
     // position: 'absolute',
     borderRadius: 120,
-    marginTop: -20,
+    marginTop: -25,
     paddingVertical: 5,
     borderWidth: 6,
     borderColor: APP_COLORS.background,
