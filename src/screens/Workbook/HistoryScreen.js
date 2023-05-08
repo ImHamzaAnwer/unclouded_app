@@ -7,6 +7,7 @@ import {
   Button,
   FlatList,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -265,8 +266,13 @@ export default function HistoryScreen({navigation}) {
   const userId = auth().currentUser.uid;
 
   useEffect(() => {
-    fetchReviewPledgeData();
-    fetchAnsweredQuestions();
+    const unsubscribe_1 = fetchReviewPledgeData();
+    const unsubscribe_2 = fetchAnsweredQuestions();
+
+    return () => {
+      unsubscribe_1();
+      unsubscribe_2();
+    };
   }, []);
 
   const fetchReviewPledgeData = async () => {
@@ -278,7 +284,7 @@ export default function HistoryScreen({navigation}) {
       .then(querySnapshot => {
         console.log(querySnapshot, 'hainnnnnn');
         const array = [];
-        querySnapshot.forEach(doc => {
+        querySnapshot?.forEach(doc => {
           array.push({
             id: doc.id,
             pledgeStatus: doc.data().pledgeStatus,
@@ -295,9 +301,9 @@ export default function HistoryScreen({navigation}) {
         setRefreshing(false);
         setPledges(groupedPledges);
       })
-      .catch(()=>{
+      .catch(() => {
         setRefreshing(false);
-      })
+      });
   };
 
   const fetchAnsweredQuestions = async () => {
@@ -373,23 +379,25 @@ export default function HistoryScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center'}}
-          onPress={() => navigation.goBack()}>
-          <Image
-            style={{width: 25, height: 25, padding: 10, marginRight: 10}}
-            source={IMAGES.BackArrowIcon}
-          />
-          <AppText textType="heading">History</AppText>
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => navigation.goBack()}>
+            <Image
+              style={{width: 25, height: 25, padding: 10, marginRight: 10}}
+              source={IMAGES.BackArrowIcon}
+            />
+            <AppText textType="heading">History</AppText>
+          </TouchableOpacity>
+        </View>
 
-      <CustomTabs
-        tabValues={['Questions', 'Pledges']}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
+        <CustomTabs
+          tabValues={['Questions', 'Pledges']}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+      </SafeAreaView>
 
       {activeTab === 0 ? (
         <FlatList
@@ -400,7 +408,12 @@ export default function HistoryScreen({navigation}) {
       ) : (
         <FlatList
           refreshControl={
-            <RefreshControl colors={["#fff"]} tintColor={"#fff"} refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              colors={['#fff']}
+              tintColor={'#fff'}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
           }
           contentContainerStyle={{padding: 20}}
           data={Object.keys(pledges)}

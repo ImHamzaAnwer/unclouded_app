@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 15,
+    bottom: 45,
     backgroundColor: APP_COLORS.itemBackground,
     borderRadius: 50,
     marginHorizontal: width * 0.07,

@@ -35,6 +35,14 @@ const SignupScreen = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
 
+  const createUserInDB = async userId => {
+    await firestore().collection('users').add({
+      username,
+      email,
+      userId,
+    });
+  };
+
   const handleSignup = () => {
     if (!username.length) {
       Alert.alert('please enter username');
@@ -50,7 +58,8 @@ const SignupScreen = ({navigation}) => {
       setLoading(true);
       auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
+        .then(doc => {
+          createUserInDB(doc.user.uid);
           setLoading(false);
           // Handle successful signup
         })

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, StatusBar} from 'react-native';
+import {View, Text, StatusBar, SafeAreaView} from 'react-native';
 import AlbumArt from './AlbumArt';
 import SeekBar from './SeekBar';
 import Controls from './Controls';
@@ -93,31 +93,33 @@ export default function Player(props) {
 
   return (
     <View style={styles.container}>
-      <AudioHeader title={track.title} message="Playing From Playlist" />
-      <AlbumArt
-        title={track.title}
-        artist={track.artist}
-        url={track.albumArtUrl}
-      />
-      <SeekBar
-        onSeek={seek}
-        trackLength={totalLength}
-        onSlidingStart={() => setPaused(true)}
-        currentPosition={currentPosition}
-      />
-      <Controls
-        onPressRepeat={() => setRepeatOn(!repeatOn)}
-        repeatOn={repeatOn}
-        shuffleOn={shuffleOn}
-        forwardDisabled={selectedTrack === track.length - 1}
-        onPressShuffle={() => setShuffleOn(!shuffleOn)}
-        onPressPlay={() => setPaused(false)}
-        onPressPause={() => setPaused(true)}
-        onBack={onBack}
-        onForward={onForward}
-        paused={paused}
-      />
-      {video}
+      <SafeAreaView>
+        <AudioHeader title={track.title} message="Playing From Playlist" />
+        <AlbumArt
+          title={track.title}
+          artist={track.artist}
+          url={track.albumArtUrl}
+        />
+        <SeekBar
+          onSeek={seek}
+          trackLength={totalLength}
+          onSlidingStart={() => setPaused(true)}
+          currentPosition={currentPosition}
+        />
+        <Controls
+          onPressRepeat={() => setRepeatOn(!repeatOn)}
+          repeatOn={repeatOn}
+          shuffleOn={shuffleOn}
+          forwardDisabled={selectedTrack === track.length - 1}
+          onPressShuffle={() => setShuffleOn(!shuffleOn)}
+          onPressPlay={() => setPaused(false)}
+          onPressPause={() => setPaused(true)}
+          onBack={onBack}
+          onForward={onForward}
+          paused={paused}
+        />
+        {video}
+      </SafeAreaView>
     </View>
   );
 }

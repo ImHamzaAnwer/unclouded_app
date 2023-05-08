@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Image,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
@@ -133,33 +134,35 @@ export default function Workbook({navigation}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <AppText textType="heading" style={styles.title}>
-          Workbook
-        </AppText>
-        <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center'}}
-          onPress={() => navigation.navigate('HistoryScreen')}>
-          <Image
-            style={{width: 20, height: 20, marginRight: 7}}
-            source={IMAGES.HistoryIcon}
-          />
-          <AppText style={{marginVertical: 0, color: '#fff'}}>History</AppText>
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <AppText textType="heading" style={styles.title}>
+            Workbook
+          </AppText>
+          <TouchableOpacity
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => navigation.navigate('HistoryScreen')}>
+            <Image
+              style={{width: 20, height: 20, marginRight: 7}}
+              source={IMAGES.HistoryIcon}
+            />
+            <AppText style={{marginVertical: 0, color: '#fff'}}>
+              History
+            </AppText>
+          </TouchableOpacity>
+        </View>
 
-      <MakePledgeComponent />
+        <MakePledgeComponent />
+      </SafeAreaView>
 
-      <View style={{padding: 15, flex: 1}}>
-        <AppText style={styles.questionnaireTitle}>Questionnaires</AppText>
-        <FlatList
-          style={{marginBottom: 100}}
-          data={questionnaires}
-          numColumns={2}
-          showsVerticalScrollIndicator={false}
-          renderItem={renderQuestionnaires}
-        />
-      </View>
+      <AppText style={styles.questionnaireTitle}>Questionnaires</AppText>
+      <FlatList
+        style={{paddingHorizontal: 20, marginBottom: 120}}
+        data={questionnaires}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        renderItem={renderQuestionnaires}
+      />
 
       <QuestionModal
         answer={answer}
@@ -192,6 +195,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 20,
+    paddingHorizontal: 20,
   },
   questionCard: {
     marginTop: 20,

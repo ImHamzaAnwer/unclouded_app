@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   Pressable,
+  SafeAreaView,
 } from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import auth from '@react-native-firebase/auth';
@@ -17,6 +18,7 @@ const PROFILE_ITEMS = [
     name: 'Update Usage Info.',
     icon: IMAGES.UpdateUsageInfoIcon,
     routeName: 'UsageScreen',
+    params: {isEdit: true},
   },
   {
     name: 'Reset Quit Date',
@@ -47,49 +49,53 @@ const PROFILE_ITEMS = [
 
 export default function Profile({navigation}) {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center'}}
-          onPress={() => navigation.goBack()}>
-          <Image
-            style={{width: 25, height: 25, marginRight: 10}}
-            source={IMAGES.BackArrowIcon}
-          />
-          <AppText textType="heading" style={styles.title}>
-            Profile
+    <View style={styles.container}>
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={{flexDirection: 'row', alignItems: 'center'}}
+              onPress={() => navigation.navigate('MainTabs')}>
+              <Image
+                style={{width: 25, height: 25, marginRight: 10}}
+                source={IMAGES.BackArrowIcon}
+              />
+              <AppText textType="heading" style={styles.title}>
+                Profile
+              </AppText>
+            </TouchableOpacity>
+          </View>
+
+          {PROFILE_ITEMS.map((item, index) => {
+            return (
+              <Pressable
+                key={index}
+                onPress={() => navigation.navigate(item.routeName, item.params)}
+                style={styles.itemContainer}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={styles.iconWrap}>
+                    <Image source={item.icon} />
+                  </View>
+                  <AppText>{item.name}</AppText>
+                </View>
+                <Image source={IMAGES.RightArrowIcon} />
+              </Pressable>
+            );
+          })}
+
+          <AppText
+            onPress={() => auth().signOut()}
+            style={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              color: '#EB5757',
+              marginTop: 40,
+            }}>
+            Log Out
           </AppText>
-        </TouchableOpacity>
-      </View>
-
-      {PROFILE_ITEMS.map((item, index) => {
-        return (
-          <Pressable
-            key={index}
-            onPress={() => navigation.navigate(item.routeName)}
-            style={styles.itemContainer}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <View style={styles.iconWrap}>
-                <Image source={item.icon} />
-              </View>
-              <AppText>{item.name}</AppText>
-            </View>
-            <Image source={IMAGES.RightArrowIcon} />
-          </Pressable>
-        );
-      })}
-
-      <AppText
-        onPress={() => auth().signOut()}
-        style={{
-          fontWeight: 'bold',
-          textAlign: 'center',
-          color: '#EB5757',
-          marginTop: 40,
-        }}>
-        Log Out
-      </AppText>
-    </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -102,7 +108,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 20,
   },
   title: {
     fontSize: 24,

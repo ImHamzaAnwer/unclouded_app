@@ -43,8 +43,6 @@ const HomeStack = () => {
       initialRouteName="Home">
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="PledgeScreen" component={PledgeScreen} />
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Notifications" component={Notifiactions} />
     </Stack.Navigator>
   );
 };
@@ -86,6 +84,8 @@ const MainNavigator = () => {
       initialRouteName="UsageScreen">
       <Stack.Screen name="UsageScreen" component={UsageScreen} />
       <Stack.Screen name="MainTabs" component={MainTabs} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Notifications" component={Notifiactions} />
     </Stack.Navigator>
   );
 };

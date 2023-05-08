@@ -6,7 +6,8 @@ import {
   Alert,
   Image,
   TouchableOpacity,
-  RefreshControl
+  RefreshControl,
+  SafeAreaView,
 } from 'react-native';
 import {RadioButton} from 'react-native-paper';
 import {APP_COLORS} from '../../config/colors';
@@ -26,7 +27,7 @@ const PledgeScreen = ({navigation, route}) => {
 
   const [pledgeStatus, setPledgeStatus] = useState('yes');
   const [pledgeNote, setPledgeNote] = useState('');
-  const [challengeLevel, setChallengeLevel] = useState('good');
+  const [challengeLevel, setChallengeLevel] = useState('easy');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [sliderValue, setSliderValue] = useState(0);
@@ -42,7 +43,7 @@ const PledgeScreen = ({navigation, route}) => {
       setPledgeNote(pledgeEditData.note);
       setSelectedItems(pledgeEditData.timeSpentWith);
       setChallengeLevel(pledgeEditData.challengeLevel);
-      setMood(pledgeEditData.mood);
+      setMood(pledgeEditData.feelings);
       if (pledgeEditData.feelings == 'happy') {
         setSliderValue(0);
       } else if (pledgeEditData.feelings == 'sad') {
@@ -89,7 +90,7 @@ const PledgeScreen = ({navigation, route}) => {
         .then(() => {
           setPledgeNote('');
           setSelectedItems([]);
-          setChallengeLevel('good');
+          setChallengeLevel('easy');
           setMood('happy');
           Alert.alert('Pledge Review Edited successfully');
           navigation.goBack();
@@ -114,7 +115,7 @@ const PledgeScreen = ({navigation, route}) => {
             .update({docId: doc.id});
           setPledgeNote('');
           setSelectedItems([]);
-          setChallengeLevel('good');
+          setChallengeLevel('easy');
           setMood('happy');
           Alert.alert('Reviewed successfully');
           navigation.goBack();
@@ -124,100 +125,114 @@ const PledgeScreen = ({navigation, route}) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <TouchableOpacity
-        style={{flexDirection: 'row', alignItems: 'center'}}
-        onPress={() => navigation.goBack()}>
-        <Image source={IMAGES.BackArrowIcon} />
-        <AppText textType="heading" style={styles.heading}>
-          Pledge Review
-        </AppText>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <SafeAreaView style={{flex: 1}}>
+        <ScrollView>
+          <>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 20,
+              }}
+              onPress={() => navigation.goBack()}>
+              <Image source={IMAGES.BackArrowIcon} />
+              <AppText textType="heading" style={styles.heading}>
+                Pledge Review
+              </AppText>
+            </TouchableOpacity>
 
-      <AppText style={styles.label}>
-        Have you stayed true to your pledge today?
-      </AppText>
+            <AppText style={styles.label}>
+              Have you stayed true to your pledge today?
+            </AppText>
 
-      <RadioButton.Group
-        onValueChange={handlePledgeStatusChange}
-        value={pledgeStatus}>
-        <View style={styles.radioButtonContainer}>
-          <View style={styles.radioButton}>
-            <RadioButton.Android
-              color={APP_COLORS.primaryText}
-              style={styles.radioCirle}
-              value="yes"
+            <RadioButton.Group
+              onValueChange={handlePledgeStatusChange}
+              value={pledgeStatus}>
+              <View style={styles.radioButtonContainer}>
+                <View style={styles.radioButton}>
+                  <RadioButton.Android
+                    color={APP_COLORS.primaryText}
+                    style={styles.radioCirle}
+                    value="yes"
+                  />
+                  <AppText style={styles.radioLabel}>Yes</AppText>
+                </View>
+                <View style={styles.radioButton}>
+                  <RadioButton.Android
+                    // uncheckedColor={APP_COLORS.primaryText}
+                    color={APP_COLORS.primaryText}
+                    style={styles.radioCirle}
+                    value="no"
+                  />
+                  <AppText style={styles.radioLabel}>No</AppText>
+                </View>
+              </View>
+            </RadioButton.Group>
+
+            <AppText style={styles.label}>
+              How challenging was it today?
+            </AppText>
+            <AppDropdown
+              data={[
+                {label: 'Easy', value: 'easy'},
+                {label: 'Hard', value: 'hard'},
+              ]}
+              value={challengeLevel}
+              style={styles.dropdown}
+              setValue={handleChallengeLevelChange}
             />
-            <AppText style={styles.radioLabel}>Yes</AppText>
-          </View>
-          <View style={styles.radioButton}>
-            <RadioButton.Android
-              // uncheckedColor={APP_COLORS.primaryText}
-              color={APP_COLORS.primaryText}
-              style={styles.radioCirle}
-              value="no"
+
+            <AppText style={styles.label}>How did you feel?</AppText>
+            <View style={styles.sliderContainer}>
+              <Slider
+                thumbTintColor={APP_COLORS.aqua}
+                minimumTrackTintColor={APP_COLORS.aqua}
+                style={styles.slider}
+                minimumValue={0}
+                maximumValue={1}
+                step={0.5}
+                value={sliderValue}
+                onValueChange={handleSliderChange}
+              />
+              <View style={styles.labelContainer}>
+                <AppText style={styles.sliderLabel}>Happy</AppText>
+                <AppText style={styles.sliderLabel}>Sad</AppText>
+                <AppText style={styles.sliderLabel}>Angry</AppText>
+              </View>
+            </View>
+
+            <AppText style={styles.label}>
+              How did you spend your time today?
+            </AppText>
+
+            <MultiSelectDropdown
+              data={[
+                {label: 'Friends', value: 'friends'},
+                {label: 'Family', value: 'family'},
+              ]}
+              showDropdown={showDropdown}
+              setShowDropdown={setShowDropdown}
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
             />
-            <AppText style={styles.radioLabel}>No</AppText>
-          </View>
-        </View>
-      </RadioButton.Group>
 
-      <AppText style={styles.label}>How challenging was it today?</AppText>
-      <AppDropdown
-        data={[
-          {label: 'Bad', value: 'bad'},
-          {label: 'Good', value: 'good'},
-        ]}
-        value={challengeLevel}
-        style={styles.dropdown}
-        setValue={handleChallengeLevelChange}
-      />
+            <AppText style={styles.label}>Note</AppText>
+            <AppInput
+              style={styles.input}
+              value={pledgeNote}
+              onChangeText={handlePledgeNote}
+            />
 
-      <AppText style={styles.label}>How did you feel?</AppText>
-      <View style={styles.sliderContainer}>
-        <Slider
-          thumbTintColor={APP_COLORS.aqua}
-          minimumTrackTintColor={APP_COLORS.aqua}
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={1}
-          step={0.5}
-          value={sliderValue}
-          onValueChange={handleSliderChange}
-        />
-        <View style={styles.labelContainer}>
-          <AppText style={styles.sliderLabel}>Happy</AppText>
-          <AppText style={styles.sliderLabel}>Sad</AppText>
-          <AppText style={styles.sliderLabel}>Angry</AppText>
-        </View>
-      </View>
-
-      <AppText style={styles.label}>How did you spend your time today?</AppText>
-
-      <MultiSelectDropdown
-        data={[
-          {label: 'Friends', value: 'friends'},
-          {label: 'Family', value: 'family'},
-        ]}
-        showDropdown={showDropdown}
-        setShowDropdown={setShowDropdown}
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
-      />
-
-      <AppText style={styles.label}>Note</AppText>
-      <AppInput
-        style={styles.input}
-        value={pledgeNote}
-        onChangeText={handlePledgeNote}
-      />
-
-      <AppButton
-        title="Save"
-        style={styles.button}
-        onPress={savePledgeReview}
-      />
-    </ScrollView>
+            <AppButton
+              title="Save"
+              style={styles.button}
+              onPress={savePledgeReview}
+            />
+          </>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -238,7 +253,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
   button: {
-    marginVertical: 40,
+    marginTop: 40,
+    marginBottom: 120,
   },
   label: {
     marginTop: 30,

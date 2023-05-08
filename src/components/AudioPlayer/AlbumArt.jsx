@@ -20,13 +20,11 @@ const AlbumArt = ({title, artist, url, onPress}) => (
           styles.image,
           {
             borderRadius: 20,
+            overflow: 'hidden',
             backgroundColor: APP_COLORS.itemBackground,
           },
         ]}>
-        <Image
-          style={[styles.image, {borderRadius: 120}]}
-          source={{uri: url}}
-        />
+        <Image style={[styles.image]} source={{uri: url}} />
       </View>
     </View>
 

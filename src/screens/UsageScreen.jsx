@@ -12,6 +12,8 @@ import AppInput from '../components/AppInput';
 import CustomTabs from '../components/CustomTabs';
 import moment from 'moment';
 import {IMAGES} from '../config/images';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const UsageCard = ({item, handleEditUsageData}) => {
   const styles = StyleSheet.create({
@@ -99,7 +101,8 @@ const UsageCard = ({item, handleEditUsageData}) => {
 
         <View style={styles.contentContainerRow}>
           <AppText style={styles.totalAmountText}>
-            $20 <AppText style={styles.totalAmountText2}>total amount</AppText>
+            ${item?.averagePrice || ''}{' '}
+            <AppText style={styles.totalAmountText2}>total amount</AppText>
           </AppText>
 
           <AppButton
@@ -122,6 +125,7 @@ const UsageScreen = ({navigation, route}) => {
   const [gramsPer, setGramsPer] = useState('0');
   const [pricePerGram, setPricePerGram] = useState('0');
   const [usageData, setUsageData] = useState([]);
+  const [averagePrice, setAveragePrice] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD'),
@@ -171,6 +175,7 @@ const UsageScreen = ({navigation, route}) => {
         consumage,
         gramsPer,
         pricePerGram,
+        averagePrice: consumage * gramsPer * pricePerGram,
         createdAt: firestore.FieldValue.serverTimestamp(),
         userId: auth().currentUser.uid,
         quittingDate: null,
@@ -197,7 +202,7 @@ const UsageScreen = ({navigation, route}) => {
       );
     } catch (error) {
       console.error(error);
-      Alert.alert('Error saving usage data.');
+      Alert.alert('Something went wrong, please try again.');
     }
   };
 
@@ -208,86 +213,100 @@ const UsageScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <CustomTabs
-        tabValues={['Step 1', 'Step 2']}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
-      {activeTab === 0 ? (
-        <>
-          <AppText textType="heading" style={styles.title}>
-            Please enter your cannabis usage information
-          </AppText>
-
-          {!usageData.length && (
-            <AppText
-              style={styles.addUsageText}
-              onPress={() => setModalVisible(true)}>
-              + Add Usage Method
+      <SafeAreaView>
+        {isEdit && (
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <Image
+              style={{width: 25, height: 25, marginBottom: 20}}
+              source={IMAGES.BackArrowIcon}
+            />
+          </TouchableOpacity>
+        )}
+        <CustomTabs
+          tabValues={['Step 1', 'Step 2']}
+          activeTab={activeTab}
+          setActiveTab={s => {
+            usageData.length
+              ? setActiveTab(s)
+              : Alert.alert('please add usage method first');
+          }}
+        />
+        {activeTab === 0 ? (
+          <>
+            <AppText textType="heading" style={styles.title}>
+              Please enter your cannabis usage information
             </AppText>
-          )}
 
-          <FlatList
-            data={usageData}
-            renderItem={({item}) => (
-              <UsageCard
-                handleEditUsageData={handleEditUsageData}
-                item={item}
-              />
-            )}
-            keyExtractor={item => item.id}
-            style={styles.usageList}
-          />
-
-          {/* <AppButton  title="Next" /> */}
-        </>
-      ) : (
-        <>
-          <AppText style={styles.calendarTitle} textType="heading">
-            Set quitting date
-          </AppText>
-          <View style={styles.calendarRow}>
-            <View>
-              <AppText>select date</AppText>
-              <AppText style={styles.selectedDateText} textType="heading">
-                {selectedDate}
+            {!usageData.length && (
+              <AppText
+                style={styles.addUsageText}
+                onPress={() => setModalVisible(true)}>
+                + Add Usage Method
               </AppText>
-            </View>
-            <Image style={styles.calendarIcon} source={IMAGES.CalendarIcon} />
-          </View>
-          <Calendar
-            hideExtraDays
-            firstDay={1}
-            style={{
-              borderRadius: 10,
-              marginVertical: 20,
-              paddingTop: 10,
-            }}
-            theme={{
-              backgroundColor: APP_COLORS.itemBackground,
-              calendarBackground: APP_COLORS.itemBackground,
-              dayTextColor: '#A8C0BC',
-              textDisabledColor: APP_COLORS.gray,
-              monthTextColor: APP_COLORS.primaryText,
-              textMonthFontSize: 18,
-              textMonthFontWeight: '500',
-            }}
-            onDayPress={day => {
-              setSelectedDate(day.dateString);
-            }}
-            minDate={moment().format('YYYY-MM-DD')}
-            markedDates={{
-              [selectedDate]: {
-                selected: true,
-                disableTouchEvent: true,
-                selectedDotColor: 'orange',
-              },
-            }}
-          />
+            )}
 
-          <AppButton onPress={() => saveUsageData(true)} title="Next" />
-        </>
-      )}
+            <FlatList
+              data={usageData}
+              renderItem={({item}) => (
+                <UsageCard
+                  handleEditUsageData={handleEditUsageData}
+                  item={item}
+                />
+              )}
+              keyExtractor={item => item.id}
+              style={styles.usageList}
+            />
+
+            {/* <AppButton  title="Next" /> */}
+          </>
+        ) : (
+          <>
+            <AppText style={styles.calendarTitle} textType="heading">
+              Set quitting date
+            </AppText>
+            <View style={styles.calendarRow}>
+              <View>
+                <AppText>select date</AppText>
+                <AppText style={styles.selectedDateText} textType="heading">
+                  {selectedDate}
+                </AppText>
+              </View>
+              <Image style={styles.calendarIcon} source={IMAGES.CalendarIcon} />
+            </View>
+            <Calendar
+              hideExtraDays
+              firstDay={1}
+              style={{
+                borderRadius: 10,
+                marginVertical: 20,
+                paddingTop: 10,
+              }}
+              theme={{
+                backgroundColor: APP_COLORS.itemBackground,
+                calendarBackground: APP_COLORS.itemBackground,
+                dayTextColor: '#A8C0BC',
+                textDisabledColor: APP_COLORS.gray,
+                monthTextColor: APP_COLORS.primaryText,
+                textMonthFontSize: 18,
+                textMonthFontWeight: '500',
+              }}
+              onDayPress={day => {
+                setSelectedDate(day.dateString);
+              }}
+              minDate={moment().format('YYYY-MM-DD')}
+              markedDates={{
+                [selectedDate]: {
+                  selected: true,
+                  disableTouchEvent: true,
+                  selectedDotColor: 'orange',
+                },
+              }}
+            />
+
+            <AppButton onPress={() => saveUsageData(true)} title="Next" />
+          </>
+        )}
+      </SafeAreaView>
 
       <AppModal isVisible={modalVisible} setIsVisible={setModalVisible}>
         <AppText style={styles.modalHeading} textType="heading">
@@ -422,7 +441,7 @@ const styles = StyleSheet.create({
   //calendar Screen
   calendarTitle: {
     textAlign: 'center',
-    marginTop: 20,
+    marginVertical: 30,
   },
   selectedDateText: {
     marginVertical: 0,
