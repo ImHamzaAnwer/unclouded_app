@@ -297,10 +297,12 @@ export default function HistoryScreen({navigation}) {
           });
         });
         const groupedPledges = groupByDate(array);
+        console.log(groupedPledges, 'ahaiaihaih');
         setRefreshing(false);
         setPledges(groupedPledges);
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e, "ererererer")
         setRefreshing(false);
       });
   };
@@ -334,6 +336,7 @@ export default function HistoryScreen({navigation}) {
   };
 
   const groupByDate = array => {
+    console.log(array, 'ararrara');
     return array.reduce((result, pledge) => {
       const date = pledge.date;
       const formattedDate = moment(date, 'DD-MM-YYYY').format('DD MMM, YYYY');

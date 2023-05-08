@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Touchable, View} from 'react-native';
+import {Alert, StyleSheet, Touchable, View} from 'react-native';
 import AppText from './AppText';
 import moment from 'moment';
 import {APP_COLORS} from '../config/colors';
@@ -20,13 +20,17 @@ const MakePledgeComponent = () => {
 
   const [pledgedModal, setPledgeModal] = useState(false);
   const [pledgedToday, setPledgedToday] = useState(false);
+  const [pledgedReviewed, setPledgeReviewed] = useState(false);
   const [note, setNote] = useState('');
 
   useEffect(() => {
     const unsubscribe = checkIfPledgedToday();
+    const unsubscribe_2 = checkIfPledgeReviewedToday();
 
-    return () => unsubscribe;
-  }, [pledgeToday]);
+    return () => {
+      unsubscribe, unsubscribe_2;
+    };
+  }, [pledgedToday, pledgedReviewed]);
 
   const pledgeToday = () => {
     firestore().collection('dailyPledges').add({
@@ -58,6 +62,25 @@ const MakePledgeComponent = () => {
       });
   };
 
+  const checkIfPledgeReviewedToday = () => {
+    firestore()
+      .collection('pledgesReview')
+      .where('user', '==', uid)
+      .onSnapshot(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          console.log(doc, 'doccc-c-c-c--');
+          if (
+            doc.exists &&
+            moment(doc.data().date?.toDate()?.toISOString()).format(
+              'YYYY-MM-DD',
+            ) === today
+          ) {
+            setPledgeReviewed(true);
+          }
+        });
+      });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.btnWrap}>
@@ -69,15 +92,22 @@ const MakePledgeComponent = () => {
             ? "You've committed to your daily pledge."
             : 'Make a pledge to improve your life.'}
         </AppText>
+
         <TouchableOpacity
           onPress={() =>
             pledgedToday
-              ? navigation.navigate('PledgeScreen')
+              ? pledgedReviewed
+                ? Alert.alert('Already Reviewed for today')
+                : navigation.navigate('PledgeScreen')
               : setPledgeModal(true)
           }
           style={styles.btn}>
           <AppText style={styles.btnText}>
-            {pledgedToday ? 'Review' : 'Make'} Today's Pledge
+            {pledgedToday
+              ? pledgedReviewed
+                ? 'Reviewed for today'
+                : "Review  Today's Pledge"
+              : "Make  Today's Pledge"}
           </AppText>
         </TouchableOpacity>
       </View>
