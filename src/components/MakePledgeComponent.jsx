@@ -23,15 +23,6 @@ const MakePledgeComponent = () => {
   const [pledgedReviewed, setPledgeReviewed] = useState(false);
   const [note, setNote] = useState('');
 
-  useEffect(() => {
-    const unsubscribe = checkIfPledgedToday();
-    const unsubscribe_2 = checkIfPledgeReviewedToday();
-
-    return () => {
-      unsubscribe, unsubscribe_2;
-    };
-  }, [pledgedToday, pledgedReviewed]);
-
   const pledgeToday = () => {
     firestore().collection('dailyPledges').add({
       pledged: true,
@@ -47,39 +38,48 @@ const MakePledgeComponent = () => {
   };
 
   const checkIfPledgedToday = () => {
-    firestore()
+    let query = firestore()
       .collection('dailyPledges')
-      .where('userId', '==', uid)
-      .onSnapshot(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          if (doc.exists && doc.data().pledged && doc.data().date === today) {
-            setPledgedToday(true);
-            setPledgeModal(false);
-          } else {
-            setPledgedToday(false);
-          }
-        });
+      .where('userId', '==', uid);
+    let unsubscribe = query?.onSnapshot(querySnapshot => {
+      querySnapshot?.forEach(doc => {
+        if (doc.exists && doc.data().pledged && doc.data().date === today) {
+          setPledgedToday(true);
+          setPledgeModal(false);
+        } else {
+          setPledgedToday(false);
+        }
       });
+    });
+
+    return () => unsubscribe();
   };
 
   const checkIfPledgeReviewedToday = () => {
-    firestore()
+    let query = firestore()
       .collection('pledgesReview')
-      .where('user', '==', uid)
-      .onSnapshot(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(doc, 'doccc-c-c-c--');
-          if (
-            doc.exists &&
-            moment(doc.data().date?.toDate()?.toISOString()).format(
-              'YYYY-MM-DD',
-            ) === today
-          ) {
-            setPledgeReviewed(true);
-          }
-        });
+      .where('user', '==', uid);
+    let unsubscribe = query?.onSnapshot(querySnapshot => {
+      querySnapshot?.forEach(doc => {
+        console.log(doc, 'doccc-c-c-c--');
+        if (
+          doc.exists &&
+          moment(doc.data().date?.toDate()?.toISOString()).format(
+            'YYYY-MM-DD',
+          ) === today
+        ) {
+          setPledgeReviewed(true);
+        }
       });
+    });
+
+    return () => unsubscribe();
   };
+
+  useEffect(() => {
+    checkIfPledgedToday();
+    checkIfPledgeReviewedToday();
+  }, [pledgedToday, pledgedReviewed]);
 
   return (
     <View style={styles.container}>

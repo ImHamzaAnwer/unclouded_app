@@ -51,7 +51,7 @@ function SavingsCalculator() {
         />
       </View>
       <Button title="Calculate Savings" onPress={calculateSavings} />
-      <Button title="logout" onPress={()=>auth().signout()} />
+      <Button title="logout" onPress={async () => await auth().signout()} />
       {savings > 0 && (
         <Text style={styles.savings}>
           You have saved ${savings.toFixed(2)} by not smoking.

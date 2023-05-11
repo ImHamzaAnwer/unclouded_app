@@ -46,8 +46,8 @@
 		3B4392A12AC88292D35C810B /* Pods-unclouded.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unclouded.debug.xcconfig"; path = "Target Support Files/Pods-unclouded/Pods-unclouded.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-unclouded.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unclouded.release.xcconfig"; path = "Target Support Files/Pods-unclouded/Pods-unclouded.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-unclouded-uncloudedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unclouded-uncloudedTests.debug.xcconfig"; path = "Target Support Files/Pods-unclouded-uncloudedTests/Pods-unclouded-uncloudedTests.debug.xcconfig"; sourceTree = "<group>"; };
-		6AC152020FF546598ABBE6AF /* GothamRounded-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamRounded-Medium.otf"; path = "../src/assets/fonts/GothamRounded-Medium.otf"; sourceTree = "<group>"; };
-		7F9DCED252074A568C086400 /* GothamRounded-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamRounded-Light.otf"; path = "../src/assets/fonts/GothamRounded-Light.otf"; sourceTree = "<group>"; };
+		6AC152020FF546598ABBE6AF /* GothamRounded-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamRounded-Medium.otf"; path = "../src/assets/fonts/GothamRounded-Medium.otf"; sourceTree = "<group>"; };
+		7F9DCED252074A568C086400 /* GothamRounded-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamRounded-Light.otf"; path = "../src/assets/fonts/GothamRounded-Light.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = unclouded/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-unclouded-uncloudedTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unclouded-uncloudedTests.release.xcconfig"; path = "Target Support Files/Pods-unclouded-uncloudedTests/Pods-unclouded-uncloudedTests.release.xcconfig"; sourceTree = "<group>"; };
 		A9BD55B968F41C6D2B336088 /* Pods_unclouded_uncloudedTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_unclouded_uncloudedTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,7 +55,7 @@
 		BB3F527729D76A9E0046C378 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
 		BB3F527929D781A90046C378 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = unclouded/fonts; sourceTree = "<group>"; };
 		BBCB9A3529E0E8F7000DC397 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "unclouded/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C3A6959B0ED3419997BA5E6D /* GothamRounded-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamRounded-Bold.otf"; path = "../src/assets/fonts/GothamRounded-Bold.otf"; sourceTree = "<group>"; };
+		C3A6959B0ED3419997BA5E6D /* GothamRounded-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamRounded-Bold.otf"; path = "../src/assets/fonts/GothamRounded-Bold.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -503,6 +503,7 @@
 				DEVELOPMENT_TEAM = VB6VY3D86R;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = unclouded/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = unclouded;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -535,6 +536,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VB6VY3D86R;
 				INFOPLIST_FILE = unclouded/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = unclouded;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

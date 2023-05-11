@@ -84,7 +84,7 @@ export default function Profile({navigation}) {
           })}
 
           <AppText
-            onPress={() => auth().signOut()}
+            onPress={async () => await auth().signOut()}
             style={{
               fontWeight: 'bold',
               textAlign: 'center',

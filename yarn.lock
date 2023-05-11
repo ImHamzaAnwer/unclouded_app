@@ -6296,13 +6296,6 @@ react-native-modal@^13.0.1:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
-react-native-otp-textinput@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-otp-textinput/-/react-native-otp-textinput-1.0.0.tgz#2f50be01e17b0acf5c69736b2f1adb6adb8bf055"
-  integrity sha512-S3KGfgZm+Hgpb7btOCUgNdIwsWs9ouRQDigEu4y57u7L3Ws9QkncIvbJ1BLDBJftLuwnM6+93qlO1QeSHF3qAA==
-  dependencies:
-    prop-types "^15.6.2"
-
 react-native-paper@^5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.6.0.tgz#5ac94fcc451706ff5efc0690efe7ba6acdbac485"

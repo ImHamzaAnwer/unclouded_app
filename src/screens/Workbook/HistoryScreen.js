@@ -297,7 +297,6 @@ export default function HistoryScreen({navigation}) {
           });
         });
         const groupedPledges = groupByDate(array);
-        console.log(groupedPledges, 'ahaiaihaih');
         setRefreshing(false);
         setPledges(groupedPledges);
       })
@@ -315,7 +314,7 @@ export default function HistoryScreen({navigation}) {
       .get()
       .then(querySnapshot => {
         const array = [];
-        querySnapshot.forEach(doc => {
+        querySnapshot?.forEach(doc => {
           array.push({
             id: doc.id,
             answer: doc.data().answer,
@@ -336,7 +335,6 @@ export default function HistoryScreen({navigation}) {
   };
 
   const groupByDate = array => {
-    console.log(array, 'ararrara');
     return array.reduce((result, pledge) => {
       const date = pledge.date;
       const formattedDate = moment(date, 'DD-MM-YYYY').format('DD MMM, YYYY');

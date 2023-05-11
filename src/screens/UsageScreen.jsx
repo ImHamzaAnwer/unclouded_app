@@ -130,6 +130,7 @@ const UsageScreen = ({navigation, route}) => {
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD'),
   );
+  const user = auth().currentUser.uid;
 
   const usageMethodItems = [
     {label: 'Joints', value: 'joint'},
@@ -137,28 +138,30 @@ const UsageScreen = ({navigation, route}) => {
   ];
 
   const fetchUsageData = async () => {
-    firestore()
+    let response = await firestore()
       .collection('usageData')
+      .where('userId', '==', user)
       .orderBy('createdAt', 'desc')
-      .onSnapshot(querySnapshot => {
-        const array = [];
-        querySnapshot.forEach(doc => {
-          array.push({
-            id: doc.id,
-            ...doc.data(),
-          });
+      .get();
+
+    if (!response.empty) {
+      let array = [];
+      response.docs.forEach(doc => {
+        array.push({
+          id: doc.id,
+          ...doc.data(),
         });
-        setUsageData(array);
-        if (array[0]?.quittingDate && array[0]?.usageMethod && !isEdit) {
-          navigation.navigate('MainTabs');
-        }
       });
+      console.log(array, 'real array');
+      setUsageData(array);
+      if (array[0]?.quittingDate && array[0]?.usageMethod && !isEdit) {
+        navigation.navigate('MainTabs');
+      }
+    }
   };
 
   useEffect(() => {
-    const unsubscribe = fetchUsageData();
-
-    return () => unsubscribe;
+    fetchUsageData();
   }, []);
 
   const handleEditUsageData = () => {
@@ -186,10 +189,16 @@ const UsageScreen = ({navigation, route}) => {
             .collection('usageData')
             .doc(auth().currentUser.uid)
             .update({quittingDate: selectedDate || null})
+            .then(() => {
+              fetchUsageData();
+            })
         : await firestore()
             .collection('usageData')
             .doc(auth().currentUser.uid)
-            .set(usageData);
+            .set(usageData)
+            .then(() => {
+              fetchUsageData();
+            });
 
       setModalVisible(false);
       setConsumage('');
