@@ -50,7 +50,7 @@ export const TRACKS = [
     category: 'irritability',
     albumArtUrl:
       'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
-    audioUrl:
-      'https://www.chosic.com/wp-content/uploads/2021/05/inossi-got-you.mp3',
+    audioUrl: require('../assets/sample1.mp3'),
+    local: true
   },
 ];

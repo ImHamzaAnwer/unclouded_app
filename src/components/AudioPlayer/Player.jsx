@@ -76,7 +76,7 @@ export default function Player(props) {
   const track = props.tracks[selectedTrack];
   const video = isChanging ? null : (
     <Video
-      source={{uri: track.audioUrl}} // Can be a URL or a local file.
+      source={track.local ? track.audioUrl : {uri: track.audioUrl}} // Can be a URL or a local file.
       ref={audioElement}
       // playInBackground={true}
       // playWhenInactive={true}

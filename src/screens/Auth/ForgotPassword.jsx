@@ -6,15 +6,24 @@ import AppButton from '../../components/AppButton';
 import AppInput from '../../components/AppInput';
 import AppText from '../../components/AppText';
 import auth from '@react-native-firebase/auth';
-import { IMAGES } from '../../config/images';
+import {IMAGES} from '../../config/images';
 
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [otpScreen, setOtpScreen] = useState(false);
 
   const handleForgotPassword = () => {
+    const actionCodeSettings = {
+      iOS: {
+        bundleId: 'com.unclouded',
+      },
+      android: {
+        packageName: 'com.unclouded',
+        installApp: true,
+      },
+    };
     auth()
-      .sendPasswordResetEmail(email)
+      .sendPasswordResetEmail(email, actionCodeSettings)
       .then(() => {
         setOtpScreen(true);
         // Handle successful signup
@@ -26,10 +35,7 @@ const ForgotPassword = ({navigation}) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={IMAGES.logo}
-      />
+      <Image style={styles.logo} source={IMAGES.logo} />
       <AppText onPress={() => navigation.goBack()} textType="heading">
         {otpScreen ? 'Forgot Password' : 'Forgot Password'}
       </AppText>

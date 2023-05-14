@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     bottom: 45,
-    backgroundColor: APP_COLORS.itemBackground,
+    backgroundColor: '#082E3F',
     borderRadius: 50,
     marginHorizontal: width * 0.07,
   },

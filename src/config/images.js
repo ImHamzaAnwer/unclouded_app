@@ -48,4 +48,5 @@ export const IMAGES = {
   UpdateUsageInfoIcon: require('../assets/images/UpdateUsageInfo.png'),
   WorkbookIcon: require('../assets/images/Workbook.png'),
   WorkbookHelp: require('../assets/images/WorkbookHelp.png'),
+  SymptomBg: require('../assets/images/symptomBg.png'),
 };

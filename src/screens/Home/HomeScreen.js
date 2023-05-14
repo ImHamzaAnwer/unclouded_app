@@ -12,6 +12,7 @@ import MakePledgeComponent from '../../components/MakePledgeComponent';
 import {IMAGES} from '../../config/images';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import QuittingTimer from '../../components/QuttingTimer';
 
 export default function Home({navigation}) {
   const [userName, setUserName] = useState('');
@@ -61,6 +62,8 @@ export default function Home({navigation}) {
         </View>
 
         <MakePledgeComponent />
+
+        <QuittingTimer />
       </SafeAreaView>
     </View>
   );
