@@ -32,8 +32,7 @@ export const TRACKS = [
     category: 'insomnia',
     albumArtUrl:
       'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
-    audioUrl:
-      'https://www.chosic.com/wp-content/uploads/2021/07/purrple-cat-equinox.mp3',
+    audioUrl: 'https://react-native-track-player.js.org/example/Longing.mp3',
   },
   {
     title: 'Stressed Out 2 insomnia',
@@ -51,6 +50,6 @@ export const TRACKS = [
     albumArtUrl:
       'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
     audioUrl: require('../assets/sample1.mp3'),
-    local: true
+    local: true,
   },
 ];
