@@ -5,8 +5,9 @@ export const TRACKS = [
     category: 'anxiety',
     albumArtUrl:
       'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
-    audioUrl:
+    audioUrl: encodeURI(
       'https://www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3',
+    ),
   },
   {
     title: 'Stressed Out 2 anx',
@@ -15,7 +16,7 @@ export const TRACKS = [
     albumArtUrl:
       'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
     audioUrl:
-      'https://www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3',
+      'www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3',
   },
   {
     title: 'Stressed Out 3 anx',
@@ -23,8 +24,7 @@ export const TRACKS = [
     category: 'anxiety',
     albumArtUrl:
       'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
-    audioUrl:
-      'https://www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3',
+    audioUrl: `https://www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3`,
   },
   {
     title: 'Stressed Out 1 insomnia',
@@ -45,6 +45,15 @@ export const TRACKS = [
   },
   {
     title: 'Stressed Out 1 irritability',
+    artist: 'Twenty One Workets',
+    category: 'irritability',
+    albumArtUrl:
+      'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
+    audioUrl: require('../assets/sample1.mp3'),
+    local: true,
+  },
+  {
+    title: 'Stressed Out 2 irritability',
     artist: 'Twenty One Workets',
     category: 'irritability',
     albumArtUrl:

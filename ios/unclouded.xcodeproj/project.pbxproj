@@ -17,6 +17,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BB3F527829D76A9E0046C378 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F527729D76A9E0046C378 /* dummy.swift */; };
 		BB3F527A29D781AA0046C378 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = BB3F527929D781A90046C378 /* fonts */; };
+		BB4110BD277FD43B0026F894 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = BB4110BC277FD43B0026F894 /* main.jsbundle */; };
 		BBCB9A3629E0E8F8000DC397 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBCB9A3529E0E8F7000DC397 /* GoogleService-Info.plist */; };
 		C365305EBDC8474289268F32 /* GothamRounded-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C3A6959B0ED3419997BA5E6D /* GothamRounded-Bold.otf */; };
 		DC2B011E88FD4CA5B006EE33 /* GothamRounded-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6AC152020FF546598ABBE6AF /* GothamRounded-Medium.otf */; };
@@ -54,6 +55,7 @@
 		BB3F527629D76A9D0046C378 /* unclouded-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "unclouded-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB3F527729D76A9E0046C378 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
 		BB3F527929D781A90046C378 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = unclouded/fonts; sourceTree = "<group>"; };
+		BB4110BC277FD43B0026F894 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		BBCB9A3529E0E8F7000DC397 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "unclouded/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C3A6959B0ED3419997BA5E6D /* GothamRounded-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamRounded-Bold.otf"; path = "../src/assets/fonts/GothamRounded-Bold.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -133,6 +135,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				BB4110BC277FD43B0026F894 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* unclouded */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* uncloudedTests */,
@@ -269,6 +272,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB4110BD277FD43B0026F894 /* main.jsbundle in Resources */,
 				BB3F527A29D781AA0046C378 /* fonts in Resources */,
 				BBCB9A3629E0E8F8000DC397 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
@@ -499,7 +503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = VB6VY3D86R;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = unclouded/Info.plist;
@@ -533,7 +537,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = VB6VY3D86R;
 				INFOPLIST_FILE = unclouded/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = unclouded;

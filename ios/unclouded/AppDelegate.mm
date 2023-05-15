@@ -2,6 +2,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <Firebase.h>
+#import <AVFoundation/AVFoundation.h>
 
 @implementation AppDelegate
 
@@ -13,6 +14,7 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];  
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
