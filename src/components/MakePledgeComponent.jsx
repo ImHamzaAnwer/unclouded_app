@@ -10,12 +10,11 @@ import {IMAGES} from '../config/images';
 import AppModal from './AppModal';
 import AppInput from './AppInput';
 import firestore, {firebase} from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
+import {createNotification, userId} from '../functions';
 
 const MakePledgeComponent = () => {
   const today = moment().format('YYYY-MM-DD');
-  const uid = auth().currentUser.uid;
   const navigation = useNavigation();
 
   const [pledgedModal, setPledgeModal] = useState(false);
@@ -23,16 +22,15 @@ const MakePledgeComponent = () => {
   const [pledgedReviewed, setPledgeReviewed] = useState(false);
   const [note, setNote] = useState('');
 
-  const pledgeToday = () => {
+  const pledgeToday = async () => {
     firestore().collection('dailyPledges').add({
       pledged: true,
       date: today,
-      userId: uid,
+      userId: userId,
       note,
       createdAt: firebase.firestore.Timestamp.now(),
-      // const createdAt = firebase.firestore.Timestamp.now().toDate();
-      // const timeAgo = moment(createdAt).fromNow();
     });
+    await createNotification('Congrats! You made your pledge for today.');
     setPledgedToday(true);
     setPledgeModal(false);
   };
@@ -40,7 +38,7 @@ const MakePledgeComponent = () => {
   const checkIfPledgedToday = () => {
     let query = firestore()
       .collection('dailyPledges')
-      .where('userId', '==', uid);
+      .where('userId', '==', userId);
     let unsubscribe = query?.onSnapshot(querySnapshot => {
       querySnapshot?.forEach(doc => {
         if (doc.exists && doc.data().pledged && doc.data().date === today) {
@@ -58,7 +56,7 @@ const MakePledgeComponent = () => {
   const checkIfPledgeReviewedToday = () => {
     let query = firestore()
       .collection('pledgesReview')
-      .where('user', '==', uid);
+      .where('user', '==', userId);
     let unsubscribe = query?.onSnapshot(querySnapshot => {
       querySnapshot?.forEach(doc => {
         console.log(doc, 'doccc-c-c-c--');
@@ -123,7 +121,7 @@ const MakePledgeComponent = () => {
         <AppText style={styles.pledeModalTitle} textType="heading">
           Today, I will not smoke
         </AppText>
-        <AppText>I’m doing this because...</AppText>
+        <AppText>I'm doing this because...</AppText>
         <AppInput
           value={note}
           onChangeText={setNote}

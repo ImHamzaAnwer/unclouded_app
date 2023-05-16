@@ -13,6 +13,8 @@ import {IMAGES} from '../../config/images';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import QuittingTimer from '../../components/QuttingTimer';
+import SymptomsChart from '../../components/SymptomsChart';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export default function Home({navigation}) {
   const [userName, setUserName] = useState('');
@@ -60,11 +62,17 @@ export default function Home({navigation}) {
             </TouchableOpacity>
           </View>
         </View>
+      </SafeAreaView>
 
+      <ScrollView>
         <MakePledgeComponent />
 
         <QuittingTimer />
-      </SafeAreaView>
+
+        <SymptomsChart />
+
+        <View style={{height: 120}}/>
+      </ScrollView>
     </View>
   );
 }

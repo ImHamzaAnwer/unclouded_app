@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList, Image, Alert} from 'react-native';
+import {View, StyleSheet, FlatList, Image, Alert} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {Calendar} from 'react-native-calendars';
@@ -14,6 +14,7 @@ import moment from 'moment';
 import {IMAGES} from '../config/images';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {fetchUsageData} from '../functions';
 
 const UsageCard = ({item, handleEditUsageData}) => {
   const styles = StyleSheet.create({
@@ -125,43 +126,25 @@ const UsageScreen = ({navigation, route}) => {
   const [gramsPer, setGramsPer] = useState('0');
   const [pricePerGram, setPricePerGram] = useState('0');
   const [usageData, setUsageData] = useState([]);
-  const [averagePrice, setAveragePrice] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD'),
   );
-  const user = auth().currentUser.uid;
 
   const usageMethodItems = [
     {label: 'Joints', value: 'joint'},
     {label: 'Bowls', value: 'bowl'},
   ];
 
-  const fetchUsageData = async () => {
-    let response = await firestore()
-      .collection('usageData')
-      .where('userId', '==', user)
-      .orderBy('createdAt', 'desc')
-      .get();
-
-    if (!response.empty) {
-      let array = [];
-      response.docs.forEach(doc => {
-        array.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-      console.log(array, 'real array');
-      setUsageData(array);
-      if (array[0]?.quittingDate && array[0]?.usageMethod && !isEdit) {
-        navigation.navigate('MainTabs');
-      }
+  const handleUsageData = async () => {
+    let array = await fetchUsageData();
+    if (array[0]?.quittingDate && array[0]?.usageMethod && !isEdit) {
+      navigation.navigate('MainTabs');
     }
   };
 
   useEffect(() => {
-    fetchUsageData();
+    handleUsageData();
   }, []);
 
   const handleEditUsageData = () => {
@@ -190,14 +173,14 @@ const UsageScreen = ({navigation, route}) => {
             .doc(auth().currentUser.uid)
             .update({quittingDate: selectedDate || null})
             .then(() => {
-              fetchUsageData();
+              handleUsageData();
             })
         : await firestore()
             .collection('usageData')
             .doc(auth().currentUser.uid)
             .set(usageData)
             .then(() => {
-              fetchUsageData();
+              handleUsageData();
             });
 
       setModalVisible(false);

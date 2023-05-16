@@ -2,52 +2,35 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import AppText from './AppText';
 import {APP_COLORS} from '../config/colors';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IMAGES} from '../config/images';
+import {fetchUsageData, userCreationTime} from '../functions';
 
 const QuttingTimer = () => {
   const [timeElapsed, setTimeElapsed] = useState(0);
-  const creationTime = auth().currentUser.metadata.creationTime;
   const [quitDate, setQuitDate] = useState(null);
-  const user = auth().currentUser.uid;
 
-  const fetchUsageData = async () => {
-    let response = await firestore()
-      .collection('usageData')
-      .where('userId', '==', user)
-      .orderBy('createdAt', 'desc')
-      .get();
-
-    if (!response.empty) {
-      let array = [];
-      response.docs.forEach(doc => {
-        array.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-      console.log(array, 'real array');
-      if (array[0]?.quittingDate) {
-        setQuitDate(array[0]?.quittingDate);
-      }
+  const handleUsageData = async () => {
+    let array = await fetchUsageData();
+    console.log(array, 'real array');
+    if (array[0]?.quittingDate) {
+      setQuitDate(array[0]?.quittingDate);
     }
   };
 
   useEffect(() => {
-    fetchUsageData();
+    handleUsageData();
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date().getTime();
-      const elapsedTime = currentTime - moment(creationTime);
+      const elapsedTime = currentTime - moment(userCreationTime);
       setTimeElapsed(elapsedTime);
     }, 1000);
     return () => clearInterval(interval);
-  }, [creationTime]);
+  }, [userCreationTime]);
 
   const days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24))
     .toString()

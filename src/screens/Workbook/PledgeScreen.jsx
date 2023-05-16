@@ -108,11 +108,15 @@ const PledgeScreen = ({navigation, route}) => {
           date: firestore.FieldValue.serverTimestamp(),
           user: auth().currentUser.uid,
         })
-        .then(doc => {
+        .then(async doc => {
           firestore()
             .collection('pledgesReview')
             .doc(doc.id)
             .update({docId: doc.id});
+
+          await createNotification(
+            'Congrats! You reviewed your pledge for today.',
+          );
           setPledgeNote('');
           setSelectedItems([]);
           setChallengeLevel('easy');

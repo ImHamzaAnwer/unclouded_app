@@ -7,13 +7,14 @@ import {
   Image,
 } from 'react-native';
 import {APP_COLORS} from '../config/colors';
-import auth from '@react-native-firebase/auth';
 import AppText from '../components/AppText';
 import moment from 'moment';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {IMAGES} from '../config/images';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Popover, {PopoverPlacement} from 'react-native-popover-view';
+import {userCreationTime} from '../functions';
+import {symptoms} from '../config/symptoms';
 
 const SymptomsCard = ({countdown, key}) => {
   const styles = StyleSheet.create({
@@ -133,18 +134,9 @@ const SymptomsCard = ({countdown, key}) => {
 };
 
 const CountdownScreen = () => {
-  const symptoms = [
-    {name: 'Reset Tolerance', expectedDays: 7.8},
-    {name: 'REM Rebound', expectedDays: 15.1},
-    {name: 'Insomnia', expectedDays: 30.2},
-    {name: 'Anxiety', expectedDays: 24},
-  ];
-
   const [countdowns, setCountdowns] = useState([]);
 
-  let date = moment(auth().currentUser.metadata.creationTime).format(
-    'YYYY-MM-DD',
-  );
+  let date = moment(userCreationTime).format('YYYY-MM-DD');
   const accountCreationDate = new Date(date); // Replace this with your account creation date
 
   useEffect(() => {
