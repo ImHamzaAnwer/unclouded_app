@@ -33,7 +33,7 @@ const PROFILE_ITEMS = [
   {
     name: 'Favorite Audio Tracks',
     icon: IMAGES.FavoriteIcon,
-    routeName: '',
+    routeName: 'Favorites',
   },
   {
     name: 'Help Center',

@@ -16,6 +16,7 @@ import HistoryScreen from '../screens/Workbook/HistoryScreen';
 import Home from '../screens/Home/HomeScreen';
 import SymptomsCountdown from '../screens/SymptomsTracker';
 import Notifiactions from '../screens/Notifications';
+import Favorites from '../screens/Favorites';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -79,6 +80,7 @@ const MainNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        gestureEnabled: false,
         header: () => null,
       }}
       initialRouteName="UsageScreen">
@@ -86,6 +88,7 @@ const MainNavigator = () => {
       <Stack.Screen name="MainTabs" component={MainTabs} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Notifications" component={Notifiactions} />
+      <Stack.Screen name="Favorites" component={Favorites} />
     </Stack.Navigator>
   );
 };

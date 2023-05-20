@@ -98,10 +98,21 @@ const AudioLibrary = ({navigation}) => {
                       {category}
                     </AppText>
                     <TouchableOpacity
+                      style={{flexDirection: 'row', alignItems: 'center'}}
                       onPress={() => {
                         navigation.navigate('AudioListSeeAll', {category});
                       }}>
-                      <AppText>{'see all >'}</AppText>
+                      <AppText
+                        style={{
+                          marginVertical: 0,
+                          color: APP_COLORS.primaryText,
+                        }}>
+                        {'See all'}
+                      </AppText>
+                      <Image
+                        style={{width: 20, height: 20}}
+                        source={IMAGES.RightArrowIcon}
+                      />
                     </TouchableOpacity>
                   </View>
                   <ScrollView showsHorizontalScrollIndicator={false} horizontal>

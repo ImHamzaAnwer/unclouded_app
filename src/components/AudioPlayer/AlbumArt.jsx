@@ -1,18 +1,12 @@
 import React from 'react';
 
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableHighlight,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import {View, StyleSheet, Image, Dimensions} from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../AppText';
+import {IMAGES} from '../../config/images';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const AlbumArt = ({title, artist, url, onPress}) => (
+const AlbumArt = ({track, title, artist, url, onPress, isFavorite}) => (
   <>
     <View style={styles.container}>
       <View
@@ -29,10 +23,18 @@ const AlbumArt = ({title, artist, url, onPress}) => (
     </View>
 
     <View style={styles.trackDetailsContainer}>
-      <AppText textType="heading" style={styles.title}>
-        {title}
-      </AppText>
-      <AppText style={styles.artist}>{artist}</AppText>
+      <View>
+        <AppText textType="heading" style={styles.title}>
+          {title}
+        </AppText>
+        <AppText style={styles.artist}>{artist}</AppText>
+      </View>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.5}>
+        <Image
+          style={[styles.iconImage]}
+          source={isFavorite ? IMAGES.FillFavoriteIcon : IMAGES.FavoriteIcon}
+        />
+      </TouchableOpacity>
     </View>
   </>
 );
@@ -54,9 +56,13 @@ const styles = StyleSheet.create({
     width: imageSize,
     height: imageSize,
   },
+  iconImage: {},
   trackDetailsContainer: {
     marginTop: 50,
     paddingHorizontal: 15,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   title: {
     fontSize: 16,

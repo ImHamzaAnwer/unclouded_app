@@ -1,25 +1,27 @@
 export const TRACKS = [
   {
-    title: 'Stressed Out 1 anx',
-    artist: 'Double One Pilots',
-    category: 'anxiety',
-    albumArtUrl:
-      'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
-    audioUrl: encodeURI(
-      'https://www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3',
-    ),
-  },
-  {
-    title: 'Stressed Out 2 anx',
+    id: 1,
+    title: 'Audio 1',
     artist: 'Double One Pilots',
     category: 'anxiety',
     albumArtUrl:
       'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
     audioUrl:
-      'www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3',
+      'https://www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3',
   },
   {
-    title: 'Stressed Out 3 anx',
+    id: 2,
+    title: 'Audio 2',
+    artist: 'Double One Pilots',
+    category: 'anxiety',
+    albumArtUrl:
+      'https://cdn-images-1.medium.com/max/1344/1*fF0VVD5cCRam10rYvDeTOw.jpeg',
+    audioUrl:
+      'https://www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3',
+  },
+  {
+    id: 3,
+    title: 'Audio 3',
     artist: 'Double One Pilots',
     category: 'anxiety',
     albumArtUrl:
@@ -27,7 +29,8 @@ export const TRACKS = [
     audioUrl: `https://www.chosic.com/wp-content/uploads/2021/04/And-So-It-Begins-Inspired-By-Crush-Sometimes.mp3`,
   },
   {
-    title: 'Stressed Out 1 insomnia',
+    id: 4,
+    title: 'Audio 5',
     artist: 'Fify One Pilots',
     category: 'insomnia',
     albumArtUrl:
@@ -35,7 +38,8 @@ export const TRACKS = [
     audioUrl: 'https://react-native-track-player.js.org/example/Longing.mp3',
   },
   {
-    title: 'Stressed Out 2 insomnia',
+    id: 5,
+    title: 'Audio 6',
     artist: 'Fify One Pilots',
     category: 'insomnia',
     albumArtUrl:
@@ -44,7 +48,8 @@ export const TRACKS = [
       'https://www.chosic.com/wp-content/uploads/2021/07/purrple-cat-equinox.mp3',
   },
   {
-    title: 'Stressed Out 1 irritability',
+    id: 6,
+    title: 'Audio 7',
     artist: 'Twenty One Workets',
     category: 'irritability',
     albumArtUrl:
@@ -53,7 +58,8 @@ export const TRACKS = [
     local: true,
   },
   {
-    title: 'Stressed Out 2 irritability',
+    id: 7,
+    title: 'Audio 8',
     artist: 'Twenty One Workets',
     category: 'irritability',
     albumArtUrl:

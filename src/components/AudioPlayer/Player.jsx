@@ -7,6 +7,8 @@ import Video from 'react-native-video';
 import AudioHeader from './AudioHeader';
 import {APP_COLORS} from '../../config/colors';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import firestore from '@react-native-firebase/firestore';
+import {userId} from '../../functions';
 
 export default function Player(props) {
   const [paused, setPaused] = useState(true);
@@ -58,6 +60,67 @@ export default function Player(props) {
       setCurrentPosition(0);
     }
   }
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    loadFavoriteStatus();
+  }, []);
+
+  const saveFavorite = async (remove = false) => {
+    const favoritesRef = firestore().collection('favorites').doc(userId);
+
+    try {
+      const doc = await favoritesRef.get();
+
+      if (doc.exists) {
+        if (remove) {
+          favoritesRef.update({
+            tracks: firestore.FieldValue.arrayRemove(track),
+          });
+        } else {
+          favoritesRef.update({
+            tracks: firestore.FieldValue.arrayUnion(track),
+          });
+        }
+      } else {
+        if (!remove) {
+          favoritesRef.set({
+            tracks: [track],
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error accessing favorites:', error);
+    }
+  };
+  const handleFavoritePress = () => {
+    setIsFavorite(!isFavorite);
+
+    if (!isFavorite) {
+      saveFavorite();
+    } else {
+      saveFavorite(true);
+    }
+  };
+
+  const loadFavoriteStatus = async () => {
+    try {
+      const favoritesRef = firestore().collection('favorites').doc(userId);
+      const doc = await favoritesRef.get();
+
+      if (doc.exists) {
+        const favoritesData = doc.data();
+        const isTrackFavorite = favoritesData.tracks.some(
+          favTrack => favTrack.id === track.id,
+        );
+        setIsFavorite(isTrackFavorite);
+      } else {
+        setIsFavorite(false);
+      }
+    } catch (error) {
+      console.error('Error loading favorite status:', error);
+    }
+  };
 
   function onForward() {
     if (selectedTrack < props.tracks.length - 1) {
@@ -76,7 +139,7 @@ export default function Player(props) {
   const track = props.tracks[selectedTrack];
   const video = isChanging ? null : (
     <Video
-      ignoreSilentSwitch={"ignore"}
+      ignoreSilentSwitch={'ignore'}
       source={track.local ? track.audioUrl : {uri: track.audioUrl}} // Can be a URL or a local file.
       ref={audioElement}
       // playInBackground={true}
@@ -98,9 +161,13 @@ export default function Player(props) {
       <SafeAreaView>
         <AudioHeader title={track.title} message="Playing From Playlist" />
         <AlbumArt
+          track={track}
           title={track.title}
           artist={track.artist}
           url={track.albumArtUrl}
+          onPress={handleFavoritePress}
+          // isSongFavorite={}
+          isFavorite={isFavorite}
         />
         <SeekBar
           onSeek={seek}
