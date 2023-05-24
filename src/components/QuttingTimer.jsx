@@ -13,7 +13,6 @@ const QuttingTimer = () => {
 
   const handleUsageData = async () => {
     let array = await fetchUsageData();
-    console.log(array, 'real array');
     if (array[0]?.quittingDate) {
       setQuitDate(array[0]?.quittingDate);
     }

@@ -38,7 +38,6 @@ const Favorites = ({navigation}) => {
   };
 
   const removeTrackFromFavorites = async track => {
-    console.log(track, 'idd-d-d-d-');
     try {
       const favoritesRef = firestore().collection('favorites').doc(userId);
 

@@ -20,9 +20,9 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import Slider from '@react-native-community/slider';
 import {IMAGES} from '../../config/images';
+import {createNotification} from '../../functions';
 
 const PledgeScreen = ({navigation, route}) => {
-  console.log(route, 'route=====');
   const pledgeEditData = route?.params?.pledgeEditData;
 
   const [pledgeStatus, setPledgeStatus] = useState('yes');
@@ -55,7 +55,6 @@ const PledgeScreen = ({navigation, route}) => {
   }, []);
 
   const handleSliderChange = val => {
-    console.log(val, 'valalalala---');
     setSliderValue(val);
     setSliderValue(val);
     if (val == 0) {
@@ -114,9 +113,10 @@ const PledgeScreen = ({navigation, route}) => {
             .doc(doc.id)
             .update({docId: doc.id});
 
-          await createNotification(
-            'Congrats! You reviewed your pledge for today.',
-          );
+          await createNotification({
+            notification: 'Congrats! You reviewed your pledge for today.',
+            type: 'pledge',
+          });
           setPledgeNote('');
           setSelectedItems([]);
           setChallengeLevel('easy');

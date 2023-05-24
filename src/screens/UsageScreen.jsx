@@ -316,8 +316,9 @@ const UsageScreen = ({navigation, route}) => {
         <View style={styles.pickerContainer}>
           <AppText style={styles.label}>Consumage per day:</AppText>
           <AppInput
+            keyboardType="numeric"
             style={styles.input}
-            placeholder={`${usageMethodValue} per day`}
+            // placeholder={`${usageMethodValue} per day`}
             value={consumage}
             onChangeText={setConsumage}
           />
@@ -326,9 +327,10 @@ const UsageScreen = ({navigation, route}) => {
         <View style={styles.smallInputWrap}>
           <AppText>Grams per {usageMethodValue}</AppText>
           <AppInput
+            keyboardType="numeric"
             containerStyle={{borderBottomWidth: 0}}
             style={styles.smallInput}
-            placeholder="Grams per Joint or Bowl"
+            // placeholder="Grams per Joint or Bowl"
             value={gramsPer}
             onChangeText={setGramsPer}
           />
@@ -337,9 +339,9 @@ const UsageScreen = ({navigation, route}) => {
         <View style={styles.smallInputWrap}>
           <AppText>Price per gram</AppText>
           <AppInput
+            keyboardType="numeric"
             containerStyle={{borderBottomWidth: 0}}
             style={styles.smallInput}
-            placeholder="Price per Gram"
             value={pricePerGram}
             onChangeText={setPricePerGram}
           />
@@ -352,7 +354,6 @@ const UsageScreen = ({navigation, route}) => {
             readOnly
             value={av_cost_per_day.toString()}
             style={styles.smallInput}
-            placeholder="Price per Gram"
             // onChangeText={setPricePerGram}
           />
         </View>

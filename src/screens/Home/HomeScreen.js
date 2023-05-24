@@ -15,6 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 import QuittingTimer from '../../components/QuttingTimer';
 import SymptomsChart from '../../components/SymptomsChart';
 import {ScrollView} from 'react-native-gesture-handler';
+import Calculator from '../../components/Calculator';
 
 export default function Home({navigation}) {
   const [userName, setUserName] = useState('');
@@ -71,7 +72,9 @@ export default function Home({navigation}) {
 
         <SymptomsChart />
 
-        <View style={{height: 120}}/>
+        <Calculator />
+
+        <View style={{height: 120}} />
       </ScrollView>
     </View>
   );

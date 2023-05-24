@@ -70,7 +70,7 @@ const ForgotPassword = ({navigation}) => {
       ) : (
         <>
           <AppText>Email ID</AppText>
-          <AppInput value={email} onChangeText={setEmail} />
+          <AppInput keyboardType="email-address" value={email} onChangeText={setEmail} />
           <AppButton
             style={styles.authBtn}
             title="Send Reset Link"

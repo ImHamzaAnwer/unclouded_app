@@ -124,6 +124,7 @@ const SignupScreen = ({navigation}) => {
 
             <AppText style={styles.label}>User Name</AppText>
             <AppInput
+              maxLength={50}
               style={styles.signupInput}
               value={username}
               onChangeText={setUsername}

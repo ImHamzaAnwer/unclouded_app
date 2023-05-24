@@ -3,7 +3,7 @@ import {View, StyleSheet, Text, Dimensions} from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import AppText from './AppText';
 import moment from 'moment';
-import {userCreationTime} from '../functions';
+import {createNotification, userCreationTime} from '../functions';
 import {symptoms} from '../config/symptoms';
 import {BarChart} from 'react-native-gifted-charts';
 
@@ -27,7 +27,6 @@ const SymptomsChart = () => {
         const progress = completed
           ? 100
           : (1 - diff / (symptom.expectedDays * 24 * 60 * 60 * 1000)) * 100;
-
         return {
           name: symptom.name,
           completed,
@@ -67,17 +66,52 @@ const SymptomsChart = () => {
         isThreeD
         side="right"
       />
+
+      <View style={styles.dataContainer}>
+        {symptoms.map((x, i) => {
+          return (
+            <View key={i} style={styles.dotContainer}>
+              <View style={[styles.dot, {backgroundColor: x.frontColor}]} />
+              <AppText style={styles.text}>{x.name}</AppText>
+            </View>
+          );
+        })}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: 300,
-    // backgroundColor: 'orange',
-    // marginVertical: 30,
+    padding: 20,
     justifyContent: 'center',
     alignSelf: 'center',
+  },
+  dataContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    borderBottomWidth: 0.5,
+    paddingVertical: 20,
+    borderBottomColor: APP_COLORS.gray2
+  },
+  dotContainer: {
+    marginHorizontal: 10,
+    marginBottom: 15,
+    width: '40%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width: 17,
+    height: 17,
+    borderRadius: 100,
+    marginRight: 5,
+  },
+  text: {
+    marginVertical: 0,
+    fontSize: 13,
   },
 });
 

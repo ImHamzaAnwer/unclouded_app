@@ -19,6 +19,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import AppButton from '../../components/AppButton';
 import {IMAGES} from '../../config/images';
 import QuestionModal from '../../components/QuestionModal';
+import {groupByDate} from '../../functions';
 
 const ReviewPledgeCard = ({item, index, navigation}) => {
   const styles = StyleSheet.create({
@@ -300,8 +301,8 @@ export default function HistoryScreen({navigation}) {
         setRefreshing(false);
         setPledges(groupedPledges);
       })
-      .catch((e) => {
-        console.log(e, "ererererer")
+      .catch(e => {
+        console.log(e, 'error in fetchreviewpledgeData');
         setRefreshing(false);
       });
   };
@@ -332,28 +333,6 @@ export default function HistoryScreen({navigation}) {
       .catch(() => {
         setRefreshing(false);
       });
-  };
-
-  const groupByDate = array => {
-    return array.reduce((result, pledge) => {
-      const date = pledge.date;
-      const formattedDate = moment(date, 'DD-MM-YYYY').format('DD MMM, YYYY');
-      const today = moment().format('YYYY-MM-DD');
-      const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD');
-      let groupKey;
-      if (date === today) {
-        groupKey = 'Today';
-      } else if (date === yesterday) {
-        groupKey = 'Yesterday';
-      } else {
-        groupKey = formattedDate;
-      }
-      if (!result[groupKey]) {
-        result[groupKey] = [];
-      }
-      result[groupKey].push(pledge);
-      return result;
-    }, {});
   };
 
   const [refreshing, setRefreshing] = React.useState(false);

@@ -30,7 +30,7 @@ const MakePledgeComponent = () => {
       note,
       createdAt: firebase.firestore.Timestamp.now(),
     });
-    await createNotification('Congrats! You made your pledge for today.');
+    await createNotification({notification: 'Congrats! You made your pledge for today.', type: 'pledge'});
     setPledgedToday(true);
     setPledgeModal(false);
   };
@@ -59,7 +59,6 @@ const MakePledgeComponent = () => {
       .where('user', '==', userId);
     let unsubscribe = query?.onSnapshot(querySnapshot => {
       querySnapshot?.forEach(doc => {
-        console.log(doc, 'doccc-c-c-c--');
         if (
           doc.exists &&
           moment(doc.data().date?.toDate()?.toISOString()).format(

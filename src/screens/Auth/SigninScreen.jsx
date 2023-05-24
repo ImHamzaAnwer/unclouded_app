@@ -43,7 +43,7 @@ const SigninScreen = ({navigation}) => {
         ) {
           Alert.alert('No user found with this email');
         }
-        console.log(error.message, 'rtt in signin');
+        console.log(error.message, 'err in signin');
         setLoading(false);
         // Handle signin error
       });
@@ -64,7 +64,11 @@ const SigninScreen = ({navigation}) => {
               Sign In to your account - enjoy exclusive features and many more.
             </AppText>
             <AppText>Email ID:</AppText>
-            <AppInput value={email} onChangeText={setEmail} />
+            <AppInput
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+            />
             <AppText style={{marginTop: 40}}>Password:</AppText>
             <AppInput
               icon={IMAGES.CloseEyeIcon}
