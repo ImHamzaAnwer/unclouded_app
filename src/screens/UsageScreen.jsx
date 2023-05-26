@@ -119,7 +119,8 @@ const UsageCard = ({item, handleEditUsageData}) => {
 };
 
 const UsageScreen = ({navigation, route}) => {
-  const isEdit = route?.params?.isEdit;
+  const {isEdit} = route?.params;
+  console.log(isEdit, 'route------');
   const [activeTab, setActiveTab] = useState(0);
   const [usageMethodValue, setUsageMethodValue] = useState('joint');
   const [consumage, setConsumage] = useState('0');
@@ -140,12 +141,18 @@ const UsageScreen = ({navigation, route}) => {
     let array = await fetchUsageData();
     if (array[0]?.quittingDate && array[0]?.usageMethod && !isEdit) {
       navigation.navigate('MainTabs');
+    } else {
+      setUsageData(array);
     }
   };
 
-  useEffect(() => {
-    handleUsageData();
-  }, []);
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      handleUsageData();
+    });
+
+    return unsubscribe;
+  }, [isEdit]);
 
   const handleEditUsageData = () => {
     setConsumage(usageData[0].consumage);
@@ -156,7 +163,7 @@ const UsageScreen = ({navigation, route}) => {
 
   const saveUsageData = async fromCalendar => {
     try {
-      const usageData = {
+      const _usageData = {
         usageMethod: usageMethodValue,
         consumage,
         gramsPer,
@@ -164,21 +171,23 @@ const UsageScreen = ({navigation, route}) => {
         averagePrice: consumage * gramsPer * pricePerGram,
         createdAt: firestore.FieldValue.serverTimestamp(),
         userId: auth().currentUser.uid,
-        quittingDate: null,
+        quittingDate: usageData[0].quittingDate || null,
       };
 
       fromCalendar
         ? await firestore()
             .collection('usageData')
             .doc(auth().currentUser.uid)
-            .update({quittingDate: selectedDate || null})
+            .update({
+              quittingDate: selectedDate || null,
+            })
             .then(() => {
               handleUsageData();
             })
         : await firestore()
             .collection('usageData')
             .doc(auth().currentUser.uid)
-            .set(usageData)
+            .set(_usageData)
             .then(() => {
               handleUsageData();
             });
@@ -287,10 +296,16 @@ const UsageScreen = ({navigation, route}) => {
               }}
               minDate={moment().format('YYYY-MM-DD')}
               markedDates={{
+                [usageData[0].quittingDate]: {
+                  selected: true,
+                  selectedColor: APP_COLORS.aqua,
+                  disableTouchEvent: true,
+                },
                 [selectedDate]: {
                   selected: true,
+                  selectedColor: 'transparent',
+                  selectedTextColor: APP_COLORS.aqua,
                   disableTouchEvent: true,
-                  selectedDotColor: 'orange',
                 },
               }}
             />

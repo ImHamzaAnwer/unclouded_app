@@ -90,3 +90,10 @@ export const groupByDate = array => {
     return result;
   }, {});
 };
+
+export function formatCompactNumber(number) {
+  const formatter = Intl.NumberFormat('en', {
+    notation: number > 10000 ? 'compact' : 'standard',
+  });
+  return formatter.format(number);
+}

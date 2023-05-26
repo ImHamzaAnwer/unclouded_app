@@ -82,9 +82,12 @@ const MainNavigator = () => {
       screenOptions={{
         gestureEnabled: false,
         header: () => null,
-      }}
-      initialRouteName="UsageScreen">
-      <Stack.Screen name="UsageScreen" component={UsageScreen} />
+      }}>
+      <Stack.Screen
+        name="UsageScreen"
+        initialParams={{isEdit: false}}
+        component={UsageScreen}
+      />
       <Stack.Screen name="MainTabs" component={MainTabs} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Notifications" component={Notifiactions} />

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -24,6 +24,7 @@ const PROFILE_ITEMS = [
     name: 'Reset Quit Date',
     icon: IMAGES.ResetQuitDateIcon,
     routeName: 'UsageScreen',
+    params: {isEdit: true},
   },
   {
     name: 'Notification',

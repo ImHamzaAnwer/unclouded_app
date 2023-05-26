@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import AppText from './AppText';
 import {APP_COLORS} from '../config/colors';
 import moment from 'moment';
@@ -10,11 +10,13 @@ import {fetchUsageData, userCreationTime} from '../functions';
 const QuttingTimer = () => {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [quitDate, setQuitDate] = useState(null);
+  const [quitDateCreation, setQuitDateCreation] = useState(moment());
 
   const handleUsageData = async () => {
     let array = await fetchUsageData();
     if (array[0]?.quittingDate) {
       setQuitDate(array[0]?.quittingDate);
+      setQuitDateCreation(array[0]?.createdAt?.toDate().toISOString());
     }
   };
 
@@ -25,7 +27,7 @@ const QuttingTimer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date().getTime();
-      const elapsedTime = currentTime - moment(userCreationTime);
+      const elapsedTime = currentTime - moment(quitDateCreation);
       setTimeElapsed(elapsedTime);
     }, 1000);
     return () => clearInterval(interval);
