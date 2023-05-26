@@ -52,7 +52,7 @@ function Notifiactions({navigation}) {
           <View style={styles.iconContainer}>
             <Image source={IMAGES.AnxietyIcon} />
           </View>
-          <View>
+          <View style={{width: '98%'}}>
             <AppText style={styles.notificationTitle}>
               {notification.notification}
             </AppText>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   notificationTitle: {
     marginVertical: 0,
     fontSize: 17,
-    width: '90%',
+    width: '85%',
     color: APP_COLORS.primaryText,
   },
   notificationSubtitle: {

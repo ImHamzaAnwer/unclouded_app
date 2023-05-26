@@ -111,7 +111,12 @@ const SignupScreen = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{flex: 1}}>
       <ImageBackground
-        style={{flex: 1, width: '100%', height: '100%'}}
+        style={{
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          backgroundColor: APP_COLORS.background,
+        }}
         source={IMAGES.LoginScreenBg}>
         <SafeAreaView>
           <ScrollView style={styles.container}>
@@ -255,6 +260,7 @@ const styles = StyleSheet.create({
   termsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 15,
   },
   checkMarkIcon: {
     marginRight: 10,

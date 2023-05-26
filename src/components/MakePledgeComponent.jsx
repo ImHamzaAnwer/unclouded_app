@@ -30,7 +30,10 @@ const MakePledgeComponent = () => {
       note,
       createdAt: firebase.firestore.Timestamp.now(),
     });
-    await createNotification({notification: 'Congrats! You made your pledge for today.', type: 'pledge'});
+    await createNotification({
+      notification: 'Congrats! You made your pledge for today.',
+      type: 'pledge',
+    });
     setPledgedToday(true);
     setPledgeModal(false);
   };
@@ -103,8 +106,8 @@ const MakePledgeComponent = () => {
             {pledgedToday
               ? pledgedReviewed
                 ? 'Reviewed for today'
-                : "Review  Today's Pledge"
-              : "Make  Today's Pledge"}
+                : "Review Today's Pledge"
+              : "Make Today's Pledge"}
           </AppText>
         </TouchableOpacity>
       </View>

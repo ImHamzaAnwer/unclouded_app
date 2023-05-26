@@ -27,7 +27,7 @@ const Calculator = () => {
       const currentDate = moment();
       const daysDiff = moment
         // .duration(currentDate.diff(userCreationTime))
-        .duration(currentDate.diff(data[0].createdAt.toDate().toISOString()))
+        .duration(currentDate.diff(data[0].createdAt?.toDate().toISOString()))
         .asDays();
       const daysDiffRounded = Math.floor(daysDiff);
       console.log(daysDiffRounded, 'rounded');

@@ -21,12 +21,16 @@ const SymptomsChart = () => {
           accountCreationDate.getTime() +
             symptom.expectedDays * 24 * 60 * 60 * 1000,
         );
-        const diff = expectedDate.getTime() - now.getTime();
+        const diff = Math.max(expectedDate.getTime() - now.getTime(), 0);
 
         const completed = diff <= 0;
         const progress = completed
           ? 100
-          : (1 - diff / (symptom.expectedDays * 24 * 60 * 60 * 1000)) * 100;
+          : Math.max(
+              0,
+              (1 - diff / (symptom.expectedDays * 24 * 60 * 60 * 1000)) * 100,
+            );
+
         return {
           name: symptom.name,
           completed,
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     borderBottomWidth: 0.5,
     paddingVertical: 20,
-    borderBottomColor: APP_COLORS.gray2
+    borderBottomColor: APP_COLORS.gray2,
   },
   dotContainer: {
     marginHorizontal: 10,

@@ -14,7 +14,7 @@ import moment from 'moment';
 import {IMAGES} from '../config/images';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {fetchUsageData} from '../functions';
+import {fetchUsageData, formatCompactNumber} from '../functions';
 
 const UsageCard = ({item, handleEditUsageData}) => {
   const styles = StyleSheet.create({
@@ -123,9 +123,9 @@ const UsageScreen = ({navigation, route}) => {
   console.log(isEdit, 'route------');
   const [activeTab, setActiveTab] = useState(0);
   const [usageMethodValue, setUsageMethodValue] = useState('joint');
-  const [consumage, setConsumage] = useState('0');
-  const [gramsPer, setGramsPer] = useState('0');
-  const [pricePerGram, setPricePerGram] = useState('0');
+  const [consumage, setConsumage] = useState();
+  const [gramsPer, setGramsPer] = useState();
+  const [pricePerGram, setPricePerGram] = useState();
   const [usageData, setUsageData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
@@ -162,48 +162,52 @@ const UsageScreen = ({navigation, route}) => {
   };
 
   const saveUsageData = async fromCalendar => {
-    try {
-      const _usageData = {
-        usageMethod: usageMethodValue,
-        consumage,
-        gramsPer,
-        pricePerGram,
-        averagePrice: consumage * gramsPer * pricePerGram,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        userId: auth().currentUser.uid,
-        quittingDate: usageData[0].quittingDate || null,
-      };
+    if ((!consumage.length || !gramsPer.length || !pricePerGram.length) && !fromCalendar) {
+      Alert.alert('All fields are required');
+    } else {
+      try {
+        const _usageData = {
+          usageMethod: usageMethodValue,
+          consumage,
+          gramsPer,
+          pricePerGram,
+          averagePrice: consumage * gramsPer * pricePerGram,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          userId: auth().currentUser.uid,
+          quittingDate: usageData.length ? usageData[0]?.quittingDate : null,
+        };
 
-      fromCalendar
-        ? await firestore()
-            .collection('usageData')
-            .doc(auth().currentUser.uid)
-            .update({
-              quittingDate: selectedDate || null,
-            })
-            .then(() => {
-              handleUsageData();
-            })
-        : await firestore()
-            .collection('usageData')
-            .doc(auth().currentUser.uid)
-            .set(_usageData)
-            .then(() => {
-              handleUsageData();
-            });
-
-      setModalVisible(false);
-      setConsumage('');
-      setGramsPer('');
-      setPricePerGram('');
-      Alert.alert(
         fromCalendar
-          ? 'Quitting date saved successfully!'
-          : 'Usage data saved successfully!',
-      );
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Something went wrong, please try again.');
+          ? await firestore()
+              .collection('usageData')
+              .doc(auth().currentUser.uid)
+              .update({
+                quittingDate: selectedDate || null,
+              })
+              .then(() => {
+                handleUsageData();
+              })
+          : await firestore()
+              .collection('usageData')
+              .doc(auth().currentUser.uid)
+              .set(_usageData)
+              .then(() => {
+                handleUsageData();
+              });
+
+        setModalVisible(false);
+        setConsumage('');
+        setGramsPer('');
+        setPricePerGram('');
+        Alert.alert(
+          fromCalendar
+            ? 'Quitting date saved successfully!'
+            : 'Usage data saved successfully!',
+        );
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Something went wrong, please try again.');
+      }
     }
   };
 
@@ -331,10 +335,12 @@ const UsageScreen = ({navigation, route}) => {
         <View style={styles.pickerContainer}>
           <AppText style={styles.label}>Consumage per day:</AppText>
           <AppInput
+            maxLength={3}
             keyboardType="numeric"
             style={styles.input}
             // placeholder={`${usageMethodValue} per day`}
             value={consumage}
+            placeholder="0"
             onChangeText={setConsumage}
           />
         </View>
@@ -342,11 +348,13 @@ const UsageScreen = ({navigation, route}) => {
         <View style={styles.smallInputWrap}>
           <AppText>Grams per {usageMethodValue}</AppText>
           <AppInput
+            maxLength={3}
             keyboardType="numeric"
             containerStyle={{borderBottomWidth: 0}}
             style={styles.smallInput}
             // placeholder="Grams per Joint or Bowl"
             value={gramsPer}
+            placeholder="0"
             onChangeText={setGramsPer}
           />
         </View>
@@ -354,10 +362,12 @@ const UsageScreen = ({navigation, route}) => {
         <View style={styles.smallInputWrap}>
           <AppText>Price per gram</AppText>
           <AppInput
+            maxLength={3}
             keyboardType="numeric"
             containerStyle={{borderBottomWidth: 0}}
             style={styles.smallInput}
             value={pricePerGram}
+            placeholder="0"
             onChangeText={setPricePerGram}
           />
         </View>
@@ -367,7 +377,7 @@ const UsageScreen = ({navigation, route}) => {
           <AppInput
             containerStyle={{borderBottomWidth: 0}}
             readOnly
-            value={av_cost_per_day.toString()}
+            value={formatCompactNumber(av_cost_per_day)}
             style={styles.smallInput}
             // onChangeText={setPricePerGram}
           />

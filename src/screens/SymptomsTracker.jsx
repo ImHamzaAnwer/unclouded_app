@@ -166,7 +166,10 @@ const CountdownScreen = () => {
         const completed = diff <= 0;
         const progress = completed
           ? 100
-          : (1 - diff / (symptom.expectedDays * 24 * 60 * 60 * 1000)) * 100;
+          : Math.max(
+              0,
+              (1 - diff / (symptom.expectedDays * 24 * 60 * 60 * 1000)) * 100,
+            );
 
         return {
           name: symptom.name,
