@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import AppText from './AppText';
 import {APP_COLORS} from '../config/colors';
 import moment from 'moment';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IMAGES} from '../config/images';
 import {fetchUsageData, userCreationTime} from '../functions';
 
@@ -31,7 +30,7 @@ const QuttingTimer = () => {
       setTimeElapsed(elapsedTime);
     }, 1000);
     return () => clearInterval(interval);
-  }, [userCreationTime]);
+  }, [quitDateCreation]);
 
   const days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24))
     .toString()

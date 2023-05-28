@@ -1,9 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import AppText from '../AppText';
 import {IMAGES} from '../../config/images';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AudioHeader = ({title, message}) => {
   const navigation = useNavigation();

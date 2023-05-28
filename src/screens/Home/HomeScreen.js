@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
@@ -14,7 +15,6 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import QuittingTimer from '../../components/QuttingTimer';
 import SymptomsChart from '../../components/SymptomsChart';
-import {ScrollView} from 'react-native-gesture-handler';
 import Calculator from '../../components/Calculator';
 
 export default function Home({navigation}) {

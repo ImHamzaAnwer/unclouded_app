@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, FlatList, Image, Alert} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Image,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {Calendar} from 'react-native-calendars';
@@ -13,7 +20,6 @@ import CustomTabs from '../components/CustomTabs';
 import moment from 'moment';
 import {IMAGES} from '../config/images';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {fetchUsageData, formatCompactNumber} from '../functions';
 
 const UsageCard = ({item, handleEditUsageData}) => {
@@ -162,7 +168,10 @@ const UsageScreen = ({navigation, route}) => {
   };
 
   const saveUsageData = async fromCalendar => {
-    if ((!consumage.length || !gramsPer.length || !pricePerGram.length) && !fromCalendar) {
+    if (
+      (!consumage.length || !gramsPer.length || !pricePerGram.length) &&
+      !fromCalendar
+    ) {
       Alert.alert('All fields are required');
     } else {
       try {

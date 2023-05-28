@@ -1,10 +1,15 @@
 import React from 'react';
 
-import {View, StyleSheet, Image, Dimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../AppText';
 import {IMAGES} from '../../config/images';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AlbumArt = ({track, title, artist, url, onPress, isFavorite}) => (
   <>

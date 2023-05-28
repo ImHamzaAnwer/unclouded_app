@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
 import {APP_COLORS} from '../config/colors';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
 const AppButton = props => {

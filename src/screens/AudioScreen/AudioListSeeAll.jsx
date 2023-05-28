@@ -6,13 +6,13 @@ import {
   View,
   TextInput,
   Dimensions,
-  SafeAreaView
+  SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import {IMAGES} from '../../config/images';
 import {TRACKS} from '../../config/tracks';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AudioCardSeeAll = ({tracks, selectedTrack, i, navigation}) => {
   return (
@@ -156,7 +156,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     width: '85%',
     marginLeft: 10,
-    height: 30,
+    padding: Platform.OS == 'ios' ? undefined : 0,
+    height: Platform.OS == 'ios' ? 30 : undefined,
     fontFamily: 'GothamRounded-Medium',
     color: APP_COLORS.primaryText,
     // backgroundColor: 'orange'

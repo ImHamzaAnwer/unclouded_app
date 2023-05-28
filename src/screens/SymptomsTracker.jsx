@@ -5,13 +5,13 @@ import {
   StyleSheet,
   ImageBackground,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import AppText from '../components/AppText';
 import moment from 'moment';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {IMAGES} from '../config/images';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import Popover, {PopoverPlacement} from 'react-native-popover-view';
 import {userCreationTime} from '../functions';
 import {symptoms} from '../config/symptoms';

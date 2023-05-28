@@ -7,6 +7,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 // import OTPTextView from 'react-native-otp-textinput';
 import {APP_COLORS} from '../../config/colors';
@@ -16,7 +17,6 @@ import AppText from '../../components/AppText';
 import auth from '@react-native-firebase/auth';
 import {IMAGES} from '../../config/images';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {EMAIL_REGEX} from '../../config/regexes';
 
 const ForgotPassword = ({navigation}) => {

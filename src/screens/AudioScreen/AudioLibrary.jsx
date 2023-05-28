@@ -5,13 +5,13 @@ import {
   Image,
   View,
   TextInput,
-  ImageBackground,
+  Platform,
+  TouchableOpacity,
 } from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import {IMAGES} from '../../config/images';
 import {TRACKS} from '../../config/tracks';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const AudioLibrary = ({navigation}) => {
@@ -223,7 +223,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     width: '85%',
     marginLeft: 10,
-    height: 30,
+    padding: Platform.OS == 'ios' ? undefined : 0,
+    height: Platform.OS == 'ios' ? 30 : undefined,
     fontFamily: 'GothamRounded-Medium',
     color: APP_COLORS.primaryText,
     // backgroundColor: 'orange'

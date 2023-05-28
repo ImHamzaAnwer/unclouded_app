@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import AppText from '../components/AppText';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import firestore from '@react-native-firebase/firestore';
-import {
-  createNotification,
-  userId,
-  formatFirebaseTimestamp,
-  groupByDate,
-} from '../functions';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {userId, formatFirebaseTimestamp, groupByDate} from '../functions';
 import {IMAGES} from '../config/images';
 import moment from 'moment';
 

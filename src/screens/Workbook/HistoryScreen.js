@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -15,7 +16,6 @@ import moment from 'moment';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
 import CustomTabs from '../../components/CustomTabs';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import AppButton from '../../components/AppButton';
 import {IMAGES} from '../../config/images';
 import QuestionModal from '../../components/QuestionModal';
@@ -390,7 +390,6 @@ export default function HistoryScreen({navigation}) {
         <FlatList
           refreshControl={
             <RefreshControl
-              colors={['#fff']}
               tintColor={'#fff'}
               refreshing={refreshing}
               onRefresh={onRefresh}
@@ -404,7 +403,6 @@ export default function HistoryScreen({navigation}) {
         <FlatList
           refreshControl={
             <RefreshControl
-              colors={['#fff']}
               tintColor={'#fff'}
               refreshing={refreshing}
               onRefresh={onRefresh}

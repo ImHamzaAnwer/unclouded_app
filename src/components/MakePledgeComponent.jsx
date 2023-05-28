@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, StyleSheet, Touchable, View} from 'react-native';
+import {Alert, StyleSheet, View, TouchableOpacity} from 'react-native';
 import AppText from './AppText';
 import moment from 'moment';
 import {APP_COLORS} from '../config/colors';
 import AppButton from './AppButton';
 import {Image} from 'react-native-animatable';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IMAGES} from '../config/images';
 import AppModal from './AppModal';
 import AppInput from './AppInput';

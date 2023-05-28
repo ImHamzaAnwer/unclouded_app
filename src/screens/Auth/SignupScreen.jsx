@@ -10,6 +10,7 @@ import {
   Alert,
   ImageBackground,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -24,7 +25,6 @@ import {
   weakPasswordRegex,
 } from '../../config/regexes';
 import {IMAGES} from '../../config/images';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const SignupScreen = ({navigation}) => {
   const [username, setUsername] = useState('');

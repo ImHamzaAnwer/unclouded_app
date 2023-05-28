@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {APP_COLORS} from '../config/colors';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const AppInput = props => {
   const {
