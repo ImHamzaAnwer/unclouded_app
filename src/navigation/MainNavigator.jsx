@@ -17,6 +17,7 @@ import Home from '../screens/Home/HomeScreen';
 import SymptomsCountdown from '../screens/SymptomsTracker';
 import Notifiactions from '../screens/Notifications';
 import Favorites from '../screens/Favorites';
+import {Platform} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -80,6 +81,7 @@ const MainNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        animationEnabled: Platform.OS == 'ios' ? true : false,
         gestureEnabled: false,
         header: () => null,
       }}>

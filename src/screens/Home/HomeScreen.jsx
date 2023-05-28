@@ -6,6 +6,8 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import {APP_COLORS} from '../../config/colors';
 import AppText from '../../components/AppText';
@@ -16,6 +18,7 @@ import firestore from '@react-native-firebase/firestore';
 import QuittingTimer from '../../components/QuttingTimer';
 import SymptomsChart from '../../components/SymptomsChart';
 import Calculator from '../../components/Calculator';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function Home({navigation}) {
   const [userName, setUserName] = useState('');
@@ -30,6 +33,21 @@ export default function Home({navigation}) {
     name = name?.split(' ')[0];
     setUserName(name);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        BackHandler.exitApp();
+      };
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
+
+      return () => subscription.remove();
+    }, []),
+  );
 
   useEffect(() => {
     fetchUsername();

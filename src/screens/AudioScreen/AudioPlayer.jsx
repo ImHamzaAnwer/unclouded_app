@@ -4,7 +4,7 @@ import {BackHandler} from 'react-native';
 import {StackActions} from '@react-navigation/native';
 import {TRACKS} from '../../config/tracks';
 
-const AudioPlayer = ({navigation, route, songId}) => {
+const AudioPlayer = ({route}) => {
   const track = route.params.track;
   const playlist = route.params.playlist;
 

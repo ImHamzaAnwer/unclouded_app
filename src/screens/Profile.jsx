@@ -29,7 +29,7 @@ const PROFILE_ITEMS = [
   {
     name: 'Notification',
     icon: IMAGES.NotificationIcon,
-    routeName: 'Notification',
+    routeName: 'Notifications',
   },
   {
     name: 'Favorite Audio Tracks',
