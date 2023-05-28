@@ -1,6 +1,13 @@
 import React from 'react';
 
-import {View, Pressable, Dimensions, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Pressable,
+  Dimensions,
+  StyleSheet,
+  Image,
+  Platform,
+} from 'react-native';
 import {APP_COLORS} from '../config/colors';
 import {IMAGES} from '../config/images';
 import LinearGradient from 'react-native-linear-gradient';
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 45,
+    bottom: Platform.OS == 'ios' ? 45 : 35,
     backgroundColor: '#082E3F',
     borderRadius: 50,
     marginHorizontal: width * 0.07,

@@ -27,17 +27,16 @@ const ForgotPassword = ({navigation}) => {
     if (!email.length || !email.match(EMAIL_REGEX)) {
       Alert.alert('Please enter a valid email address');
     } else {
-      const actionCodeSettings = {
-        iOS: {
-          bundleId: 'com.unclouded',
-        },
-        android: {
-          packageName: 'com.unclouded',
-          installApp: true,
-        },
-      };
+      // const actionCodeSettings = {
+      //   iOS: {
+      //     bundleId: 'com.unclouded',
+      //   },
+      //   android: {
+      //     packageName: 'com.unclouded',
+      //   },
+      // };
       auth()
-        .sendPasswordResetEmail(email, actionCodeSettings)
+        .sendPasswordResetEmail(email)
         .then(() => {
           setOtpScreen(true);
           // Handle successful signup
@@ -70,6 +69,7 @@ const ForgotPassword = ({navigation}) => {
           }}>
           <Image style={styles.logo} source={IMAGES.logo} />
           <TouchableOpacity
+            activeOpacity={1}
             style={styles.header}
             onPress={() => navigation.goBack()}>
             <Image style={{marginRight: 10}} source={IMAGES.BackArrowIcon} />
